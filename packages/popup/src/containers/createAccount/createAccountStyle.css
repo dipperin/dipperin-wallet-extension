@@ -1,0 +1,33 @@
+.ca-close-box {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 12px 16px;
+  height: 41px;
+  overflow: hidden;
+}
+
+.ca-close-icon {
+  display: block;
+  width: 17px;
+  height: 17px;
+  float: right;
+  background: url(../../images/close_slices/close@2x.png) no-repeat;
+  cursor: pointer;
+}
+
+.ca-label {
+  width: 100%;
+  margin-bottom: 25px;
+  padding: 0px 27px;
+  line-height: 14px;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.ca-btn-box {
+  margin-top: 98px;
+}
+
+.ca-input-box {
+  text-align: center;
+}

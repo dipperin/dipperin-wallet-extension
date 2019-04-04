@@ -1,0 +1,165 @@
+.nav-main {
+  box-sizing: border-box;
+  height: 69px;
+  width: 100%;
+  padding: 19px 18px;
+  display: flex;
+  flex-wrap: wrap;
+  /* align-content: space-between; */
+  justify-content: space-between;
+  user-select: none;
+}
+
+.nav-home-logo {
+  display: inline-block;
+  height: 30px;
+  width: 30px;
+  background: url(../../images/slogo_slices/logo@2x.png) 0px 0px no-repeat;
+  cursor: pointer;
+}
+
+.nav-page-name {
+  line-height: 30px;
+  font-size: 18px;
+  font-weight: 550;
+  color: rgba(255, 255, 255, 1);
+}
+
+.nav-avatar {
+  display: inline-block;
+  height: 30px;
+  width: 30px;
+  /* background: red; */
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+.nav-modal {
+  position: fixed;
+  top: 54px;
+  left: 88px;
+  width: 264px;
+  /* height: 168px; */
+  background: rgba(0, 0, 0, 0.92);
+  border-radius: 10px;
+  z-index: 99;
+}
+
+.nav-addAccount-box {
+  box-sizing: border-box;
+  width: 100%;
+  height: 54px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  padding: 18px 14px;
+  vertical-align: middle;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 1);
+}
+
+.nav-myAccount {
+  font-size: 16px;
+}
+
+.nav-addAccount {
+  font-size: 18px;
+  display: block;
+  width: 18px;
+  height: 18px;
+  background: url(../../images/plus_slices/plus@2x.png) 0px 0px no-repeat;
+  float: right;
+  cursor: pointer;
+}
+
+.nav-accountList-box {
+  max-height: 226px;
+  overflow: auto;
+}
+
+.nav-accountList-box::-webkit-scrollbar {
+  display: none;
+}
+
+.nav-account-item {
+  box-sizing: border-box;
+  height: 64px;
+  padding: 18px 14px;
+}
+
+.nav-account-item:hover {
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.nav-account-id {
+  display: block;
+  height: 26px;
+  width: 26px;
+  float: left;
+  background: url(../../images/yuan_slices/yuan.png) no-repeat;
+  background-size: cover;
+  background-position: center center;
+  line-height: 26px;
+  text-align: center;
+  /* vertical-align: middle; */
+}
+
+.nav-account-avatar {
+  display: block;
+  height: 26px;
+  width: 26px;
+  float: left;
+  border-radius: 13px;
+}
+
+.nav-account-info {
+  float: left;
+  margin-left: 8px;
+}
+
+.nav-account-name {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.nav-account-balance {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.nav-account-activemark {
+  display: block;
+  width: 18px;
+  height: 26px;
+  float: right;
+  background: url(../../images/active_slices/active@2x.png) 0px 7px no-repeat;
+}
+
+.nav-setting-box {
+  box-sizing: border-box;
+  width: 100%;
+  height: 48px;
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  padding: 11px 14px;
+  vertical-align: middle;
+  font-family: SourceHanSansSC-Normal;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 1);
+  cursor: pointer;
+}
+
+.nav-setting-icon {
+  display: block;
+  float: left;
+  width: 26px;
+  height: 26px;
+  background: url(../../images/setting_slices/setting@2x.png) 0px 0px no-repeat;
+}
+
+.nav-setting-word {
+  display: block;
+  float: left;
+  margin-left: 8px;
+  font-size: 16px;
+  line-height: 26px;
+}

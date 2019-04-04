@@ -1,0 +1,23 @@
+.import-modal {
+  display: block;
+  margin: 15px auto 34px;
+  box-sizing: border-box;
+  width: 100%;
+  /* height: 283px; */
+  padding: 0px 25px;
+
+  overflow: auto;
+}
+
+.import-mnemonic {
+  margin-top: 10px;
+}
+
+.import-msg {
+  margin-top: 13px;
+  margin-bottom: 7px;
+}
+
+.import-continue:disabled {
+  background-color: rgba(153, 153, 153, 1);
+}

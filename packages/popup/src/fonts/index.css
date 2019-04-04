@@ -1,0 +1,69 @@
+/* @font-face {
+  font-family: 'SourceHanSansSC-Medium';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100;
+  src: local('SourceHanSansSC-Medium'), local('SourceHanSansSC-Medium '),
+    url('./files/SourceHanSansCN-ExtraLight.otf') format('otf');
+}
+
+@font-face {
+  font-family: 'SourceHanSansSC-Medium';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 300;
+  src: local('SourceHanSansSC-Medium'), local('SourceHanSansSC-Medium '),
+    url('./files/SourceHanSansCN-Light.otf') format('otf');
+}
+
+@font-face {
+  font-family: 'SourceHanSansSC-Medium';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: local('SourceHanSansSC-Medium'), local('SourceHanSansSC-Medium '),
+    url('./files/SourceHanSansCN-Normal.otf') format('otf');
+} */
+
+@font-face {
+  font-family: 'SourceHanSansSC-Medium';
+  /* font-style: normal; */
+  /* font-display: swap; */
+  /* font-weight: 500; */
+  src: url('./files/SourceHanSansCN-Regular.eot');
+  src: url('./files/SourceHanSansCN-Regular.woff') format('woff'),
+    url('./files/SourceHanSansCN-Regular.otf') format('otf'), url('./files/SourceHanSansCN-Regular.ttf') format('ttf'),
+    url('./files/SourceHanSansCN-Regular.svg') format('svg');
+}
+
+body {
+  font-family: 'SourceHanSansSC-Medium';
+}
+
+/* 
+@font-face {
+  font-family: 'SourceHanSansSC-Medium';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: local('SourceHanSansSC-Medium'), local('SourceHanSansSC-Medium '),
+    url('./files/SourceHanSansCN-Medium.otf') format('otf');
+}
+
+@font-face {
+  font-family: 'SourceHanSansSC-Medium';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: local('SourceHanSansSC-Medium'), local('SourceHanSansSC-Medium '),
+    url('./files/SourceHanSansCN-Bold.otf') format('otf');
+}
+
+@font-face {
+  font-family: 'SourceHanSansSC-Medium';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 900;
+  src: local('SourceHanSansSC-Medium'), local('SourceHanSansSC-Medium '),
+    url('./files/SourceHanSansCN-Heavy.otf') format('otf');
+} */

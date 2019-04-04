@@ -1,0 +1,36 @@
+{
+  "name": "@dipperin/content-script",
+  "main": "index.js",
+  "private": true,
+  "version": "0.0.1",
+  "scripts": {
+    "build": "webpack-cli --config ../../webpack.config.js -o ../../build/contentScript.js",
+    "watch": "webpack-cli -w --config ../../webpack.config.js -o ../../build/contentScript.js",
+    "test": "jest --watch --config=./jest.config.js",
+    "test:ci": "jest --ci --config=./jest.config.js",
+    "removeCache": "rimraf node_modules/.cache/hard-source"
+  },
+  "dependencies": {
+    "@dipperin/lib": "^0.0.1",
+    "consola": "^2.4.1",
+    "extension-port-stream": "^1.0.0",
+    "extensionizer": "^1.0.1",
+    "obj-multiplex": "^1.0.0",
+    "ping-pong-stream": "^1.0.0",
+    "post-message-stream": "^3.0.0",
+    "pump": "^3.0.0",
+    "querystring": "^0.2.0"
+  },
+  "devDependencies": {
+    "@types/jest": "23.3.14",
+    "@types/pump": "^1.0.1",
+    "awesome-typescript-loader": "^5.2.1",
+    "babel-loader": "^8.0.5",
+    "hard-source-webpack-plugin": "^0.13.1",
+    "jest": "23.6.0",
+    "rimraf": "^2.6.3",
+    "ts-jest": "^23.10.5",
+    "webpack-chrome-extension-reloader": "^1.2.0",
+    "webpack-cli": "^3.2.3"
+  }
+}

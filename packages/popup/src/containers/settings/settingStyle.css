@@ -1,0 +1,80 @@
+.setting-close-box {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 11px 16px;
+  height: 38px;
+  overflow: hidden;
+}
+
+.setting-close-icon {
+  display: block;
+  width: 17px;
+  height: 17px;
+  float: right;
+  background: url(../../images/close_slices/close@2x.png) no-repeat;
+  cursor: pointer;
+}
+
+.setting-content {
+  padding: 0 17px;
+}
+
+.setting-title {
+  padding-left: 11px;
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 25px;
+}
+
+.setting-netword-item {
+  box-sizing: border-box;
+  padding: 11px 10px;
+  width: 326px;
+  height: 48px;
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.setting-netword-item + .setting-netword-item {
+  margin-top: 2px;
+}
+
+.setting-netword-active {
+  box-sizing: border-box;
+  padding: 11px 10px;
+  width: 326px;
+  height: 48px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.setting-mainnet-icon {
+  float: left;
+  width: 26px;
+  height: 26px;
+  background: url(../../images/Mainnet_slices/Mainnet@2x.png) no-repeat;
+}
+.setting-testnet-icon {
+  float: left;
+  width: 26px;
+  height: 26px;
+  background: url(../../images/testnet_slices/testnet@2x.png) no-repeat;
+}
+.setting-net {
+  float: left;
+  margin-left: 16px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 26px;
+  vertical-align: middle;
+}
+.setting-activenet {
+  float: right;
+  height: 26px;
+  width: 18px;
+  background: url(../../images/active_slices/active@2x.png) 0px 7px no-repeat;
+}
+
+.setting-button-box {
+  margin-top: 50px;
+}

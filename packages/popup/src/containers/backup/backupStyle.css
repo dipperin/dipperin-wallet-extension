@@ -1,0 +1,15 @@
+.backup-modal {
+  display: block;
+  margin: 0 auto;
+  box-sizing: border-box;
+  width: 100%;
+  height: 296px;
+  padding: 17px 25px;
+
+  /* background-color: rgba(242, 242, 242, 1); */
+  overflow: hidden;
+}
+
+.backup-mnemonic {
+  margin-top: 19px;
+}

@@ -1,0 +1,21 @@
+.auth-title {
+  margin-top: 0 auto 23px;
+  text-align: center;
+  line-height: 20px;
+  font-size: 24px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 1);
+}
+
+.auth-logo {
+  margin: 105px auto 42px;
+}
+
+.auth-info {
+  line-height: 17px;
+  text-align: center;
+}
+
+.auth-btn {
+  margin-top: 75px;
+}

@@ -1,0 +1,291 @@
+.create-account {
+  display: block;
+  width: 314px;
+  height: 40px;
+
+  margin: 23px auto;
+
+  background-color: rgba(255, 255, 255, 1);
+  box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgba(0, 40, 100, 1);
+  border-radius: 5px;
+}
+
+.accounts-content {
+  margin-top: 36px;
+}
+
+.accounts-id-box {
+  text-align: center;
+}
+
+.accounts-id {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+  background: url(../../images/yuan_slices/yuan@2x.png) -6px -6px no-repeat;
+  font-size: 38px;
+  font-family: RTWSShangGoG0v1-Bold;
+  font-weight: bold;
+  color: rgba(255, 255, 255, 1);
+  line-height: 80px;
+}
+
+.accounts-name-box {
+  margin-top: 10px;
+  text-align: center;
+  /* display: flex;
+  flex-wrap: nowrap;
+  justify-content: center; */
+}
+
+.accounts-name-nothing {
+  display: inline-block;
+  margin-right: 10px;
+  /* margin-left: 10px; */
+  width: 16px;
+  height: 16px;
+  /* background: url(../../images/changeAccoutsName_slices/changeName@2x.png) 0px 0px no-repeat; */
+}
+
+.accounts-name {
+  font-size: 18px;
+  font-family: SourceHanSansSC-Normal;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 1);
+}
+
+.accounts-name-icon {
+  display: inline-block;
+  margin-left: 10px;
+  width: 16px;
+  height: 16px;
+  background: url(../../images/changeAccoutsName_slices/changeName@2x.png) 0px 0px no-repeat;
+  cursor: pointer;
+}
+
+.accounts-hr-line {
+  margin: 0 auto;
+  height: 1px;
+  width: 184px;
+  background: radial-gradient(white, transparent);
+  opacity: 0.5;
+}
+
+.accounts-name-input {
+  border: none;
+  /* border: 1px solid white; */
+  /* border-style: solid none; */
+  background: linear-gradient(to right, transparent 0%, black, transparent 100%);
+
+  text-align: center;
+  width: 184px;
+  height: 30px;
+  font-size: 18px;
+  font-family: SourceHanSansSC-Normal;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 1);
+}
+
+.accounts-balance-box {
+  margin-top: 17px;
+  text-align: center;
+}
+
+.accounts-balance {
+  font-size: 30px;
+  font-weight: 500;
+}
+
+.accounts-address-box {
+  margin-top: 18px;
+  text-align: center;
+}
+
+.accounts-address {
+  font-size: 12px;
+  font-family: SourceHanSansSC-Normal;
+  font-weight: 400;
+}
+
+.accounts-address-icon {
+  display: inline-block;
+  margin-left: 10px;
+  width: 16px;
+  height: 16px;
+  background: url(../../images/copy_slices/copy@2x.png) 0px 0px no-repeat;
+  cursor: pointer;
+}
+
+.accounts-btn-box {
+  margin-top: 56px;
+}
+
+.accounts-id-box {
+  text-align: center;
+}
+
+.accounts-id {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+  background: url(../../images/yuan_slices/yuan@2x.png) -6px -6px no-repeat;
+  font-size: 38px;
+  font-family: RTWSShangGoG0v1-Bold;
+  font-weight: bold;
+  color: rgba(255, 255, 255, 1);
+  line-height: 80px;
+}
+
+.accounts-avatar {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+  border-radius: 40px;
+  line-height: 80px;
+}
+
+.accounts-name-box {
+  margin-top: 10px;
+  text-align: center;
+  /* display: flex;
+  flex-wrap: nowrap;
+  justify-content: center; */
+}
+
+.accounts-name-nothing {
+  display: inline-block;
+  margin-right: 10px;
+  /* margin-left: 10px; */
+  width: 16px;
+  height: 16px;
+  /* background: url(../../images/changeAccoutsName_slices/changeName@2x.png) 0px 0px no-repeat; */
+}
+
+.accounts-name {
+  font-size: 18px;
+  font-family: SourceHanSansSC-Normal;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 1);
+}
+
+.accounts-name-icon {
+  display: inline-block;
+  margin-left: 10px;
+  width: 16px;
+  height: 16px;
+  background: url(../../images/changeAccoutsName_slices/changeName@2x.png) 0px 0px no-repeat;
+  cursor: pointer;
+}
+
+.accounts-hr-line {
+  margin: 0 auto;
+  height: 1px;
+  width: 184px;
+  background: radial-gradient(white, transparent);
+  opacity: 0.5;
+}
+
+.accounts-name-input {
+  border: none;
+  /* border: 1px solid white; */
+  /* border-style: solid none; */
+  background: linear-gradient(to right, transparent 0%, black, transparent 100%);
+
+  text-align: center;
+  width: 184px;
+  height: 30px;
+  font-size: 18px;
+  font-family: SourceHanSansSC-Normal;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 1);
+}
+
+.accounts-balance-box {
+  margin-top: 17px;
+  text-align: center;
+}
+
+.accounts-balance {
+  font-size: 30px;
+  font-weight: 500;
+}
+
+.accounts-address-box {
+  margin-top: 18px;
+  text-align: center;
+}
+
+.accounts-address {
+  display: inline-block;
+  max-width: 232px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  font-family: SourceHanSansSC-Normal;
+  font-weight: 400;
+}
+
+.accounts-address-icon {
+  display: inline-block;
+  margin-left: 10px;
+  width: 16px;
+  height: 16px;
+  background: url(../../images/copy_slices/copy@2x.png) 0px 0px no-repeat;
+  cursor: pointer;
+}
+
+.accounts-btn-box {
+  margin-top: 56px;
+}
+
+.accountInfo-box {
+  width: 314px;
+  height: 172px;
+
+  margin: 23px auto;
+  padding: 24px 12px;
+
+  background-color: rgba(0, 40, 100, 1);
+
+  box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgba(121, 121, 121, 1);
+  border-radius: 10px;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.349);
+
+  color: white;
+}
+
+.accountInfo-index {
+  font-size: 20px;
+  font-family: 'ArialMT', 'Arial';
+  font-weight: 400;
+  font-style: normal;
+}
+
+.accountInfo-address {
+  margin-top: 16px;
+}
+
+.accountInfo-balance {
+  margin-top: 36px;
+  text-align: right;
+}
+
+.accountInfo-balance-num {
+  font-size: 32px;
+  font-family: 'Arial-BoldMT', 'Arial Bold', 'Arial';
+  font-weight: 700;
+  padding: 0 5px;
+}
+
+.accountInfo-balance-unit {
+  font-size: 18px;
+  font-family: 'ArialMT', 'Arial';
+  font-weight: 400;
+}

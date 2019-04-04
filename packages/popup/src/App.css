@@ -1,0 +1,125 @@
+/* @import './fonts/index.css'; */
+
+body {
+  padding: 0;
+  margin: 0;
+  color: rgba(255, 255, 255, 1);
+  overflow: hidden;
+}
+
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.bg-blue {
+  width: 360px;
+  height: 490px;
+  background: url(images/background@2X.png) no-repeat;
+  overflow: hidden;
+  /* color: rgba(255, 255, 255, 1); */
+}
+
+.g-input-msg-v1 {
+  width: 100%;
+  /* padding-left: 24px; */
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(200, 200, 200, 1);
+}
+
+.g-input-v1 {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+  width: 310px;
+  height: 36px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 18px;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0 18px;
+  font-size: 16px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 1);
+  outline: none;
+  text-overflow: ellipsis;
+}
+
+.g-input-v2 {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+  width: 326px;
+  height: 48px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0 18px;
+  font-size: 16px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 1);
+  outline: none;
+}
+
+.g-2btn-area {
+  padding: 0 25px;
+}
+
+.g-text-mnemonic {
+  display: block;
+  box-sizing: border-box;
+  margin-left: auto;
+  margin-right: auto;
+  width: 310px;
+  height: 100px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 18px;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 7px 17px;
+  font-size: 16px;
+  line-height: 28px;
+  font-weight: 600;
+  font-family: sans-serif;
+  color: rgba(255, 255, 255, 1);
+  outline: none;
+  overflow-y: hidden;
+}
+
+.g-p-info {
+  display: block;
+  margin: 0;
+  width: 100%;
+  /* padding: 8px 25px; */
+  font-size: 12px;
+  font-weight: 500;
+  /* color: rgba(255, 255, 255, 1); */
+  line-height: 18px;
+}
+
+.g-left {
+  float: left;
+}
+
+.g-right {
+  float: right;
+}
+
+.dipperin-logo {
+  width: 86px;
+  height: 98px;
+  background: url(./images/logo_slices/logo@2x.png) no-repeat;
+}
+
+.g-title-v1 {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 500;
+  /* color: rgba(255, 255, 255, 1); */
+}
+
+.g-tip {
+  display: inline-block;
+  margin-left: 20px;
+  line-height: 10px;
+}

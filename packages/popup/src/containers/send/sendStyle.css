@@ -1,0 +1,68 @@
+.send-account-select {
+  border: none;
+  width: 397px;
+  height: 60px;
+
+  text-align: right;
+  vertical-align: middle;
+}
+
+.send-transfer-modal {
+  height: 231px;
+  width: 397px;
+}
+
+.send-content-box {
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 25px;
+  position: relative;
+}
+
+.send-balance-info {
+  margin: 19px auto 34px;
+  line-height: 18px;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.send-msg-v1 {
+  margin: 17px auto 10px;
+  line-height: 9px;
+}
+
+.send-msg-v2 {
+  line-height: 13px;
+  margin: 16px auto 7px;
+}
+
+.send-button-box {
+  margin-top: 56px;
+}
+
+.send-reminder {
+  display: inline-block;
+  margin-left: 20px;
+  line-height: 10px;
+}
+
+.send-close-box {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 11px 0;
+  height: 38px;
+  overflow: hidden;
+}
+
+.send-close-icon {
+  position: absolute;
+  top: 11px;
+  right: 16px;
+  display: block;
+  width: 17px;
+  height: 17px;
+  float: right;
+  background: url(../../images/close_slices/close@2x.png) no-repeat;
+  cursor: pointer;
+}

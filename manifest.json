@@ -1,0 +1,42 @@
+{
+    "manifest_version": 2,
+    "name": "Dipperin",
+    "version": "0.0.1",
+    "version_name": "0.0.1",
+    "permissions": [
+        "storage",
+        "unlimitedStorage",
+        "clipboardWrite",
+        "activeTab"
+    ],
+    "browser_action": {
+        "default_popup": "build/index.html",
+        "default_title": "Dipperin"
+    },
+    "icons": {
+		"128": "build/icon.png"
+    },
+    "background": {
+        "scripts": [
+            "build/backgroundScript.js"
+        ],
+        "persistent": true
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "file://*/*",
+                "http://*/*",
+                "https://*/*"
+            ],
+            "js": [
+                "build/contentScript.js"
+            ],
+            "run_at": "document_start",
+            "all_frames": false
+        }
+    ],
+    "web_accessible_resources": [
+        "build/pageHook.js"
+    ]
+}
