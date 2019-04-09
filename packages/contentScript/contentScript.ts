@@ -1,11 +1,12 @@
-import Consola from 'consola'
+// import Consola from 'consola'
 import extensionizer from 'extensionizer'
 import { Tab } from '@dipperin/lib/duplex'
 import EventChannel from '@dipperin/lib/eventChannel'
+import { contentScriptLog as log } from '@dipperin/lib/log'
 
-const log = Consola.withTag('content-script').create({
-  level: 5
-})
+// const log = Consola.withTag('content-script').create({
+//   level: 5
+// })
 
 export default class ContentScript {
   duplex = new Tab()

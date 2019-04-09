@@ -9,6 +9,7 @@ import History from '@/stores/history'
 import Layout from '@/stores/layout'
 import Button from '@/components/button'
 import AppHeader from '@/components/header'
+import { popupLog as log } from '@dipperin/lib/log'
 
 import RandomMnemonic from './randomMnemonic'
 import './backupConfirmStyle.css'
@@ -67,7 +68,7 @@ class BackupConfirm extends React.Component<Props> {
       const res = (await this.props.wallet!.getMnenmonic()) as string
       this.setMnemonic(res)
     } catch (e) {
-      console.log('backupConfirm-getMnemonic-error:', e)
+      log.error('backupConfirm-getMnemonic-error:' + e)
     }
   }
 
@@ -75,11 +76,11 @@ class BackupConfirm extends React.Component<Props> {
     this.props.layout!.handleOpenLoading()
     try {
       const res = await this.props.wallet!.createWallet()
-      console.log('BackupConfirm-createWallet-result:', res)
+      log.debug('BackupConfirm-createWallet-result:' + res)
       this.props.layout!.handleCloseLoading(this.toAccount)
     } catch (e) {
       this.props.layout!.handleOpenLoading()
-      console.log('BackupConfirm-createWallet-result-error:', e)
+      log.error('BackupConfirm-createWallet-result-error:' + e)
     }
   }
 

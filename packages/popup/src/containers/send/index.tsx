@@ -16,6 +16,7 @@ import './sendStyle.css'
 
 import { APP_STATE, ORIGIN_FEE } from '@dipperin/lib/constants'
 import Button from '@/components/button'
+import { popupLog as log } from '@dipperin/lib/log'
 
 const { ACCOUNT_PAGE, SETTING_PAGE } = APP_STATE
 
@@ -97,12 +98,12 @@ class Send extends React.Component<SendProps> {
       this.props
         .transaction!.getMinTransactionFee(tx)!
         .then((res: string) => {
-          // console.log('Send-getMinFee-res:', res)
+          log.debug('Send-getMinFee-res:' + res)
           this.setMinFee(res)
           this.updatePoundage()
         })!
         .catch(e => {
-          console.log('send-getMinFee-error:', e)
+          log.error('send-getMinFee-error:' + e)
         })
     }
   }

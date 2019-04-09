@@ -10,7 +10,7 @@ import Transaction from '@/stores/transaction'
 import NavHeader from '@/components/navHeader'
 import Modal from '@/components/modal'
 import { verifyNumber } from '@/utils'
-
+import { popupLog as log } from '@dipperin/lib/log'
 import './dappSendStyle.css'
 
 import { APP_STATE, ORIGIN_FEE } from '@dipperin/lib/constants'
@@ -156,7 +156,7 @@ class DappSend extends React.Component<DappSendProps> {
   getMinFee = () => {
     if (this.sendToAddress && this.sendAmount) {
       const tx = this.genTx(this.sendToAddress, this.sendAmount)
-      console.log('getMinFee', tx)
+      log.debug('getMinFee' + tx)
       this.props
         .transaction!.getMinTransactionFee(tx)!
         .then((res: string) => {

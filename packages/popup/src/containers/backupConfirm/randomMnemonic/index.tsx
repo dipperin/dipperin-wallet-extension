@@ -1,6 +1,7 @@
 import React from 'react'
 import { observable, action, runInAction, autorun } from 'mobx'
 import classnames from 'classnames'
+// import { popupLog as log } from '@dipperin/lib/log'
 
 interface Props {
   mnemonic: string
@@ -43,7 +44,7 @@ class RandomMnemonic extends React.Component<Props> {
 
   @action
   handleCheck = e => {
-    console.log(e.target)
+    // console.log(e.target)
     this.mnemonicChecked[Number(e.target.key)] = true
   }
 
@@ -74,7 +75,7 @@ class RandomMnemonic extends React.Component<Props> {
   }
 
   render() {
-    console.log(this.mnemonic)
+    // console.log(this.mnemonic)
     return (
       <div className="backupConfirm-mnemonic-area">
         {[0, 1, 2, 3].map(row => (

@@ -12,6 +12,7 @@ import Tooltip from '@/components/tooltip'
 import { APP_STATE } from '@dipperin/lib/constants'
 import './createAccountStyle.css'
 import Button from '@/components/button'
+import { popupLog as log } from '@dipperin/lib/log'
 
 const { ACCOUNT_PAGE } = APP_STATE
 
@@ -65,7 +66,8 @@ class CreateAccount extends React.Component<CreateAccountProps> {
     this.props
       .account!.addAccount(this.accountName)!
       .then(res => {
-        console.log('createAccount-handleCreateAccount-res:', res)
+        log.success('createAccount-handleCreateAccount')
+        // console.log('createAccount-handleCreateAccount-res:', res)
       })
       .catch(e => {
         console.log('createAccount-handleCreateAccount-error:', e)

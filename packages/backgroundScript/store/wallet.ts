@@ -58,7 +58,7 @@ class Wallet {
   unlockWallet(password: string): boolean {
     const account = this.getHdAccount(password)
     if (account) {
-      console.log('unlock')
+      // console.log('unlock')
       this._hdAccount = account
       return true
     }
