@@ -109,7 +109,7 @@ class Settings extends React.Component<SettingsProps> {
         </div>
 
         <Button params={resetWallet} onClick={this.handleReset}>
-          Reset DipperinLink
+          Reset
         </Button>
         {/* <Button params={{ classes: [] }} onClick={this.turnToDappSend}>
           To DAPP_SEND
