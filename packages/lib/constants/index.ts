@@ -17,6 +17,11 @@ export const AUTO_LOCK_WALLET = 1000 * 60 * 10
 export const NUMBER_ZERO = 0
 export const EMPTY_STRING = ''
 
+/**
+ * timer
+ */
+export const LOG_LEVEL = 5
+
 // export const HOST = 'http://10.200.0.139:3035'
 export const HOST = 'http://14.17.65.122:3035'
 

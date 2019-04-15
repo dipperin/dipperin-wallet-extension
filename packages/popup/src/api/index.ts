@@ -25,7 +25,7 @@ import {
   CHANGE_NET,
   GET_CURRENT_NET
 } from '@dipperin/lib/constants'
-import { log } from '@dipperin/lib/log'
+import { popupLog as log } from '@dipperin/lib/log'
 import { SendTxParams } from '@dipperin/lib/models/transaction'
 import { AccountNameParams } from '@dipperin/lib/models/account'
 

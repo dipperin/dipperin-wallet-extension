@@ -1,11 +1,12 @@
 import API from '@/api'
 import { action, observable } from 'mobx'
 import { TxStatusParams, TransactionObj, SendTxParams } from '@dipperin/lib/models/transaction'
-import Consola from 'consola'
+import { popupLog as log } from '@dipperin/lib/log'
+// import Consola from 'consola'
 
-const log = Consola.withTag('popup-transactionStore').create({
-  level: 5
-})
+// const log = Consola.withTag('popup-transactionStore').create({
+//   level: 5
+// })
 class Transaction {
   private _api: API
 

@@ -1,9 +1,10 @@
-import Consola from 'consola'
+// import Consola from 'consola'
 import EventChannel from '@dipperin/lib/eventChannel'
 
 import DipperinExtension from './extension'
 import buildRequestHandler, { Handler } from './handlers/request'
 import { APPROVE_SUCCESS, CHNAGE_ACTIVE_ACCOUNT, CHANGE_ACTIVE_ACCOUNT, SEND_SUCCESS } from '@dipperin/lib/constants'
+import { pageHookLog as log } from '@dipperin/lib/log'
 
 declare global {
   interface Window {
@@ -11,9 +12,9 @@ declare global {
   }
 }
 
-const log = Consola.withScope('page-hook').create({
-  level: 5
-})
+// const log = Consola.withScope('page-hook').create({
+//   level: 5
+// })
 
 export default class PageHook {
   eventChannel: EventChannel

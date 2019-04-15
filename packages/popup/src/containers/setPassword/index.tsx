@@ -9,6 +9,7 @@ import AppHeader from '@/components/header'
 import Button from '@/components/button'
 import Tooltip from '@/components/tooltip'
 import { APP_STATE } from '@dipperin/lib/constants'
+import { popupLog as log } from '@dipperin/lib/log'
 
 import './createStyle.css'
 
@@ -69,10 +70,10 @@ class SetPassword extends React.Component<Props> {
   setPassword = async () => {
     try {
       await this.props.wallet!.setPassword(this.input.password)
-      console.log('set password success!')
+      log.debug('set password success!')
       this.toBackup()
     } catch (e) {
-      console.log('CreateLayout-create-error:', e)
+      log.error('CreateLayout-create-error:' + e)
     }
   }
 

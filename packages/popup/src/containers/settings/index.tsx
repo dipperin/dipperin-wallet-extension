@@ -11,7 +11,7 @@ import Wallet from '@/stores/wallet'
 
 import './settingStyle.css'
 import { APP_STATE, MAIN_NET, TEST_NET, REMOTE_MECURY, REMOTE_TEST, HAS_TEST_NET } from '@dipperin/lib/constants'
-import { log } from '@dipperin/lib/log'
+import { popupLog as log } from '@dipperin/lib/log'
 import Button from '@/components/button'
 
 const { ACCOUNT_PAGE, SEND_PAGE } = APP_STATE
@@ -109,7 +109,7 @@ class Settings extends React.Component<SettingsProps> {
         </div>
 
         <Button params={resetWallet} onClick={this.handleReset}>
-          Reset CsLink
+          Reset
         </Button>
         {/* <Button params={{ classes: [] }} onClick={this.turnToDappSend}>
           To DAPP_SEND

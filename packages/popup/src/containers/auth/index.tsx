@@ -5,6 +5,7 @@ import History from '@/stores/history'
 import Wallet from '@/stores/wallet'
 import './authStyle.css'
 import Button from '@/components/button'
+import { popupLog as log } from '@dipperin/lib/log'
 
 interface AuthProps {
   wallet?: Wallet
@@ -46,7 +47,7 @@ class Auth extends React.Component<AuthProps> {
       await this.props.wallet!.confirmAuth()
       alert('login success!')
     } catch (e) {
-      console.log('auth-agreeAuth:', e)
+      log.error('auth-agreeAuth:' + e)
     }
   }
   // TODO: add logic

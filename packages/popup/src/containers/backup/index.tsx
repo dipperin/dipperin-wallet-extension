@@ -7,6 +7,7 @@ import _ from 'lodash'
 // import RootStore from '@/stores/root'
 import Wallet from '@/stores/wallet'
 import History from '@/stores/history'
+import { popupLog as log } from '@dipperin/lib/log'
 
 import Button from '@/components/button'
 import AppHeader from '@/components/header'
@@ -59,7 +60,7 @@ class Backup extends React.Component<Props> {
         this.setMnemonic(res)
       })
       .catch(e => {
-        console.log('CreateLayout-create-error:', e)
+        log.error('CreateLayout-create-error:' + e)
       })
   }
 
