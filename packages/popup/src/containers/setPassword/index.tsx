@@ -5,6 +5,7 @@ import _ from 'lodash'
 
 import Wallet from '@/stores/wallet'
 import History from '@/stores/history'
+import Label from '@/stores/label'
 import AppHeader from '@/components/header'
 import Button from '@/components/button'
 import Tooltip from '@/components/tooltip'
@@ -18,9 +19,10 @@ const { HAS_NO_WALLET, BACKUP_PAGE } = APP_STATE
 interface Props {
   wallet?: Wallet
   history?: History
+  label?: Label
 }
 
-@inject('wallet', 'history')
+@inject('wallet', 'history', 'label')
 @observer
 class SetPassword extends React.Component<Props> {
   @observable
@@ -127,7 +129,8 @@ class SetPassword extends React.Component<Props> {
         <AppHeader />
         <div className="create-modal">
           <p className="g-input-msg-v1">
-            Set Password<span className="g-tip">at least 8 characters</span>
+            {this.props.label!.label.extension.wallet.setPassword}
+            <span className="g-tip">{this.props.label!.label.extension.wallet.atLeast}</span>
           </p>
           <Tooltip
             position="top"
@@ -143,7 +146,7 @@ class SetPassword extends React.Component<Props> {
               onBlur={this.handlePswBlur}
             />
           </Tooltip>
-          <p className="g-input-msg-v1">Repeat Password</p>
+          <p className="g-input-msg-v1">{this.props.label!.label.extension.wallet.repeatPassword}</p>
           <Tooltip
             position="bottom"
             message={this.msgs.rpsw[0] as string}
@@ -163,10 +166,10 @@ class SetPassword extends React.Component<Props> {
 
         <div className="g-2btn-area">
           <Button params={btnCancel} onClick={this.toQuit}>
-            Cancel
+            {this.props.label!.label.extension.wallet.cancel}
           </Button>
           <Button params={btnConfirm} onClick={this.handleToBackup} disabled={!this.verifyInput}>
-            Confirm
+            {this.props.label!.label.extension.wallet.confirm}
           </Button>
         </div>
       </div>

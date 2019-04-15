@@ -1,18 +1,19 @@
 import React from 'react'
 import { observable, runInAction } from 'mobx'
 import { inject, observer } from 'mobx-react'
-import classnames from 'classnames'
 
 import NavHeader from '@/components/navHeader'
 import HrLine from '@/components/hrLine'
 import Account from '@/stores/account'
 import History from '@/stores/history'
 import Wallet from '@/stores/wallet'
+import Label from '@/stores/label'
 
 import './settingStyle.css'
 import { APP_STATE, MAIN_NET, TEST_NET, REMOTE_MECURY, REMOTE_TEST, HAS_TEST_NET } from '@dipperin/lib/constants'
 import { popupLog as log } from '@dipperin/lib/log'
 import Button from '@/components/button'
+import Choice from './choice'
 
 const { ACCOUNT_PAGE, SEND_PAGE } = APP_STATE
 
@@ -20,13 +21,17 @@ interface SettingsProps {
   account?: Account
   history?: History
   wallet?: Wallet
+  label?: Label
 }
 
-@inject('account', 'history', 'wallet')
+@inject('account', 'history', 'wallet', 'label')
 @observer
 class Settings extends React.Component<SettingsProps> {
   @observable
   mainActive: boolean = true
+
+  // @observable
+  // lang: string = 'en'
 
   constructor(props) {
     super(props)
@@ -64,59 +69,58 @@ class Settings extends React.Component<SettingsProps> {
     this.props.history!.historyPush(APP_STATE.DAPP_AUTH)
   }
 
+  changeLang = (newlang: string) => () => {
+    this.props.label!.updateLang(newlang)
+  }
+
   render() {
     const resetWallet = {
       classes: ['setting-button-box'],
       color: 'gray',
       size: 'middle'
     }
+    const lang = this.props.label!.lang
     return (
       <div className="bg-blue">
         <NavHeader />
         <HrLine />
-
-        <div className="setting-close-box">
+        <div className="setting-box">
           <span className="setting-close-icon" onClick={this.turnToAccount} />
-        </div>
 
-        <div className="setting-content">
-          <div className="setting-title">Networks</div>
-          <div
-            className={classnames({
-              'setting-netword-item': !this.mainActive,
-              'setting-netword-active': this.mainActive
-            })}
-            onClick={this.handleChangeNet(true)}
-          >
-            <span className="setting-mainnet-icon" />
-            <span className="setting-net">{MAIN_NET}</span>
-            {this.mainActive && <span className="setting-activenet" />}
+          <div className="setting-content">
+            <div className="setting-title">{this.props.label!.label.extension.setting.network}</div>
+            <Choice active={this.mainActive} onClick={this.handleChangeNet(true)}>
+              <span className="setting-mainnet-icon" />
+              <span className="setting-net">{this.props.label!.label.extension.setting[MAIN_NET]}</span>
+            </Choice>
+            {HAS_TEST_NET && (
+              <Choice active={!this.mainActive} onClick={this.handleChangeNet(false)}>
+                <span className="setting-testnet-icon" />
+                <span className="setting-net">{this.props.label!.label.extension.setting[TEST_NET]}</span>
+              </Choice>
+            )}
           </div>
 
-          {HAS_TEST_NET && (
-            <div
-              className={classnames({
-                'setting-netword-item': this.mainActive,
-                'setting-netword-active': !this.mainActive
-              })}
-              onClick={this.handleChangeNet(false)}
-            >
-              <span className="setting-testnet-icon" />
-              <span className="setting-net">{TEST_NET}</span>
-              {!this.mainActive && <span className="setting-activenet" />}
-            </div>
-          )}
-        </div>
+          <div className="setting-content">
+            <div className="setting-title">{this.props.label!.label.extension.setting.languages}</div>
+            <Choice active={lang === 'en-US'} onClick={this.changeLang('en-US')}>
+              <span className="setting-net">{this.props.label!.label.extension.setting.enUS}</span>
+            </Choice>
+            <Choice active={lang === 'zh-CN'} onClick={this.changeLang('zh-CN')}>
+              <span className="setting-net">{this.props.label!.label.extension.setting.zhCN}</span>
+            </Choice>
+          </div>
 
-        <Button params={resetWallet} onClick={this.handleReset}>
-          Reset
-        </Button>
-        {/* <Button params={{ classes: [] }} onClick={this.turnToDappSend}>
+          <Button params={resetWallet} onClick={this.handleReset}>
+            {this.props.label!.label.extension.setting.reset}
+          </Button>
+          {/* <Button params={{ classes: [] }} onClick={this.turnToDappSend}>
           To DAPP_SEND
         </Button>
         <Button params={{ classes: [] }} onClick={this.turnToAuth}>
           To Auth
         </Button> */}
+        </div>
       </div>
     )
   }

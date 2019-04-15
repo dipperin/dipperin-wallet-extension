@@ -6,6 +6,7 @@ import { APP_STATE } from '@dipperin/lib/constants'
 import History from '@/stores/history'
 import Wallet from '@/stores/wallet'
 import Layout from '@/stores/layout'
+import Label from '@/stores/label'
 import Button from '@/components/button'
 import Tooltip from '@/components/tooltip'
 
@@ -16,9 +17,10 @@ interface UnlockProps {
   history?: History
   wallet?: Wallet
   layout?: Layout
+  label?: Label
 }
 
-@inject('history', 'wallet', 'layout')
+@inject('history', 'wallet', 'layout', 'label')
 @observer
 class Unlock extends React.Component<UnlockProps> {
   @observable
@@ -70,9 +72,9 @@ class Unlock extends React.Component<UnlockProps> {
     }
     return (
       <div className="bg-blue">
-        <div className="unlock-header">Unlock Wallet</div>
+        <div className="unlock-header">{this.props.label!.label.extension.wallet.unlockWallet}</div>
         <div className="unlock-form-box">
-          <p className="g-input-msg-v1">Password</p>
+          <p className="g-input-msg-v1">{this.props.label!.label.extension.wallet.password}</p>
           <Tooltip position="bottom" displayTooltip={this.displayTooltip} message={this.tooltipMsg} size={210}>
             <input
               className="g-input-v1"
@@ -84,7 +86,7 @@ class Unlock extends React.Component<UnlockProps> {
           </Tooltip>
         </div>
         <Button params={btnConfirm} disabled={!this.password} onClick={this.submitPassword}>
-          Confirm
+          {this.props.label!.label.extension.wallet.confirm}
         </Button>
       </div>
     )

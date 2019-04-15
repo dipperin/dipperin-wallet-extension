@@ -7,6 +7,7 @@ import { APP_STATE } from '@dipperin/lib/constants'
 import Wallet from '@/stores/wallet'
 import History from '@/stores/history'
 import Layout from '@/stores/layout'
+import Label from '@/stores/label'
 import Button from '@/components/button'
 import AppHeader from '@/components/header'
 import { popupLog as log } from '@dipperin/lib/log'
@@ -20,9 +21,10 @@ interface Props {
   wallet?: Wallet
   history?: History
   layout?: Layout
+  label?: Label
 }
 
-@inject('wallet', 'history', 'layout')
+@inject('wallet', 'history', 'layout', 'label')
 @observer
 class BackupConfirm extends React.Component<Props> {
   @observable
@@ -104,8 +106,9 @@ class BackupConfirm extends React.Component<Props> {
         <AppHeader />
         <div className="backupConfirm-modal">
           <p className="g-p-info">
-            Please copy down the mnemonic for your new account below. You will have to confirm the mnemonic on the next
-            screen
+            {/* Please copy down the mnemonic for your new account below. You will have to confirm the mnemonic on the next
+            screen */}
+            {this.props.label!.label.extension.wallet.backupConfirm}
           </p>
 
           {this.mnemonic && <RandomMnemonic mnemonic={this.mnemonic} changeSelect={this.updateseleted} />}
@@ -115,10 +118,10 @@ class BackupConfirm extends React.Component<Props> {
 
         <div className="g-2btn-area">
           <Button params={btnCancel} onClick={this.toBackup}>
-            Cancel
+            {this.props.label!.label.extension.wallet.cancel}
           </Button>
           <Button params={btnConfirm} disabled={!this.verifySelectMnemonic} onClick={this.handleFinishCreate}>
-            Confirm
+            {this.props.label!.label.extension.wallet.confirm}
           </Button>
         </div>
         {/* <Loading show={this.loadingHandler.show} /> */}

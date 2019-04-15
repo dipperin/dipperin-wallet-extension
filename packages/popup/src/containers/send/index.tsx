@@ -6,6 +6,7 @@ import _ from 'lodash'
 import Account from '@/stores/account'
 import History from '@/stores/history'
 import Transaction from '@/stores/transaction'
+import Label from '@/stores/label'
 
 import NavHeader from '@/components/navHeader'
 import Modal from '@/components/modal'
@@ -24,9 +25,10 @@ interface SendProps {
   account?: Account
   history?: History
   transaction?: Transaction
+  label?: Label
 }
 
-@inject('account', 'history', 'transaction')
+@inject('account', 'history', 'transaction', 'label')
 @observer
 class Send extends React.Component<SendProps> {
   @observable
@@ -160,15 +162,14 @@ class Send extends React.Component<SendProps> {
   }
 
   verifyTx = () => {
-    // TODO: add info to constant
     if (!this.sendToAddress) {
-      return { success: false, info: "You have to input receiner's address!" }
+      return { success: false, info: this.props.label!.label.extension.send.errorAddress }
     } else if (!this.sendAmount) {
-      return { success: false, info: 'You have to input the amount!' }
+      return { success: false, info: this.props.label!.label.extension.send.errorAmount }
     } else if (!this.sendPoundage) {
-      return { success: false, info: 'You have to input the poundage!' }
+      return { success: false, info: this.props.label!.label.extension.send.errorPoundage }
     } else if (!this.verifyBalance()) {
-      return { success: false, info: 'Your balance is not enough!' }
+      return { success: false, info: this.props.label!.label.extension.send.errorBalance }
     } else {
       return { success: true }
     }
@@ -181,7 +182,7 @@ class Send extends React.Component<SendProps> {
       'ResponseError: Returned error: "tx nonce is invalid"'
     ]
     if (frequent.includes(error)) {
-      return 'Your action is too frequent, please try later.'
+      return this.props.label!.label.extension.send.errorFrequent
     }
     return error
   }
@@ -192,7 +193,7 @@ class Send extends React.Component<SendProps> {
       const tx = this.genTx(this.sendToAddress, this.sendAmount, this.sendPoundage)
       try {
         await this.props.transaction!.sendTransaction(tx)
-        this.showMsg('Send Success, please wait for synchronization!', this.turnToAccounnts)
+        this.showMsg(this.props.label!.label.extension.send.sendSuccess, this.turnToAccounnts)
       } catch (e) {
         console.log('send-handleTransfer-error:', e)
         this.showMsg(this.translateErrorInfo(e as string))
@@ -215,15 +216,16 @@ class Send extends React.Component<SendProps> {
         <div className="send-content-box">
           <span className="send-close-icon" onClick={this.turnToAccounnts} />
           <div className="send-balance-info">
-            <span className="send-balance-title">Account Balance:</span>
+            <span className="send-balance-title">{this.props.label!.label.extension.send.accountBalance}:</span>
             <span className="send-balance-amount">{` ${activeAccount.balance} DIP`}</span>
           </div>
-          <p className="g-input-msg-v1">Receiner's Address</p>
+          <p className="g-input-msg-v1">{this.props.label!.label.extension.send.receinerAddress}</p>
           <input className="g-input-v1" type="text" value={this.sendToAddress} onChange={this.handleAddress} />
-          <p className="g-input-msg-v1 send-msg-v1">Amount</p>
+          <p className="g-input-msg-v1 send-msg-v1">{this.props.label!.label.extension.send.amount}</p>
           <input className="g-input-v1" type="number" value={this.sendAmount} onChange={this.handleAmount} />
           <p className="g-input-msg-v1 send-msg-v2">
-            Poundage <span className="send-reminder">more than 0.00001</span>
+            {this.props.label!.label.extension.send.poundage}{' '}
+            <span className="send-reminder">{this.props.label!.label.extension.send.moreThan} 0.00001</span>
           </p>
           <input
             className="g-input-v1"
@@ -235,7 +237,7 @@ class Send extends React.Component<SendProps> {
         </div>
         <div className="send-button-box">
           <Button params={btnSend} onClick={this.handleTransfer}>
-            Send DIP
+            {this.props.label!.label.extension.send.send} DIP
           </Button>
         </div>
         <Modal showModal={this.modalHandler.show} size={250}>
