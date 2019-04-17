@@ -182,7 +182,10 @@ class AccountInfo extends React.Component<AccountInfoProps> {
         </div>
 
         <div className="accounts-balance-box">
-          <span className="accounts-balance">{`${activeAccount.balance} DIP`}</span>
+          {/* <span className="accounts-balance">{`${activeAccount.balance} DIP`}</span> */}
+          <span className="accounts-balance">{`${Number(activeAccount.balance).toLocaleString('zh-Hans', {
+            maximumFractionDigits: 9
+          })} DIP`}</span>
         </div>
 
         <div className="accounts-address-box">
