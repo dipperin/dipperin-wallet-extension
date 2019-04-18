@@ -108,7 +108,7 @@ input::-webkit-inner-spin-button {
 .dipperin-logo {
   width: 86px;
   height: 98px;
-  background: url(./images/logo_slices/logo@2x.png) no-repeat;
+  background: url(./images/logo_slices/logo@2x.png) no-repeat center center;
 }
 
 .g-title-v1 {

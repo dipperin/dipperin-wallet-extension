@@ -4,6 +4,7 @@ import { observer, inject } from 'mobx-react'
 
 import Account from '@/stores/account'
 import History from '@/stores/history'
+import Label from '@/stores/label'
 
 // import AccountInfo from './accountInfo'
 import NavHeader from '@/components/navHeader'
@@ -19,9 +20,10 @@ const { SEND_PAGE } = APP_STATE
 interface AccountsProps {
   account?: Account
   history?: History
+  label?: Label
 }
 
-@inject('account', 'history')
+@inject('account', 'history', 'label')
 @observer
 class Accounts extends React.Component<AccountsProps> {
   constructor(props) {
@@ -45,7 +47,7 @@ class Accounts extends React.Component<AccountsProps> {
         {activeAccount && <AccountInfo />}
 
         <Button params={btnSend} onClick={this.turnToSend}>
-          Send
+          {this.props.label!.label.extension.account.send}
         </Button>
       </div>
     )

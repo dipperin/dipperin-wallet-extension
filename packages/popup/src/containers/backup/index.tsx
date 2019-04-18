@@ -7,6 +7,8 @@ import _ from 'lodash'
 // import RootStore from '@/stores/root'
 import Wallet from '@/stores/wallet'
 import History from '@/stores/history'
+import Label from '@/stores/label'
+import { popupLog as log } from '@dipperin/lib/log'
 
 import Button from '@/components/button'
 import AppHeader from '@/components/header'
@@ -19,9 +21,10 @@ const { HAS_NO_WALLET, SET_PASSWORD, BACKUP_CONFIRM } = APP_STATE
 interface Props {
   wallet?: Wallet
   history?: History
+  label?: Label
 }
 
-@inject('wallet', 'history')
+@inject('wallet', 'history', 'label')
 @observer
 class Backup extends React.Component<Props> {
   @observable
@@ -59,7 +62,7 @@ class Backup extends React.Component<Props> {
         this.setMnemonic(res)
       })
       .catch(e => {
-        console.log('CreateLayout-create-error:', e)
+        log.error('CreateLayout-create-error:' + e)
       })
   }
 
@@ -81,8 +84,9 @@ class Backup extends React.Component<Props> {
         <AppHeader />
         <div className="backup-modal">
           <p className="g-p-info">
-            Please copy down the mnemonic for your new account below. You will have to confirm the mnemonic on the next
-            screen
+            {/* Please copy down the mnemonic for your new account below. You will have to confirm the mnemonic on the next
+            screen */}
+            {this.props.label!.label.extension.wallet.backupTips}
           </p>
 
           <textarea className="g-text-mnemonic backup-mnemonic" value={this.mnemonic} readOnly={true} />
@@ -90,10 +94,10 @@ class Backup extends React.Component<Props> {
 
         <div className="g-2btn-area">
           <Button params={btnCancel} onClick={this.toSetPassword}>
-            Cancel
+            {this.props.label!.label.extension.wallet.cancel}
           </Button>
           <Button params={btnConfirm} onClick={this.toBackupConfirm}>
-            Confirm
+            {this.props.label!.label.extension.wallet.confirm}
           </Button>
         </div>
       </div>

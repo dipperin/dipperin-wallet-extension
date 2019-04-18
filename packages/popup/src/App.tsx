@@ -17,7 +17,7 @@ class App extends React.Component {
     super(props)
     this.duplex = new Popup()
 
-    this.duplex.send('getRoot', {})!.then(res => console.log('getRoot', res))
+    // this.duplex.send('getRoot', {})!.then(res => console.log('getRoot', res))
   }
 
   public render() {

@@ -3,6 +3,7 @@ import { inject, observer } from 'mobx-react'
 
 import { APP_STATE } from '@dipperin/lib/constants'
 import History from '@/stores/history'
+import Label from '@/stores/label'
 import Button from '@/components/button'
 
 import './loginStyle.css'
@@ -11,9 +12,10 @@ const { IMPORT_WALLET_PAGE, SET_PASSWORD } = APP_STATE
 
 interface LoginProps {
   history?: History
+  label?: Label
 }
 
-@inject('history')
+@inject('history', 'label')
 @observer
 class Login extends React.Component<LoginProps> {
   handlePushToImport = () => {
@@ -38,10 +40,10 @@ class Login extends React.Component<LoginProps> {
         <div className="dipperin-logo login-logo" />
         <h1 className="login-title g-title-v1">DipperinLink</h1>
         <Button params={btnToImport} onClick={this.handlePushToImport}>
-          Import Account
+          {this.props.label!.label.extension.wallet.importWallet}
         </Button>
         <Button params={btnToCreate} onClick={this.handlePushToCreate}>
-          Create Account
+          {this.props.label!.label.extension.wallet.createWallet}
         </Button>
       </div>
     )

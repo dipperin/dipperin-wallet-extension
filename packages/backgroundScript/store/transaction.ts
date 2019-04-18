@@ -15,6 +15,7 @@ import {
 
 import TransactionModel, { TransactionObj, SendTxParams, TxStatusParams } from '@dipperin/lib/models/transaction'
 import AccountModel from '@dipperin/lib/models/account'
+import { backgroundLog as log } from '@dipperin/lib/log'
 import Errors from '../utils/errors'
 import { getNowTimestamp } from '../utils'
 
@@ -123,7 +124,8 @@ class TransactionStore extends EventEmitter {
       const transaction = this.createNewTransaction(activeAccount, tx, uuid)
       console.log('confirmTransaction-transaction:', transaction)
       transaction.signTranaction(privateKey, DEFAULT_CHAIN_ID)
-      console.log('confirmTransaction-signedTransaction:', transaction.signedTransactionData)
+      log.debug(`confirmTransaction-signedTransaction: ${transaction.signedTransactionData}`)
+      // console.log('confirmTransaction-signedTransaction:', transaction.signedTransactionData)
       // console.debug(`tx${JSON.stringify(transaction.toJS())}`)
       // console.dir(transaction.toJS())
       const res = await this._dipperin.dr.sendSignedTransaction(transaction.signedTransactionData)
@@ -217,7 +219,8 @@ class TransactionStore extends EventEmitter {
     if (new BN(accountAmount).lt(new BN(amountUnit).plus(new BN(feeUnit)))) {
       throw new Errors.NoEnoughBalanceError()
     }
-    console.log(tx, uuid, 'create')
+    log.debug(`createNewTransaction，tx: ${tx}, uuid: ${uuid}`)
+    // console.log(tx, uuid, 'create')
     return new TransactionModel({
       nonce: fromAccount.nonce,
       extraData: tx.memo,

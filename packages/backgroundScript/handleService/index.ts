@@ -1,6 +1,6 @@
 import EventEmitter from 'eventemitter3'
 import Dipperin from '@dipperin/dipperin.js'
-import Consola from 'consola'
+// import Consola from 'consola'
 import {
   // HOST,
   APP_STATE,
@@ -25,10 +25,11 @@ import { TxStatusParams, TransactionObj, SendTxParams } from '@dipperin/lib/mode
 import { ImportParams } from '@dipperin/lib/models/wallet'
 import { clear } from '../storage'
 import { SendParms } from '../backgroundScript'
+import { backgroundLog as log } from '@dipperin/lib/log'
 
-const log = Consola.withTag('background-script').create({
-  level: 5
-})
+// const log = Consola.withTag('background-script').create({
+//   level: 5
+// })
 
 class RootStore extends EventEmitter {
   sendData?: SendParms // app send tx data (appName & tx)
@@ -75,7 +76,8 @@ class RootStore extends EventEmitter {
   async load() {
     const res = await this._wallet.load()
     this.initAppState()
-    console.log(this._appState, 'load')
+    log.debug(`load appState: ${this._appState}`)
+    // console.log(this._appState, 'load')
     if (res) {
       await this._account.load()
       // FIXME: if account can be deleted or net changed, tx should be reloaded after adding an account
@@ -86,7 +88,7 @@ class RootStore extends EventEmitter {
 
   async getCurrentBlock(): Promise<number> {
     const res = await this._dipperin.dr.getCurrentBlock()
-    console.log(res)
+    // console.log(res)
     return res
   }
 
@@ -103,7 +105,8 @@ class RootStore extends EventEmitter {
       const nowTimeStamp = new Date().valueOf()
       const timeDiff = nowTimeStamp - this._disconnectTimestamp
       if (timeDiff > AUTO_LOCK_WALLET) {
-        console.log('lock', AUTO_LOCK_WALLET)
+        log.debug(`lock ${AUTO_LOCK_WALLET}`)
+        // console.log('lock', AUTO_LOCK_WALLET)
         clearInterval(this._interval)
         this._wallet.lockWallet()
         this.initAppState()
@@ -298,7 +301,8 @@ class RootStore extends EventEmitter {
       tx,
       this.sendData.uuid
     )
-    console.log(res, 'service, res')
+    log.debug(res)
+    // console.log(res, 'service, res')
     if (!res.success) {
       return Promise.reject(res.info)
     }

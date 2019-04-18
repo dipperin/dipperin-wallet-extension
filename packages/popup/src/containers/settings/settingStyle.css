@@ -1,3 +1,6 @@
+.setting-box {
+  position: relative;
+}
 .setting-close-box {
   box-sizing: border-box;
   width: 100%;
@@ -7,23 +10,27 @@
 }
 
 .setting-close-icon {
+  position: absolute;
   display: block;
   width: 17px;
   height: 17px;
-  float: right;
+  top: 12px;
+  right: 17px;
+  /* float: right; */
   background: url(../../images/close_slices/close@2x.png) no-repeat;
   cursor: pointer;
 }
 
 .setting-content {
-  padding: 0 17px;
+  padding: 30px 17px 0;
 }
 
 .setting-title {
   padding-left: 11px;
   font-size: 18px;
   font-weight: 500;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
+  line-height: 18px;
 }
 
 .setting-netword-item {

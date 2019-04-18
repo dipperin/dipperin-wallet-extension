@@ -6,6 +6,7 @@ import _ from 'lodash'
 import Wallet from '@/stores/wallet'
 import History from '@/stores/history'
 import Layout from '@/stores/layout'
+import Label from '@/stores/label'
 import Button from '@/components/button'
 import Tooltip from '@/components/tooltip'
 
@@ -20,9 +21,10 @@ interface Props {
   wallet?: Wallet
   history?: History
   layout?: Layout
+  label?: Label
 }
 
-@inject('wallet', 'history', 'layout')
+@inject('wallet', 'history', 'layout', 'label')
 @observer
 class Import extends React.Component<Props> {
   @observable
@@ -96,7 +98,7 @@ class Import extends React.Component<Props> {
   handlePswBlur = () => {
     const cond = this.input.password.split('').length > 7
     if (!cond) {
-      this.msgs.psw[0] = 'Your password is too short!'
+      this.msgs.psw[0] = this.props.label!.label.extension.wallet.shortPassword
       this.msgs.psw[1] = true
     }
     setTimeout(() => {
@@ -108,7 +110,7 @@ class Import extends React.Component<Props> {
   handleRpswBlur = () => {
     const cond = this.input.password !== this.input.repeatPassword
     if (cond) {
-      this.msgs.rpsw[0] = 'The first password is not equal to the second password!'
+      this.msgs.rpsw[0] = this.props.label!.label.extension.wallet.notSamePassword
       this.msgs.rpsw[1] = true
     }
     setTimeout(() => {
@@ -129,15 +131,25 @@ class Import extends React.Component<Props> {
       float: 'right',
       size: 'small'
     }
+    const pStyles = {
+      display: 'block',
+      margin: 0,
+      width: '100%',
+      fontSize: '12px',
+      fontWeight: 500,
+      lineHeight: '18px',
+      color: 'rgba(200, 200, 200, 1)'
+    }
     return (
       <div className="bg-blue">
         <AppHeader />
 
         <div className="import-modal">
-          <p className="g-p-info">Please input mnemonic phrase to recovery your account.</p>
+          <p style={pStyles}>{this.props.label!.label.extension.wallet.inputMnemonic}</p>
           <textarea className="g-text-mnemonic import-mnemonic" value={this.mnemonic} onChange={this.handleMnemonic} />
           <p className="g-input-msg-v1 import-msg">
-            Set Password<span className="g-tip">at least 8 characters</span>
+            {this.props.label!.label.extension.wallet.setPassword}
+            <span className="g-tip">{this.props.label!.label.extension.wallet.atLeast}</span>
           </p>
           <Tooltip
             position="top"
@@ -153,7 +165,7 @@ class Import extends React.Component<Props> {
               onBlur={this.handlePswBlur}
             />
           </Tooltip>
-          <p className="g-input-msg-v1 import-msg">Repeat Password</p>
+          <p className="g-input-msg-v1 import-msg">{this.props.label!.label.extension.wallet.repeatPassword}</p>
           <Tooltip
             position="top"
             message={this.msgs.rpsw[0] as string}
@@ -173,10 +185,10 @@ class Import extends React.Component<Props> {
 
         <div className="g-2btn-area">
           <Button params={btnCancel} onClick={this.handleCancel}>
-            Cancel
+            {this.props.label!.label.extension.wallet.cancel}
           </Button>
           <Button params={btnConfirm} disabled={!this.verifyInput} onClick={this.handleConfirm}>
-            Confirm
+            {this.props.label!.label.extension.wallet.confirm}
           </Button>
         </div>
       </div>
