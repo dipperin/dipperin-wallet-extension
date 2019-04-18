@@ -3,6 +3,7 @@ import { inject, observer } from 'mobx-react'
 
 import History from '@/stores/history'
 import Wallet from '@/stores/wallet'
+import Label from '@/stores/label'
 import './authStyle.css'
 import Button from '@/components/button'
 import { popupLog as log } from '@dipperin/lib/log'
@@ -10,9 +11,10 @@ import { popupLog as log } from '@dipperin/lib/log'
 interface AuthProps {
   wallet?: Wallet
   history?: History
+  label?: Label
 }
 
-@inject('wallet', 'history')
+@inject('wallet', 'history', 'label')
 @observer
 class Auth extends React.Component<AuthProps> {
   constructor(props) {
@@ -68,13 +70,14 @@ class Auth extends React.Component<AuthProps> {
       <div className="bg-blue">
         <div className="dipperin-logo auth-logo" />
         <h1 className="auth-title">Rich Bet</h1>
-        <p className="g-p-info auth-info">Request authorization, do you agree?</p>
+        {/* // TODO: fix to a var */}
+        <p className="g-p-info auth-info">{this.props.label!.label.extension.send.authTip}</p>
         <div className="g-2btn-area auth-btn">
           <Button params={btnCancel} onClick={this.toClose}>
-            Cancel
+            {this.props.label!.label.extension.wallet.cancel}
           </Button>
           <Button params={btnConfirm} onClick={this.agreeAuth}>
-            Confirm
+            {this.props.label!.label.extension.wallet.confirm}
           </Button>
         </div>
       </div>

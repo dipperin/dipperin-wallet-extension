@@ -5,6 +5,7 @@ import _ from 'lodash'
 
 import Account from '@/stores/account'
 import History from '@/stores/history'
+import Label from '@/stores/label'
 import NavHeader from '@/components/navHeader'
 import HrLine from '@/components/hrLine'
 import Tooltip from '@/components/tooltip'
@@ -19,9 +20,10 @@ const { ACCOUNT_PAGE } = APP_STATE
 interface CreateAccountProps {
   account?: Account
   history?: History
+  label?: Label
 }
 
-@inject('account', 'history')
+@inject('account', 'history', 'label')
 @observer
 class CreateAccount extends React.Component<CreateAccountProps> {
   @observable
@@ -59,7 +61,7 @@ class CreateAccount extends React.Component<CreateAccountProps> {
 
   createAccount = () => {
     if (!this.verifyAccountName) {
-      this.showTip('The account name is limited to 10 characters or 20 letter.')
+      this.showTip(this.props.label!.label.extension.account.accountNameLimit)
       // alert('The account name is limited to 10 characters or 20 letter.')
       return
     }
@@ -117,7 +119,7 @@ class CreateAccount extends React.Component<CreateAccountProps> {
         <div className="ca-close-box">
           <span className="ca-close-icon" onClick={this.handleCancel} />
         </div>
-        <div className="ca-label">Account Name</div>
+        <div className="ca-label">{this.props.label!.label.extension.account.accountName}</div>
         <div className="ca-input-box">
           <Tooltip position="bottom" message={this.tooltipMsg} displayTooltip={this.displayTooltip} size={310}>
             <input
@@ -131,10 +133,10 @@ class CreateAccount extends React.Component<CreateAccountProps> {
         </div>
         <div className="g-2btn-area ca-btn-box">
           <Button params={btnCancel} onClick={this.handleCancel}>
-            Cancel
+            {this.props.label!.label.extension.account.cancel}
           </Button>
           <Button params={btnConfirm} disabled={!this.accountName} onClick={this.handleCreateAccount}>
-            Confirm
+            {this.props.label!.label.extension.account.confirm}
           </Button>
         </div>
       </div>

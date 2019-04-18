@@ -6,6 +6,7 @@ import _ from 'lodash'
 import Account from '@/stores/account'
 import History from '@/stores/history'
 import Transaction from '@/stores/transaction'
+import Label from '@/stores/label'
 
 import NavHeader from '@/components/navHeader'
 import Modal from '@/components/modal'
@@ -23,9 +24,10 @@ interface DappSendProps {
   account?: Account
   history?: History
   transaction?: Transaction
+  label?: Label
 }
 
-@inject('account', 'history', 'transaction')
+@inject('account', 'history', 'transaction', 'label')
 @observer
 class DappSend extends React.Component<DappSendProps> {
   @observable
@@ -178,13 +180,13 @@ class DappSend extends React.Component<DappSendProps> {
   verifyTx = () => {
     // TODO: add info to constant
     if (!this.sendToAddress) {
-      return { success: false, info: "You have to input receiner's address!" }
+      return { success: false, info: this.props.label!.label.extension.send.errorAddress }
     } else if (!this.sendAmount) {
-      return { success: false, info: 'You have to input the amount!' }
+      return { success: false, info: this.props.label!.label.extension.send.errorAmount }
     } else if (!this.sendPoundage) {
-      return { success: false, info: 'You have to input the poundage!' }
+      return { success: false, info: this.props.label!.label.extension.send.errorPoundage }
     } else if (!this.verifyBalance()) {
-      return { success: false, info: 'Your balance is not enough!' }
+      return { success: false, info: this.props.label!.label.extension.send.errorBalance }
     } else {
       return { success: true }
     }
@@ -196,9 +198,9 @@ class DappSend extends React.Component<DappSendProps> {
       'ResponseError: Returned error: "new fee is too low to replace old one"'
     ]
     if (frequent.includes(error)) {
-      return 'Your action is too frequent, please try later.'
+      return this.props.label!.label.extension.send.errorFrequent
     }
-    return 'Your action is too frequent, please try later.'
+    return error
   }
 
   sendTransfer = async () => {
@@ -208,7 +210,7 @@ class DappSend extends React.Component<DappSendProps> {
       try {
         await this.props.transaction!.sendTxForApp(this.sendPoundage)
         console.log('Send Success!')
-        this.showMsg('The transaction has been sent!', this.closeWindow)
+        this.showMsg(this.props.label!.label.extension.send.sendSuccess, this.closeWindow)
       } catch (err) {
         console.log('dappSend-sendTransfer-error:', err)
         this.showMsg(this.translateErrorInfo(err as string))
@@ -216,7 +218,6 @@ class DappSend extends React.Component<DappSendProps> {
       }
     } else {
       this.showMsg(res.info as string)
-      // alert(res.info)
     }
   }
 
@@ -276,34 +277,39 @@ class DappSend extends React.Component<DappSendProps> {
         <div className="dapp-cover" />
         <div className="send-content-box">
           <div className="send-balance-info">
-            <span className="send-balance-title">Account Balance:</span>
+            <span className="send-balance-title">{this.props.label!.label.extension.send.accountBalance}:</span>
             <span className="send-balance-amount">{`  ${activeAccount.balance} DIP`}</span>
           </div>
           <div className="dappsend-txinfo">
             <div className="dapp-info-name">
-              <p className="dapp-info-msg">{this.appName} official address</p>
+              <p className="dapp-info-msg">
+                {this.appName} {this.props.label!.label.extension.send.officialAddress}
+              </p>
               <input className="g-input-v1" type="text" value={this.sendToAddress} disabled={true} />
             </div>
             <div className="dapp-info-amount">
-              <p className="dapp-info-msg">Bet Amount</p>
+              <p className="dapp-info-msg">{this.props.label!.label.extension.send.betAmount}</p>
               <input className="g-input-v1" type="text" value={this.sendAmount} disabled={true} />
             </div>
             <div className="dapp-info-betNumber">
-              <p className="dapp-info-msg">Bet Number</p>
+              <p className="dapp-info-msg">{this.props.label!.label.extension.send.betNumber}</p>
               <input className="g-input-v1" type="text" value={this.formatExtraData()} disabled={true} />
             </div>
           </div>
           <p className="g-input-msg-v1 send-msg-v2">
-            Poundage <span className="send-reminder">more than {this.minFee}</span>
+            {this.props.label!.label.extension.send.poundage}{' '}
+            <span className="send-reminder">
+              {this.props.label!.label.extension.send.moreThan} {this.minFee}
+            </span>
           </p>
           <input className="g-input-v1" type="number" value={this.sendPoundage} onChange={this.handlePoundage} />
         </div>
         <div className="g-2btn-area dapp-button-box">
           <Button params={btnCancel} onClick={this.toQuit}>
-            Cancel
+            {this.props.label!.label.extension.wallet.cancel}
           </Button>
           <Button params={btnConfirm} onClick={this.handleTransfer}>
-            Confirm
+            {this.props.label!.label.extension.wallet.confirm}
           </Button>
         </div>
         <Modal showModal={this.modalHandler.show} size={250}>

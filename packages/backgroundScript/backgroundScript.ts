@@ -335,10 +335,17 @@ class BackgroundScript {
         this.popupId = window.id
       }
     )
+    chrome.windows.onFocusChanged.addListener(newWindowId => {
+      if (newWindowId > 0 && !!this.popupId && newWindowId !== this.popupId) {
+        log.debug(`window change to ${newWindowId}, current popupId is ${this.popupId}`)
+        chrome.windows.remove(this.popupId as number)
+      }
+    })
     chrome.windows.onRemoved.removeListener(this.windowRemoveListener)
     await new Promise(resolve => {
       this.windowRemoveListener = (id: number) => {
-        console.log('listener', id, this.popupId)
+        log.debug(`windowRemoveLister: the closed window is ${id}, popup is ${this.popupId}`)
+        // console.log('listener', id, this.popupId)
         if (id === this.popupId) {
           this.popupId = undefined
           this.service.setAppStateToHome()

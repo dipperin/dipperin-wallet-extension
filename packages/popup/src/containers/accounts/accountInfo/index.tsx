@@ -3,14 +3,16 @@ import { observable, action, autorun, computed } from 'mobx'
 import { observer, inject } from 'mobx-react'
 
 import Account from '@/stores/account'
+import Label from '@/stores/label'
 import Tooltip from '@/components/tooltip'
 import { genAvatar } from '@/utils'
 
 interface AccountInfoProps {
   account?: Account
+  label?: Label
 }
 
-@inject('account')
+@inject('account', 'label')
 @observer
 class AccountInfo extends React.Component<AccountInfoProps> {
   @observable
@@ -77,7 +79,8 @@ class AccountInfo extends React.Component<AccountInfoProps> {
 
   changeAccountName = () => {
     if (!this.verifyAccountName) {
-      alert('The account name is limited to 10 characters or 20 letter.')
+      // TODO: use tooltip
+      alert(this.props.label!.label.extension.account.accountName)
       this.accountName = this.props.account!.activeAccount.name
       return
     }
@@ -146,7 +149,7 @@ class AccountInfo extends React.Component<AccountInfoProps> {
 
   render() {
     const activeAccount = this.props.account!.activeAccount
-    const copyTip = 'Replicating Success!'
+    const copyTip = this.props.label!.label.extension.account.copySuccess
     return (
       <div className="accounts-content">
         <div className="accounts-id-box">
@@ -179,7 +182,15 @@ class AccountInfo extends React.Component<AccountInfoProps> {
         </div>
 
         <div className="accounts-balance-box">
-          <span className="accounts-balance">{`${activeAccount.balance} DIP`}</span>
+          {/* <span className="accounts-balance">{`${activeAccount.balance} DIP`}</span> */}
+          <span
+            className="accounts-balance"
+            title={`${Number(activeAccount.balance).toLocaleString('zh-Hans', {
+              maximumFractionDigits: 9
+            })} DIP`}
+          >{`${Number(activeAccount.balance).toLocaleString('zh-Hans', {
+            maximumFractionDigits: 4
+          })} DIP`}</span>
         </div>
 
         <div className="accounts-address-box">

@@ -55,7 +55,7 @@ export const ACCOUNTS_PATH = `m/44'/709394'/0'/0`
 export const DEFAULT_BALANCE = '0'
 export const DEFAULT_NAME = 'account'
 export const DEFAULT_NONCE = '0'
-export const MAIN_NET = 'mainNet'
+export const MAIN_NET = 'mercury'
 export const TEST_NET = 'testNet'
 export enum ACCOUNT {
   NAME = 'name',

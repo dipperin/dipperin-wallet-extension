@@ -6,6 +6,8 @@ import History from './history'
 import Wallet from './wallet'
 import Transaction from './transaction'
 import Layout from './layout'
+import Label from './label'
+// import i18n from '@/i18n'
 
 class RootStore {
   private duplex: PopupType
@@ -15,6 +17,7 @@ class RootStore {
   wallet: Wallet
   transaction: Transaction
   layout: Layout
+  label: Label
 
   constructor() {
     this.duplex = new Popup()
@@ -24,7 +27,12 @@ class RootStore {
     this.wallet = new Wallet(this.api)
     this.transaction = new Transaction(this.api)
     this.layout = new Layout()
+    this.label = new Label()
   }
+
+  // getLang = () => {
+
+  // }
 }
 
 export default RootStore
