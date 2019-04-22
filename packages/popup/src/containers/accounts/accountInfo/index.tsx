@@ -188,8 +188,8 @@ class AccountInfo extends React.Component<AccountInfoProps> {
             title={`${Number(activeAccount.balance).toLocaleString('zh-Hans', {
               maximumFractionDigits: 9
             })} DIP`}
-          >{`${(Math.floor(Number(activeAccount.balance) * 10000) / 10000).toLocaleString('zh-Hans', {
-            maximumFractionDigits: 4
+          >{`${Number(activeAccount.balance).toLocaleString('zh-Hans', {
+            maximumFractionDigits: 9
           })} DIP`}</span>
         </div>
 
