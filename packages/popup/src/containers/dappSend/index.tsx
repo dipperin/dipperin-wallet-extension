@@ -193,14 +193,18 @@ class DappSend extends React.Component<DappSendProps> {
   }
 
   translateErrorInfo = (error: string): string => {
+    const send = this.props.label!.label.extension.send
     const frequent = [
       'ResponseError: Returned error: "this transaction already in tx pool"',
-      'ResponseError: Returned error: "new fee is too low to replace old one"'
+      'ResponseError: Returned error: "tx nonce is invalid"'
     ]
     if (frequent.includes(error)) {
-      return this.props.label!.label.extension.send.errorFrequent
+      return send.errorFrequent
     }
-    return error
+    if (error === 'ResponseError: Returned error: "new fee is too low to replace old one"') {
+      return send.lowFee
+    }
+    return send.errorFrequent
   }
 
   sendTransfer = async () => {
