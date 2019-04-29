@@ -18,11 +18,15 @@ class Label {
   }
 
   private getLang = () => {
-    chrome.storage.sync.get('lang', item => {
-      if (item && item.lang) {
-        this.updateLang(item.lang)
-      }
-    })
+    try {
+      chrome.storage.sync.get('lang', item => {
+        if (item && item.lang) {
+          this.updateLang(item.lang)
+        }
+      })
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   @computed
