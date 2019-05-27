@@ -33,6 +33,7 @@ import { backgroundLog as log } from '@dipperin/lib/log'
 
 class RootStore extends EventEmitter {
   sendData?: SendParms // app send tx data (appName & tx)
+  appName: string | undefined = undefined
   private _isConnecting: boolean = false
   private _appState: number = APP_STATE.HAS_NO_WALLET
   private _currentNet: string = REMOTE_MECURY
@@ -423,6 +424,10 @@ class RootStore extends EventEmitter {
 
   getCurrentNet = () => {
     return this._currentNet
+  }
+
+  getAppName = () => {
+    return this.appName
   }
 
   async reload() {

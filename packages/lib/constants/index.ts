@@ -29,7 +29,7 @@ export const REMOTE_TEST = 'remoteTest'
 export const REMOTE_MECURY = 'remoteMecury'
 
 export const NET_HOST_OBJ = {
-  [REMOTE_TEST]: 'http://10.200.0.139:3035',
+  [REMOTE_TEST]: 'http://172.16.5.201:3035',
   [REMOTE_MECURY]: 'http://14.17.65.122:3035'
 }
 
@@ -113,6 +113,7 @@ export const GET_TRANSACTIONS = 'getTransactions'
 export const RESET_WALLET = 'resetWallet'
 export const CHANGE_NET = 'changeNet'
 export const GET_CURRENT_NET = 'getCurrentNet'
+export const GET_APP_NAME = 'getAppName'
 // popup for app
 export const APP_SEND = 'appSend'
 export const GET_APP_TX = 'getAppTx'

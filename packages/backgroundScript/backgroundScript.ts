@@ -34,7 +34,8 @@ import {
   GET_APP_TX,
   SET_PASSWORD,
   CHANGE_NET,
-  GET_CURRENT_NET
+  GET_CURRENT_NET,
+  GET_APP_NAME
 } from '@dipperin/lib/constants'
 import { AccountBalanceParams } from '@dipperin/lib/models/account'
 import { TxStatusParams } from '@dipperin/lib/models/transaction'
@@ -96,6 +97,7 @@ class BackgroundScript {
     this.duplex.on(APP_SEND, this.service.appSendTx)
     this.duplex.on(CHANGE_NET, this.service.changeNet)
     this.duplex.on(GET_CURRENT_NET, this.service.getCurrentNet)
+    this.duplex.on(GET_APP_NAME, this.service.getAppName)
     /**
      * for app event
      */
@@ -196,6 +198,7 @@ class BackgroundScript {
    */
   private async approve(appName: string, resolve, uuid: string) {
     this.appName = appName
+    this.service.appName = appName
     const res: ApproveRes = {
       popupExist: !!this.popupId,
       isHaveWallet: this.service.isHaveWallet,
@@ -235,6 +238,7 @@ class BackgroundScript {
     this.api.approveSuccess(params)
     console.log(params)
     this.appName = undefined
+    this.service.appName = undefined
     // close popup by id
     if (this.popupId) {
       chrome.windows.remove(this.popupId)
@@ -354,6 +358,11 @@ class BackgroundScript {
       }
       chrome.windows.onRemoved.addListener(this.windowRemoveListener)
     })
+  }
+
+  getAppName = (): string => {
+    console.log('appName: ' + this.appName)
+    return this.appName
   }
 }
 

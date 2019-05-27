@@ -23,7 +23,8 @@ import {
   GET_APP_TX,
   APP_SEND,
   CHANGE_NET,
-  GET_CURRENT_NET
+  GET_CURRENT_NET,
+  GET_APP_NAME
 } from '@dipperin/lib/constants'
 import { popupLog as log } from '@dipperin/lib/log'
 import { SendTxParams } from '@dipperin/lib/models/transaction'
@@ -91,6 +92,11 @@ class API {
   changeNet = (remoteNode: string) => {
     log.debug(`_api change net to ${remoteNode}`)
     this.duplex.send(CHANGE_NET, remoteNode)
+  }
+
+  getAppName = () => {
+    log.debug(`_api getAppName`)
+    return this.duplex.send(GET_APP_NAME, '', true)
   }
 
   /** for account store  */
