@@ -39,3 +39,30 @@
 .txRecord_tbody_row > span + span {
   border-left: 1px solid white;
 }
+
+.txRecord_row {
+  margin: 16px 0;
+  width: 100%;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.txRecord_th {
+  font-weight: 500;
+  font-size: 16px;
+  width: 100px;
+}
+
+.txRecord-box {
+  position: relative;
+  padding-top: 10px;
+}
+
+.txRecord_td {
+  width: 205px;
+  font-size: 14px;
+  white-space: pre-wrap;
+  word-break: break-all;
+}

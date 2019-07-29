@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { observable, reaction, computed, action } from 'mobx'
 import { inject, observer } from 'mobx-react'
 import { Utils } from '@dipperin/dipperin.js'
@@ -14,6 +14,7 @@ import Transaction from '@/stores/transaction'
 import './style.css'
 import { APP_STATE } from '@dipperin/lib/constants'
 import Pagination from './Pagination'
+import TxDetail from './txDetail'
 
 const { ACCOUNT_PAGE } = APP_STATE
 const itemPerPage = 6
@@ -50,6 +51,10 @@ class TxRecord extends React.Component<SettingsProps> {
   transactions: TransactionObj[] = []
   @observable
   currentPage: number = 0
+  @observable
+  showDetail: boolean = false
+  @observable
+  transaction: TransactionObj | undefined = undefined
 
   @computed
   get maxPage() {
@@ -62,6 +67,11 @@ class TxRecord extends React.Component<SettingsProps> {
     if (page >= 0 && page < this.maxPage) {
       this.currentPage = page
     }
+  }
+
+  @computed
+  get pageTitle() {
+    return this.showDetail ? this.props.label!.label.extension.wallet.transactionDetail : ''
   }
 
   constructor(props) {
@@ -113,40 +123,46 @@ class TxRecord extends React.Component<SettingsProps> {
     return ret
   }
 
-  @observable
-  count = 0
-  @action
-  handleChangeCount = (num: number) => {
-    this.count = num
-    console.log('count', this.count)
+  handleCloseDetail = () => {
+    this.showDetail = false
+  }
+
+  handleTurnDetail(tx: TransactionObj) {
+    this.showDetail = true
+    this.transaction = tx
   }
 
   render() {
     // const lang = this.props.label!.lang
     return (
       <div className="bg-blue">
-        <NavHeader />
+        <NavHeader title={this.pageTitle} />
         <HrLine />
-        <div className="setting-box">
-          <span className="setting-close-icon" onClick={this.turnToAccount} />
-          <div className="txRecord_table_head">
-            <span className="txRecord_thead_item">Time</span>
-            <span className="txRecord_thead_item">From</span>
-            <span className="txRecord_thead_item">To</span>
-            <span className="txRecord_thead_item">Account</span>
-          </div>
-          <div>
-            {this.transactions.slice(this.currentPage * 6, this.currentPage * 6 + itemPerPage).map(tx => (
-              <div className="txRecord_tbody_row">
-                <span style={{ minWidth: '25%' }}>{this.formatTime(tx.timestamp)}</span>
-                <span>{this.formatAddress(tx.from)}</span>
-                <span>{this.formatAddress(tx.to)}</span>
-                <span>{this.formatBalance(tx.value)}</span>
+        {!this.showDetail && (
+          <Fragment>
+            <div className="setting-box">
+              <span className="setting-close-icon" onClick={this.turnToAccount} />
+              <div className="txRecord_table_head">
+                <span className="txRecord_thead_item">Time</span>
+                <span className="txRecord_thead_item">From</span>
+                <span className="txRecord_thead_item">To</span>
+                <span className="txRecord_thead_item">Account</span>
               </div>
-            ))}
-          </div>
-        </div>
-        <Pagination maxPage={this.maxPage} handlePage={this.handlePageChange} />
+              <div>
+                {this.transactions.slice(this.currentPage * 6, this.currentPage * 6 + itemPerPage).map((tx, index) => (
+                  <div onClick={this.handleTurnDetail.bind(this, tx)} key={index} className="txRecord_tbody_row">
+                    <span style={{ minWidth: '25%' }}>{this.formatTime(tx.timestamp)}</span>
+                    <span>{this.formatAddress(tx.from)}</span>
+                    <span>{this.formatAddress(tx.to)}</span>
+                    <span>{this.formatBalance(tx.value)}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <Pagination maxPage={this.maxPage} handlePage={this.handlePageChange} />
+          </Fragment>
+        )}
+        {this.showDetail && <TxDetail transaction={this.transaction!} onClose={this.handleCloseDetail} />}
       </div>
     )
   }

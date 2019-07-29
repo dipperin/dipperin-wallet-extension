@@ -53,7 +53,8 @@ export const zhCN = {
       unlockWallet: '解锁钱包',
       password: '密码',
       shortPassword: '密码过短，请重新设定！',
-      notSamePassword: '两次输入密码不一致，请重新输入！'
+      notSamePassword: '两次输入密码不一致，请重新输入！',
+      transactionDetail: '交易详情'
     }
   }
 }
@@ -115,7 +116,8 @@ export const enUS: I18nCollection = {
       unlockWallet: 'Unlock Wallet',
       password: 'Password',
       shortPassword: 'Your password is too short!',
-      notSamePassword: 'The first password is not equal to the second password!'
+      notSamePassword: 'The first password is not equal to the second password!',
+      transactionDetail: 'Transaction Detail'
     }
   }
 }

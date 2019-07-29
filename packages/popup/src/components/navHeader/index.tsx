@@ -12,6 +12,7 @@ import { PAGE_NANE_DIC } from './constant'
 import './navHeaderStyle.css'
 
 interface NavHeaderProps {
+  title?: string
   history?: History
   account?: Account
   label?: Label
@@ -74,7 +75,9 @@ class NavHeader extends React.Component<NavHeaderProps> {
     return (
       <div className="nav-main">
         <span className="nav-home-logo" onClick={this.turnToAccounts} />
-        <span className="nav-page-name">{PAGE_NANE_DIC[this.props.label!.lang][appState]}</span>
+        <span className="nav-page-name">
+          {this.props.title ? this.props.title : PAGE_NANE_DIC[this.props.label!.lang][appState]}
+        </span>
         <div className="nav-avatar" onClick={this.handleShowModal}>
           <img className="nav-avatar" alt="" src={genAvatar(activeAccount.address, 30)} />
         </div>
