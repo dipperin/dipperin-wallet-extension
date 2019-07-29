@@ -12,6 +12,7 @@ import {
   TRANSACTION_STATUS_SUCCESS,
   UPDATE_TX_STATUS
 } from '@dipperin/lib/constants'
+// import AccountStore from './account'
 
 import TransactionModel, { TransactionObj, SendTxParams, TxStatusParams } from '@dipperin/lib/models/transaction'
 import AccountModel from '@dipperin/lib/models/account'

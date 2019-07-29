@@ -87,9 +87,9 @@ class RootStore extends EventEmitter {
     }
   }
 
-  async getCurrentBlock(): Promise<number> {
+  async getCurrentBlock(): Promise<any> {
     const res = await this._dipperin.dr.getCurrentBlock()
-    // console.log(res)
+    console.log('Current Block:', res)
     return res
   }
 
@@ -388,6 +388,7 @@ class RootStore extends EventEmitter {
     this._account.updateNonce()
     this._timer.asyncOn(TIMER.UPDATE_BALANCE, this._account.updateBanlance.bind(this._account), 5000)
     this._timer.asyncOn(TIMER.UPDATE_NONCE, this._account.updateNonce.bind(this._account), 30000)
+    // this._timer.asyncOn(TIMER.UPDATE_BLOCK, this.getCurrentBlock.bind(this), 5000)
     // tx start update
     this._tx.updateTransactionStatus()
     this._timer.asyncOn(TIMER.UPDATE_TX_STATUS, this._tx.updateTransactionStatus.bind(this._account), 5000)

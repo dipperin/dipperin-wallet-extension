@@ -14,8 +14,9 @@ import './accountsStyle.css'
 import { APP_STATE } from '@dipperin/lib/constants'
 // import { action, observable, autorun } from 'mobx'
 import Button from '@/components/button'
+import txRecordIcon from '../../images/txRecord.png'
 
-const { SEND_PAGE } = APP_STATE
+const { SEND_PAGE, TX_RECORD } = APP_STATE
 
 interface AccountsProps {
   account?: Account
@@ -34,6 +35,10 @@ class Accounts extends React.Component<AccountsProps> {
     this.props.history!.historyPush(SEND_PAGE)
   }
 
+  turnToTxRecord = () => {
+    this.props.history!.historyPush(TX_RECORD)
+  }
+
   render() {
     const activeAccount = this.props.account!.activeAccount
     const btnSend = {
@@ -49,6 +54,10 @@ class Accounts extends React.Component<AccountsProps> {
         <Button params={btnSend} onClick={this.turnToSend}>
           {this.props.label!.label.extension.account.send}
         </Button>
+        <p className="accounts-txRecordLink" onClick={this.turnToTxRecord}>
+          <img src={txRecordIcon} className="accounts-txRecordIcon" />
+          查看全部交易记录
+        </p>
       </div>
     )
   }

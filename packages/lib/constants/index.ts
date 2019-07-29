@@ -11,7 +11,8 @@ export enum APP_STATE {
   BACKUP_CONFIRM,
   CREATE_ACCOUNT_PAGE,
   DAPP_SEND_PAGE,
-  DAPP_AUTH
+  DAPP_AUTH,
+  TX_RECORD
 }
 export const AUTO_LOCK_WALLET = 1000 * 60 * 10
 export const NUMBER_ZERO = 0
@@ -45,6 +46,7 @@ export enum TIMER {
   UPDATE_BALANCE = 'update-balance',
   UPDATE_NONCE = 'update-nonce',
   UPDATE_TX_STATUS = 'udpate-tx-status',
+  UPDATE_BLOCK = 'update-block',
   CHECK_IS_CONNECTING = 'check-is-connecting'
 }
 

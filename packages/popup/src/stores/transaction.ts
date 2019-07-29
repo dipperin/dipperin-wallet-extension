@@ -33,6 +33,10 @@ class Transaction {
     return this._api.getMinTxFee(tx)
   }
 
+  getTransactions = (address: string) => {
+    return this._api.getTransaction(address)
+  }
+
   sendTransaction = (tx: SendTxParams) => {
     return this._api.sendTransaction(tx)
   }
