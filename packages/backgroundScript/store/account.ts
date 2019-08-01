@@ -59,6 +59,43 @@ class Account extends EventEmitter {
     this.addAccount(hdAccount)
   }
 
+  async initImportAccount(hdAccount: AccountObject) {
+    this.addAccount(hdAccount)
+    for (let i = 0; i < 14; i++) {
+      await this.addAccountAsync(hdAccount, 'account' + String(i + 2))
+    }
+    this.changeActiveAccount('1')
+    if (this._accountMap.get('1').balance === '0') {
+      for (let i = 2; i < 16; i++) {
+        const act = this._accountMap.get(String(i))
+        console.log(i, act.balance)
+        if (act.balance !== '0') {
+          this.changeActiveAccount(String(i))
+          break
+        }
+      }
+    }
+  }
+
+  async addAccountAsync(hdAccount: AccountObject, name: string = DEFAULT_NAME): Promise<Error | void> {
+    try {
+      const newId = String(++this._maxId)
+      const newPath = `${ACCOUNTS_PATH}/${newId}`
+      const address = hdAccount.derivePath(newPath).address
+      // Add new account
+      const newAccount = this.createAccount(name, address, newId, newPath)
+      // Save account
+      this._accountMap.set(newId, newAccount)
+      // add account to storage
+      await addAccount(newAccount.toJS())
+      // change active account
+      this.changeActiveAccount(newId)
+      await this.updateBanlance(newId)
+    } catch (err) {
+      return err
+    }
+  }
+
   addAccount(hdAccount: AccountObject, name: string = DEFAULT_NAME): Error | void {
     try {
       const newId = String(++this._maxId)

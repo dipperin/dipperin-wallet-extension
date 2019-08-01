@@ -201,7 +201,7 @@ class RootStore extends EventEmitter {
     }
     // start update after import wallet success
     this.startUpdate()
-    this._account.initAccount(this._wallet.hdAccount)
+    this._account.initImportAccount(this._wallet.hdAccount)
   }
 
   /**
