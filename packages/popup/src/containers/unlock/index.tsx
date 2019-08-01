@@ -1,5 +1,5 @@
 import React from 'react'
-import { observable, action } from 'mobx'
+import { observable, action, runInAction } from 'mobx'
 import { observer, inject } from 'mobx-react'
 
 import { APP_STATE } from '@dipperin/lib/constants'
@@ -9,10 +9,11 @@ import Layout from '@/stores/layout'
 import Label from '@/stores/label'
 import Button from '@/components/button'
 import Tooltip from '@/components/tooltip'
+import Modal from '@/components/modal'
 
 import './unlockStyle.css'
 
-const { ACCOUNT_PAGE } = APP_STATE
+const { ACCOUNT_PAGE, HAS_NO_WALLET } = APP_STATE
 interface UnlockProps {
   history?: History
   wallet?: Wallet
@@ -31,6 +32,43 @@ class Unlock extends React.Component<UnlockProps> {
 
   @observable
   displayTooltip = false
+
+  @observable
+  forgetPasswordCount = 0
+
+  @observable
+  modalHandler = {
+    show: false,
+    msg: ''
+  }
+
+  @action
+  forgetPassword = () => {
+    if (++this.forgetPasswordCount > 1) {
+      this.props.wallet!.resetWallet()
+      this.props.history!.historyPush(HAS_NO_WALLET)
+    } else {
+      this.modalHandler.msg = '下一次点击将重置账户'
+      this.modalHandler.show = true
+      setTimeout(() => {
+        runInAction(() => {
+          this.modalHandler.show = false
+        })
+      }, 4000)
+    }
+  }
+
+  debounce = (fn: () => void, duration: number) => {
+    let timestamp = 0
+    return () => {
+      if (Date.now() - timestamp > duration) {
+        timestamp = Date.now()
+        fn()
+      }
+    }
+  }
+
+  handleForgetPassword = this.debounce(this.forgetPassword, 4000)
 
   @action
   handlePassword = e => {
@@ -88,6 +126,12 @@ class Unlock extends React.Component<UnlockProps> {
         <Button params={btnConfirm} disabled={!this.password} onClick={this.submitPassword}>
           {this.props.label!.label.extension.wallet.confirm}
         </Button>
+        <p className="accounts-txRecordLink" onClick={this.handleForgetPassword}>
+          {this.props.label!.label.extension.wallet.forgetPassword}
+        </p>
+        <Modal showModal={this.modalHandler.show} size={250}>
+          {this.modalHandler.msg}
+        </Modal>
       </div>
     )
   }

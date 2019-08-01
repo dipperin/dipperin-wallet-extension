@@ -17,7 +17,8 @@ export const zhCN = {
       accountName: '账户名称',
       cancel: '取消',
       confirm: '确认',
-      myAccounts: '我的账户'
+      myAccounts: '我的账户',
+      seeTxs: '查看全部交易记录'
     },
     send: {
       accountBalance: '账户余额',
@@ -54,7 +55,8 @@ export const zhCN = {
       password: '密码',
       shortPassword: '密码过短，请重新设定！',
       notSamePassword: '两次输入密码不一致，请重新输入！',
-      transactionDetail: '交易详情'
+      transactionDetail: '交易详情',
+      forgetPassword: '忘记密码?'
     }
   }
 }
@@ -80,7 +82,8 @@ export const enUS: I18nCollection = {
       accountName: 'Account Name',
       cancel: 'Cancel',
       confirm: 'Confirm',
-      myAccounts: 'My Accounts'
+      myAccounts: 'My Accounts',
+      seeTxs: 'see all transaction records'
     },
     send: {
       accountBalance: 'Account Balance',
@@ -117,7 +120,8 @@ export const enUS: I18nCollection = {
       password: 'Password',
       shortPassword: 'Your password is too short!',
       notSamePassword: 'The first password is not equal to the second password!',
-      transactionDetail: 'Transaction Detail'
+      transactionDetail: 'Transaction Detail',
+      forgetPassword: 'forget your password?'
     }
   }
 }

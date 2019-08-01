@@ -56,7 +56,7 @@ class Accounts extends React.Component<AccountsProps> {
         </Button>
         <p className="accounts-txRecordLink" onClick={this.turnToTxRecord}>
           <img src={txRecordIcon} className="accounts-txRecordIcon" />
-          查看全部交易记录
+          {this.props.label!.label.extension.account.seeTxs}
         </p>
       </div>
     )
