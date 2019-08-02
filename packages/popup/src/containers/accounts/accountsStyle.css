@@ -94,9 +94,19 @@
   text-align: center;
 }
 
+.accounts-lockbalance-box {
+  text-align: center;
+}
+
 .accounts-balance {
   font-size: 30px;
   font-weight: 500;
+}
+
+.accounts-lockbalance {
+  font-size: 20px;
+  font-weight: 500;
+  color: #999;
 }
 
 .accounts-address-box {
@@ -117,10 +127,6 @@
   height: 16px;
   background: url(../../images/copy_slices/copy@2x.png) 0px 0px no-repeat;
   cursor: pointer;
-}
-
-.accounts-btn-box {
-  margin-top: 56px;
 }
 
 .accounts-id-box {
@@ -239,7 +245,9 @@
 }
 
 .accounts-btn-box {
-  margin-top: 56px;
+  position: absolute;
+  bottom: 60px;
+  width: 100%;
 }
 
 .accountInfo-box {

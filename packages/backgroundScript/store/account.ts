@@ -1,6 +1,6 @@
 import EventEmitter from 'eventemitter3'
 import Dipperin, { AccountObject, Utils } from '@dipperin/dipperin.js'
-import AccountModel, { AccountObj, AccountBalanceParams } from '@dipperin/lib/models/account'
+import AccountModel, { AccountObj, AccountBalanceParams, AccountLockBalanceParams } from '@dipperin/lib/models/account'
 import {
   getAccounts,
   addAccount,
@@ -17,7 +17,8 @@ import {
   UPDATE_ACCOUNT_BALANCE,
   NUMBER_ZERO,
   ACCOUNT,
-  CHNAGE_ACTIVE_ACCOUNT
+  CHNAGE_ACTIVE_ACCOUNT,
+  UPDATE_ACCOUNT_LOCK_BALANCE
 } from '@dipperin/lib/constants'
 class Account extends EventEmitter {
   private _activeAccount!: AccountModel
@@ -91,6 +92,7 @@ class Account extends EventEmitter {
       // change active account
       this.changeActiveAccount(newId)
       await this.updateBanlance(newId)
+      await this.updateAddressLockMoney(newId)
     } catch (err) {
       return err
     }
@@ -110,6 +112,7 @@ class Account extends EventEmitter {
       // change active account
       this.changeActiveAccount(newId)
       this.updateBanlance(newId)
+      this.updateAddressLockMoney(newId)
     } catch (err) {
       return err
     }
@@ -150,6 +153,51 @@ class Account extends EventEmitter {
         this.updateAccountBalance(account, balance)
       }
     }
+  }
+
+  private async getAddressLockMoney(address: string): Promise<string> {
+    try {
+      const res = await this._dipperin.dr.getLockedMoney(address)
+      return res || '0'
+    } catch (err) {
+      // console.log('getAddressLockMoney', err)
+      return ''
+    }
+  }
+
+  private updateAccountLockBalance(account: AccountModel, lockBalance: string) {
+    // if (balance !== EMPTY_STRING) {
+    const preBalance = account.lockBalance
+    account.lockBalance = lockBalance ? Utils.fromUnit(lockBalance) : lockBalance
+    if (preBalance !== account.lockBalance) {
+      updateAccountInfo(account.id, ACCOUNT.LOCK_BALANCE, account.lockBalance)
+      // send to popup new banlance
+      const params: AccountLockBalanceParams = {
+        id: account.id,
+        lockBalance: account.lockBalance
+      }
+      this.emit(UPDATE_ACCOUNT_LOCK_BALANCE, params)
+    }
+    // }
+  }
+
+  async updateAddressLockMoney(id?: string): Promise<void> {
+    // console.log('updateAddressLockMoney start-----------')
+    if (id) {
+      const selectAccount = this._accountMap.get(id)
+      if (selectAccount) {
+        const lockMoney = await this.getAddressLockMoney(selectAccount.address)
+        this.updateAccountLockBalance(selectAccount, lockMoney)
+        // console.log('selectAccount',lockMoney)
+      }
+    } else {
+      for (const account of this._accountMap.values()) {
+        const lockMoney = await this.getAddressLockMoney(account.address)
+        this.updateAccountLockBalance(account, lockMoney)
+        // console.log('account', lockMoney)
+      }
+    }
+    // console.log('updateAddressLockMoney end-------------')
   }
 
   async updateNonce(id?: string) {

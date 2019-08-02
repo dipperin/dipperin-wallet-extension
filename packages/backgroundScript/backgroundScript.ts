@@ -35,9 +35,10 @@ import {
   SET_PASSWORD,
   CHANGE_NET,
   GET_CURRENT_NET,
-  GET_APP_NAME
+  GET_APP_NAME,
+  UPDATE_ACCOUNT_LOCK_BALANCE
 } from '@dipperin/lib/constants'
-import { AccountBalanceParams } from '@dipperin/lib/models/account'
+import { AccountBalanceParams, AccountLockBalanceParams } from '@dipperin/lib/models/account'
 import { TxStatusParams } from '@dipperin/lib/models/transaction'
 import { addWhiteList, isApproved } from './storage'
 
@@ -153,6 +154,10 @@ class BackgroundScript {
     // update account balance
     this.service.on(UPDATE_ACCOUNT_BALANCE, (params: AccountBalanceParams) => {
       this.api.updateAccountBalance(params)
+    })
+
+    this.service.on(UPDATE_ACCOUNT_LOCK_BALANCE, (param: AccountLockBalanceParams) => {
+      this.api.updateAccountLockBalance(param)
     })
 
     // update tx status

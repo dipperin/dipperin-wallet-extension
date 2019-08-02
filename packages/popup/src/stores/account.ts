@@ -2,7 +2,7 @@ import { observable, computed, action } from 'mobx'
 
 import { ApiType } from '@/api'
 import { AccountObj, AccountNameParams } from '@dipperin/lib/models/account'
-import { TEST_NET, UPDATE_ACCOUNT_BALANCE } from '@dipperin/lib/constants'
+import { TEST_NET, UPDATE_ACCOUNT_BALANCE, UPDATE_ACCOUNT_LOCK_BALANCE } from '@dipperin/lib/constants'
 
 class Account {
   @observable
@@ -19,6 +19,7 @@ class Account {
   constructor(api: ApiType) {
     this._api = api
     this.onUpdateAccountBalance()
+    this.onUpdateAccountLockBalance()
   }
 
   @computed
@@ -40,7 +41,8 @@ class Account {
         address: '',
         id: this._activeAccountId,
         path: '',
-        balance: ''
+        balance: '',
+        lockBalance: ''
       }
     }
     return res
@@ -49,7 +51,7 @@ class Account {
   @action
   getAccountInfo = () => {
     this._api.getAccounts()!.then((res: AccountObj[]) => {
-      console.log('accountStore-getAccountInfo:', res)
+      // console.log('accountStore-getAccountInfo:', res)
       this._accountList = res
     })
   }
@@ -57,7 +59,7 @@ class Account {
   @action
   getActiveAccount = () => {
     this._api.getActiveAccount()!.then((res: AccountObj) => {
-      console.log('accountStore-getActiveAccount', res)
+      // console.log('accountStore-getActiveAccount', res)
       this._activeAccountId = res.id
     })
   }
@@ -75,6 +77,17 @@ class Account {
       this._accountList.forEach(obj => {
         if (obj.id === id) {
           obj.balance = balance
+        }
+      })
+    })
+  }
+
+  private onUpdateAccountLockBalance = () => {
+    this._api.addEventListener(UPDATE_ACCOUNT_LOCK_BALANCE, res => {
+      const { id, lockBalance } = res
+      this._accountList.forEach(obj => {
+        if (obj.id === id) {
+          obj.lockBalance = lockBalance
         }
       })
     })

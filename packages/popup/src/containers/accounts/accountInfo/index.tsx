@@ -6,6 +6,8 @@ import Account from '@/stores/account'
 import Label from '@/stores/label'
 import Tooltip from '@/components/tooltip'
 import { genAvatar } from '@/utils'
+// image
+import WhiteLock from '@/images/whiteLock.png'
 
 interface AccountInfoProps {
   account?: Account
@@ -192,6 +194,20 @@ class AccountInfo extends React.Component<AccountInfoProps> {
             maximumFractionDigits: 9
           })} DIP`}</span>
         </div>
+
+        {activeAccount.lockBalance && activeAccount.lockBalance !== '0' && (
+          <div className="accounts-lockbalance-box">
+            <img src={WhiteLock} />
+            <span
+              className="accounts-lockbalance"
+              title={`${Number(activeAccount.lockBalance).toLocaleString('zh-Hans', {
+                maximumFractionDigits: 9
+              })} DIP`}
+            >{` ${Number(activeAccount.lockBalance).toLocaleString('zh-Hans', {
+              maximumFractionDigits: 9
+            })} DIP`}</span>
+          </div>
+        )}
 
         <div className="accounts-address-box">
           <span className="accounts-name-nothing" />

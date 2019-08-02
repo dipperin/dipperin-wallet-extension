@@ -387,6 +387,7 @@ class RootStore extends EventEmitter {
     this._account.updateBanlance()
     this._account.updateNonce()
     this._timer.asyncOn(TIMER.UPDATE_BALANCE, this._account.updateBanlance.bind(this._account), 5000)
+    this._timer.asyncOn(TIMER.UPDATE_LOCK_BALANCE, this._account.updateAddressLockMoney.bind(this._account), 5000)
     this._timer.asyncOn(TIMER.UPDATE_NONCE, this._account.updateNonce.bind(this._account), 30000)
     // this._timer.asyncOn(TIMER.UPDATE_BLOCK, this.getCurrentBlock.bind(this), 5000)
     // tx start update

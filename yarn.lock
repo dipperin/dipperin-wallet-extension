@@ -152,10 +152,11 @@
   dependencies:
     exec-sh "^0.3.2"
     minimist "^1.2.0"
-"@dipperin/dipperin.js@0.4.38":
-  version "0.4.38"
-  resolved "https://registry.yarnpkg.com/@dipperin/dipperin.js/-/dipperin.js-0.4.38.tgz#6ab1238073d9e3721414434c3e0c6e74f5f75291"
-  integrity sha512-4bkA1MPQ1SPUVmbXPRPCyzphnjHfuR4WdNZ3TsdL5W4wp+oiTGWBJyd5J+7ra7I+NMApY9j+mRc1GpN0B5K++Q==
+
+"@dipperin/dipperin.js@0.4.40":
+  version "0.4.40"
+  resolved "https://registry.yarnpkg.com/@dipperin/dipperin.js/-/dipperin.js-0.4.40.tgz#67527408b32fd1b1a7c09148f4b252c931e2df4e"
+  integrity sha512-cgNqWpWvdURdUJgKHv2mtPlhRIQyB4YB3kismPZbsQQfqEqUTNeMEbO8SQbZB+wbHfJuntyqK2+0iyl7T3PHlg==
   dependencies:
     axios "^0.18.0"
     bignumber.js "^7.2.1"

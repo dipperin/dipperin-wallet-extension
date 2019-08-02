@@ -47,7 +47,8 @@ export enum TIMER {
   UPDATE_NONCE = 'update-nonce',
   UPDATE_TX_STATUS = 'udpate-tx-status',
   UPDATE_BLOCK = 'update-block',
-  CHECK_IS_CONNECTING = 'check-is-connecting'
+  CHECK_IS_CONNECTING = 'check-is-connecting',
+  UPDATE_LOCK_BALANCE = 'update-lock-balance'
 }
 
 /**
@@ -61,7 +62,8 @@ export const MAIN_NET = 'mercury'
 export const TEST_NET = 'testNet'
 export enum ACCOUNT {
   NAME = 'name',
-  BALANCE = 'balace'
+  BALANCE = 'balace',
+  LOCK_BALANCE = 'lockBalance'
 }
 
 /**
@@ -125,6 +127,7 @@ export const GET_APP_TX = 'getAppTx'
  */
 export const POPUP_GET_APP_STATE = 'getAppState'
 export const UPDATE_ACCOUNT_BALANCE = 'updateAccountBalance' // for both store event name and channel message's action name
+export const UPDATE_ACCOUNT_LOCK_BALANCE = 'updateAccountLockBalance'
 export const UPDATE_TX_STATUS = 'udpateTxStatus' // for both store event name and channel message's action name
 
 /**
