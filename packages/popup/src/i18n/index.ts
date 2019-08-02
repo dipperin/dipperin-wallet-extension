@@ -56,7 +56,9 @@ export const zhCN = {
       shortPassword: '密码过短，请重新设定！',
       notSamePassword: '两次输入密码不一致，请重新输入！',
       transactionDetail: '交易详情',
-      forgetPassword: '忘记密码?'
+      forgetPassword: '忘记密码?',
+      forgetPasswordTitle: '忘记密码',
+      forgetPasswordWord: '忘记密码可以通过导入助记词重新设置，不会影响您的钱包使用，请妥善保管您的助记词！'
     }
   }
 }
@@ -121,7 +123,10 @@ export const enUS: I18nCollection = {
       shortPassword: 'Your password is too short!',
       notSamePassword: 'The first password is not equal to the second password!',
       transactionDetail: 'Transaction Detail',
-      forgetPassword: 'forget your password?'
+      forgetPassword: 'forget your password?',
+      forgetPasswordTitle: 'Forget Password',
+      forgetPasswordWord:
+        'Your password can be reset by importing mnemonics. It will not affect your wallet, and please keep your mnemonic!'
     }
   }
 }

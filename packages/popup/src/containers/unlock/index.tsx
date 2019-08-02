@@ -9,18 +9,41 @@ import Layout from '@/stores/layout'
 import Label from '@/stores/label'
 import Button from '@/components/button'
 import Tooltip from '@/components/tooltip'
-import Modal from '@/components/modal'
+// import Modal from '@/components/modal'
 
 import './unlockStyle.css'
 
-const { ACCOUNT_PAGE, HAS_NO_WALLET } = APP_STATE
+const { ACCOUNT_PAGE, IMPORT_WALLET_PAGE } = APP_STATE
+
+interface ResetModalProp {
+  label: Label
+  onClose: () => void
+  onConfirm: () => void
+}
+
+const ResetModal = (props: ResetModalProp) => (
+  <div className="unlock-modal">
+    <span className="unlock-close-icon" onClick={props.onClose} />
+    <div className="unlock-icon-box" />
+    <div className="unlock-modal-title">{props.label.label!.extension.wallet.forgetPasswordTitle}</div>
+    <p className="unlock-modal-paragh">{props.label.label!.extension.wallet.forgetPasswordWord}</p>
+    <div className="unlock-modal-btnbox">
+      <button className="unlock-modal-cancel" onClick={props.onClose}>
+        Cancel
+      </button>
+      <button className="unlock-modal-confirm" onClick={props.onConfirm}>
+        Confirm
+      </button>
+    </div>
+  </div>
+)
+
 interface UnlockProps {
   history?: History
   wallet?: Wallet
   layout?: Layout
   label?: Label
 }
-
 @inject('history', 'wallet', 'layout', 'label')
 @observer
 class Unlock extends React.Component<UnlockProps> {
@@ -46,7 +69,7 @@ class Unlock extends React.Component<UnlockProps> {
   forgetPassword = () => {
     if (++this.forgetPasswordCount > 1) {
       this.props.wallet!.resetWallet()
-      this.props.history!.historyPush(HAS_NO_WALLET)
+      this.props.history!.historyPush(IMPORT_WALLET_PAGE)
     } else {
       this.modalHandler.msg = '下一次点击将重置账户'
       this.modalHandler.show = true
@@ -66,6 +89,14 @@ class Unlock extends React.Component<UnlockProps> {
         fn()
       }
     }
+  }
+
+  confirmForgetPassword = () => {
+    runInAction(() => {
+      this.modalHandler.show = false
+    })
+    this.props.wallet!.resetWallet()
+    this.props.history!.historyPush(IMPORT_WALLET_PAGE)
   }
 
   handleForgetPassword = this.debounce(this.forgetPassword, 4000)
@@ -104,6 +135,12 @@ class Unlock extends React.Component<UnlockProps> {
     }, 2000)
   }
 
+  handleCloseModal = () => {
+    runInAction(() => {
+      this.modalHandler.show = false
+    })
+  }
+
   render() {
     const btnConfirm = {
       classes: ['unlock-btn-box']
@@ -129,9 +166,16 @@ class Unlock extends React.Component<UnlockProps> {
         <p className="accounts-txRecordLink" onClick={this.handleForgetPassword}>
           {this.props.label!.label.extension.wallet.forgetPassword}
         </p>
-        <Modal showModal={this.modalHandler.show} size={250}>
+        {this.modalHandler.show && (
+          <ResetModal
+            onClose={this.handleCloseModal}
+            onConfirm={this.confirmForgetPassword}
+            label={this.props.label!}
+          />
+        )}
+        {/* <Modal showModal={this.modalHandler.show} size={250}>
           {this.modalHandler.msg}
-        </Modal>
+        </Modal> */}
       </div>
     )
   }

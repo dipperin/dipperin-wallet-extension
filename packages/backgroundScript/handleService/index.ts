@@ -194,14 +194,15 @@ class RootStore extends EventEmitter {
   /**
    * import wallet
    */
-  importWallet(params: ImportParams): Promise<string> | void {
+  async importWallet(params: ImportParams): Promise<string | void> {
     const res = this._wallet.create(params.password, params.mnemonic)
     if (res) {
       return Promise.reject(res.message)
     }
     // start update after import wallet success
     this.startUpdate()
-    this._account.initImportAccount(this._wallet.hdAccount)
+    await this._account.initImportAccount(this._wallet.hdAccount)
+    return Promise.resolve('import success')
   }
 
   /**

@@ -61,21 +61,26 @@ class Account extends EventEmitter {
   }
 
   async initImportAccount(hdAccount: AccountObject) {
-    this.addAccount(hdAccount)
-    for (let i = 0; i < 14; i++) {
-      await this.addAccountAsync(hdAccount, 'account' + String(i + 2))
-    }
-    this.changeActiveAccount('1')
-    if (this._accountMap.get('1').balance === '0') {
-      for (let i = 2; i < 16; i++) {
-        const act = this._accountMap.get(String(i))
-        console.log(i, act.balance)
-        if (act.balance !== '0') {
-          this.changeActiveAccount(String(i))
-          break
-        }
+    for (let i = 0; i < 15; i++) {
+      await this.addAccountAsync(hdAccount, 'account' + String(i + 1))
+      if (this._activeAccount.balance !== '0') {
+        break
       }
     }
+    if (this._activeAccount.balance === '0') {
+      this.changeActiveAccount('1')
+    }
+    // this.changeActiveAccount('1')
+    // if (this._accountMap.get('1').balance === '0') {
+    //   for (let i = 2; i < 16; i++) {
+    //     const act = this._accountMap.get(String(i))
+    //     console.log(i, act.balance)
+    //     if (act.balance !== '0') {
+    //       this.changeActiveAccount(String(i))
+    //       break
+    //     }
+    //   }
+    // }
   }
 
   async addAccountAsync(hdAccount: AccountObject, name: string = DEFAULT_NAME): Promise<Error | void> {
@@ -94,6 +99,7 @@ class Account extends EventEmitter {
       await this.updateBanlance(newId)
       await this.updateAddressLockMoney(newId)
     } catch (err) {
+      console.log(err)
       return err
     }
   }
