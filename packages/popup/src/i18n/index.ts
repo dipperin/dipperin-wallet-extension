@@ -49,7 +49,7 @@ export const zhCN = {
       cancel: '取消',
       confirm: '确认',
       backupTips:
-        '我们强烈建议您将助记词记录在纸上，放置在一个安全的地方。任何人得到这些助记词都可以进入您的钱包使用您的资产！您将在下一步中确认助记词。',
+        '我们强烈建议您在纸上写下助记词，并将其保存在安全的地方。请注意任何人只要获得助记词就可以登入您的账号并使用您的资产。',
       backupConfirm: '请按顺序选择助记词',
       unlockWallet: '解锁钱包',
       password: '密码',
@@ -116,8 +116,8 @@ export const enUS: I18nCollection = {
       cancel: 'Cancel',
       confirm: 'Confirm',
       backupTips:
-        'We highly recommend you write down the mnemonic words on paper and keep it in a safe place. Anyone who gets it can access and spend your assets. You will have to confirm the mnemonic on the next step.',
-      backupConfirm: 'Please select mnemonic words in correct order.',
+        'We highly recommend you write the Mnemonic words on paper and keep it in a safe place.Anynoe who gets it can access or spend your assets.',
+      backupConfirm: 'Please choose mnemonic words in order.',
       unlockWallet: 'Unlock Wallet',
       password: 'Password',
       shortPassword: 'Your password is too short!',

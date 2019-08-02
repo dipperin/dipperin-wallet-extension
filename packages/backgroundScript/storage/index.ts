@@ -72,6 +72,11 @@ export const addAccount = async (account: AccountObj) => {
   setData(ACCOUNTS, preAccounts)
 }
 
+export const removeAccount = async (id: string) => {
+  const preAccounts = await getAccounts()
+  setData(ACCOUNTS, preAccounts.filter(item => item.id !== id))
+}
+
 export const deleteAccount = async (id: string) => {
   const preAccounts = await getAccounts()
   const accounts = preAccounts.filter(account => {
