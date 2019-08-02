@@ -58,7 +58,8 @@ export const zhCN = {
       transactionDetail: '交易详情',
       forgetPassword: '忘记密码?',
       forgetPasswordTitle: '忘记密码',
-      forgetPasswordWord: '忘记密码可以通过导入助记词重新设置，不会影响您的钱包使用，请妥善保管您的助记词！'
+      forgetPasswordWord:
+        '&#160;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  忘记密码可以通过导入助记词重新  &#160;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设置，不会影响您的钱包使用，请妥善保管您的助记词！'
     }
   }
 }

@@ -26,7 +26,9 @@ const ResetModal = (props: ResetModalProp) => (
     <span className="unlock-close-icon" onClick={props.onClose} />
     <div className="unlock-icon-box" />
     <div className="unlock-modal-title">{props.label.label!.extension.wallet.forgetPasswordTitle}</div>
-    <p className="unlock-modal-paragh">{props.label.label!.extension.wallet.forgetPasswordWord}</p>
+    <p className="unlock-modal-paragh">
+      <span dangerouslySetInnerHTML={{ __html: props.label.label!.extension.wallet.forgetPasswordWord }} />
+    </p>
     <div className="unlock-modal-btnbox">
       <button className="unlock-modal-cancel" onClick={props.onClose}>
         Cancel
@@ -67,18 +69,7 @@ class Unlock extends React.Component<UnlockProps> {
 
   @action
   forgetPassword = () => {
-    if (++this.forgetPasswordCount > 1) {
-      this.props.wallet!.resetWallet()
-      this.props.history!.historyPush(IMPORT_WALLET_PAGE)
-    } else {
-      this.modalHandler.msg = '下一次点击将重置账户'
-      this.modalHandler.show = true
-      setTimeout(() => {
-        runInAction(() => {
-          this.modalHandler.show = false
-        })
-      }, 4000)
-    }
+    this.modalHandler.show = true
   }
 
   debounce = (fn: () => void, duration: number) => {
