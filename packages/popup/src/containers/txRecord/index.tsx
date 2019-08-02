@@ -143,17 +143,23 @@ class TxRecord extends React.Component<SettingsProps> {
             <div className="setting-box">
               <span className="setting-close-icon" onClick={this.turnToAccount} />
               <div className="txRecord_table_head">
-                <span className="txRecord_thead_item">Time</span>
-                <span className="txRecord_thead_item">From</span>
-                <span className="txRecord_thead_item">To</span>
+                <span style={{ minWidth: '30%' }} className="txRecord_thead_item">
+                  Time
+                </span>
+                <span style={{ minWidth: '25%' }} className="txRecord_thead_item">
+                  From
+                </span>
+                <span style={{ minWidth: '25%' }} className="txRecord_thead_item">
+                  To
+                </span>
                 <span className="txRecord_thead_item">Account</span>
               </div>
               <div>
                 {this.transactions.slice(this.currentPage * 6, this.currentPage * 6 + itemPerPage).map((tx, index) => (
                   <div onClick={this.handleTurnDetail.bind(this, tx)} key={index} className="txRecord_tbody_row">
                     <span style={{ minWidth: '25%' }}>{this.formatTime(tx.timestamp)}</span>
-                    <span>{this.formatAddress(tx.from)}</span>
-                    <span>{this.formatAddress(tx.to)}</span>
+                    <span title={tx.from}>{this.formatAddress(tx.from)}</span>
+                    <span title={tx.to}>{this.formatAddress(tx.to)}</span>
                     <span>{this.formatBalance(tx.value)}</span>
                   </div>
                 ))}
