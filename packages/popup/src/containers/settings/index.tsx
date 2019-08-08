@@ -10,7 +10,7 @@ import Wallet from '@/stores/wallet'
 import Label from '@/stores/label'
 
 import './settingStyle.css'
-import { APP_STATE, MAIN_NET, TEST_NET, REMOTE_MECURY, REMOTE_TEST, HAS_TEST_NET } from '@dipperin/lib/constants'
+import { APP_STATE, MAIN_NET, TEST_NET, REMOTE_VENUS, REMOTE_TEST, HAS_TEST_NET } from '@dipperin/lib/constants'
 import { popupLog as log } from '@dipperin/lib/log'
 import Button from '@/components/button'
 import Choice from './choice'
@@ -36,7 +36,7 @@ class Settings extends React.Component<SettingsProps> {
   constructor(props) {
     super(props)
     this.props.wallet!.getCurrentNet()!.then(res => {
-      this.mainActive = res === REMOTE_MECURY
+      this.mainActive = res === REMOTE_VENUS
     })
   }
 
@@ -52,7 +52,7 @@ class Settings extends React.Component<SettingsProps> {
     runInAction(() => {
       this.mainActive = flag
     })
-    const net = flag ? REMOTE_MECURY : REMOTE_TEST
+    const net = flag ? REMOTE_VENUS : REMOTE_TEST
     log.debug(`Setting page, change net to ${net}`)
     this.props.wallet!.changeNet(net)
   }

@@ -116,6 +116,7 @@ class Account extends EventEmitter {
     try {
       this._accountMap.delete(id)
       await removeAccount(id)
+      this._maxId--
     } catch (err) {
       return err
     }

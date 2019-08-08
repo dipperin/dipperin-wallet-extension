@@ -7,7 +7,8 @@ export const zhCN = {
     languages: '语言',
     enUS: '英语（美式）',
     zhCN: '简体中文',
-    reset: '重置钱包'
+    reset: '重置钱包',
+    venus: '金星'
   },
   account: {
     send: '发送交易',
@@ -75,7 +76,8 @@ export const enUS: I18nCollection = {
     languages: 'Languages',
     enUS: 'en-US',
     zhCN: 'zh-CN',
-    reset: 'Reset DipLink'
+    reset: 'Reset DipLink',
+    venus: 'venus'
   },
   account: {
     send: 'Send',
