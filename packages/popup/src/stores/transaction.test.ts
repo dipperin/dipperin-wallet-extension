@@ -54,7 +54,13 @@ describe('transaction Store', () => {
 
   it('sendTxForApp', () => {
     mockApi.sendTxForApp = jest.fn().mockReturnValue(true)
-    const res = transaction.sendTxForApp('0.1')
+    const tx = {
+      address: '0x0000723c7780e40199937eE2207bC7008434b7C0eeFF',
+      amount: '1',
+      memo: 'xxx',
+      fee: '0.0001'
+    }
+    const res = transaction.sendTxForApp(tx)
     expect(res).toBe(true)
   })
 })

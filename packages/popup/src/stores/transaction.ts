@@ -1,7 +1,7 @@
 import API from '@/api'
 import { action, observable } from 'mobx'
 import { TxStatusParams, TransactionObj, SendTxParams } from '@dipperin/lib/models/transaction'
-import { popupLog as log } from '@dipperin/lib/log'
+// import { popupLog as log } from '@dipperin/lib/log'
 import { Utils } from '@dipperin/dipperin.js'
 
 class Transaction {
@@ -46,8 +46,8 @@ class Transaction {
     return this._api.getAppTx() as Promise<AppTx>
   }
 
-  sendTxForApp = (txFee?: string) => {
-    return this._api.sendTxForApp(txFee)
+  sendTxForApp = (tx: SendTxParams) => {
+    return this._api.sendTxForApp(tx)
   }
 
   verifyBalance = (tx: SendTxParams) => {
@@ -68,41 +68,6 @@ class Transaction {
     } else {
       return { success: true }
     }
-  }
-  sendAppTx = async (txParam: SendTxParams) => {
-    const res = this.verifyTx(txParam)
-    const response = {
-      success: false,
-      info: ''
-    }
-    if (res.success) {
-      try {
-        await this.sendTxForApp()
-        log.debug('Send App Transaction Success!')
-        response.success = true
-        response.info = 'The transaction has been sent!'
-      } catch (err) {
-        response.info = 'The transaction has been sent!'
-        log.error('Send App Transaction Error:' + err)
-        // TODO:
-        // response.info = this.translateErrorInfo(err as string)
-        response.info = 'Your action is too frequent, please try later.'
-      }
-    } else {
-      response.info = res.info as string
-    }
-    return response
-  }
-
-  translateErrorInfo = (error: string): string => {
-    const frequent = [
-      'ResponseError: Returned error: "this transaction already in tx pool"',
-      'ResponseError: Returned error: "new fee is too low to replace old one"'
-    ]
-    if (frequent.includes(error)) {
-      return 'Your action is too frequent, please try later.'
-    }
-    return error
   }
 }
 

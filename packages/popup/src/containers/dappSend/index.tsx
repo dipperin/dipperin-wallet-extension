@@ -98,6 +98,7 @@ class DappSend extends React.Component<DappSendProps> {
     this.sendToAddress = appTx.to
     this.sendAmount = appTx.value
     this.extraData = appTx.extraData
+    log.debug('get Dapp info', appTx)
   }
 
   turnToAccounnts = () => {
@@ -197,7 +198,7 @@ class DappSend extends React.Component<DappSendProps> {
     if (res.success) {
       log.debug('sendTransfer', 'verifyTx success')
       try {
-        await this.props.transaction!.sendTransaction(tx)
+        await this.props.transaction!.sendTxForApp(tx)
         this.showMsg(this.props.label!.label.send.sendSuccess, this.closeWindow)
       } catch (e) {
         log.error('send-handleTransfer:', e)

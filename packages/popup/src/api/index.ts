@@ -160,8 +160,8 @@ class API {
   /**
    * send tx for app
    */
-  sendTxForApp = (txFee?: string) => {
-    return this.duplex.send(APP_SEND, txFee, true)
+  sendTxForApp = (tx: SendTxParams) => {
+    return this.duplex.send(APP_SEND, tx, true)
   }
 
   /** EventListener */

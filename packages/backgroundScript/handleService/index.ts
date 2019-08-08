@@ -296,12 +296,33 @@ class RootStore extends EventEmitter {
   /**
    * app send tx
    */
-  async appSendTx(): Promise<string | void> {
-    const tx: SendTxParams = {
-      address: this.sendData.to,
-      amount: this.sendData.value,
-      memo: this.sendData.extraData
-    }
+  // async appSendTx(): Promise<string | void> {
+  //   const tx: SendTxParams = {
+  //     address: this.sendData.to,
+  //     amount: this.sendData.value,
+  //     memo: this.sendData.extraData
+  //   }
+  //   const res = await this._tx.confirmTransaction(
+  //     this._wallet.hdAccount,
+  //     this._account.activeAccount,
+  //     tx,
+  //     this.sendData.uuid
+  //   )
+  //   log.debug(res)
+  //   // console.log(res, 'service, res')
+  //   if (!res.success) {
+  //     return Promise.reject(res.info)
+  //   }
+  //   // send app tx hash
+  //   // this.emit(SEND_SUCCESS, { appName: this.sendData, hash: res.hash })
+  //   // close popup
+  //   this.emit(SEND_SUCCESS)
+  //   // reset sendData
+  //   this.sendData = undefined
+  //   this.setAppStateToHome()
+  // }
+
+  async appSendTx(tx: SendTxParams): Promise<string | void> {
     const res = await this._tx.confirmTransaction(
       this._wallet.hdAccount,
       this._account.activeAccount,
