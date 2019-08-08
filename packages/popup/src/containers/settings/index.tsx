@@ -88,31 +88,31 @@ class Settings extends React.Component<SettingsProps> {
           <span className="setting-close-icon" onClick={this.turnToAccount} />
 
           <div className="setting-content">
-            <div className="setting-title">{this.props.label!.label.extension.setting.network}</div>
+            <div className="setting-title">{this.props.label!.label.setting.network}</div>
             <Choice active={this.mainActive} onClick={this.handleChangeNet(true)}>
               <span className="setting-mainnet-icon" />
-              <span className="setting-net">{this.props.label!.label.extension.setting[MAIN_NET]}</span>
+              <span className="setting-net">{this.props.label!.label.setting[MAIN_NET]}</span>
             </Choice>
             {HAS_TEST_NET && (
               <Choice active={!this.mainActive} onClick={this.handleChangeNet(false)}>
                 <span className="setting-testnet-icon" />
-                <span className="setting-net">{this.props.label!.label.extension.setting[TEST_NET]}</span>
+                <span className="setting-net">{this.props.label!.label.setting[TEST_NET]}</span>
               </Choice>
             )}
           </div>
 
           <div className="setting-content">
-            <div className="setting-title">{this.props.label!.label.extension.setting.languages}</div>
+            <div className="setting-title">{this.props.label!.label.setting.languages}</div>
             <Choice active={lang === 'en-US'} onClick={this.changeLang('en-US')}>
-              <span className="setting-net">{this.props.label!.label.extension.setting.enUS}</span>
+              <span className="setting-net">{this.props.label!.label.setting.enUS}</span>
             </Choice>
             <Choice active={lang === 'zh-CN'} onClick={this.changeLang('zh-CN')}>
-              <span className="setting-net">{this.props.label!.label.extension.setting.zhCN}</span>
+              <span className="setting-net">{this.props.label!.label.setting.zhCN}</span>
             </Choice>
           </div>
 
           <Button params={resetWallet} onClick={this.handleReset}>
-            {this.props.label!.label.extension.setting.reset}
+            {this.props.label!.label.setting.reset}
           </Button>
           {/* <Button params={{ classes: [] }} onClick={this.turnToDappSend}>
           To DAPP_SEND

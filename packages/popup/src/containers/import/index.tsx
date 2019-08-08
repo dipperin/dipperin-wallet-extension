@@ -98,7 +98,7 @@ class Import extends React.Component<Props> {
   handlePswBlur = () => {
     const cond = this.input.password.split('').length > 7
     if (!cond) {
-      this.msgs.psw[0] = this.props.label!.label.extension.wallet.shortPassword
+      this.msgs.psw[0] = this.props.label!.label.wallet.shortPassword
       this.msgs.psw[1] = true
     }
     setTimeout(() => {
@@ -110,7 +110,7 @@ class Import extends React.Component<Props> {
   handleRpswBlur = () => {
     const cond = this.input.password !== this.input.repeatPassword
     if (cond) {
-      this.msgs.rpsw[0] = this.props.label!.label.extension.wallet.notSamePassword
+      this.msgs.rpsw[0] = this.props.label!.label.wallet.notSamePassword
       this.msgs.rpsw[1] = true
     }
     setTimeout(() => {
@@ -145,11 +145,11 @@ class Import extends React.Component<Props> {
         <AppHeader />
 
         <div className="import-modal">
-          <p style={pStyles}>{this.props.label!.label.extension.wallet.inputMnemonic}</p>
+          <p style={pStyles}>{this.props.label!.label.wallet.inputMnemonic}</p>
           <textarea className="g-text-mnemonic import-mnemonic" value={this.mnemonic} onChange={this.handleMnemonic} />
           <p className="g-input-msg-v1 import-msg">
-            {this.props.label!.label.extension.wallet.setPassword}
-            <span className="g-tip">{this.props.label!.label.extension.wallet.atLeast}</span>
+            {this.props.label!.label.wallet.setPassword}
+            <span className="g-tip">{this.props.label!.label.wallet.atLeast}</span>
           </p>
           <Tooltip
             position="top"
@@ -165,7 +165,7 @@ class Import extends React.Component<Props> {
               onBlur={this.handlePswBlur}
             />
           </Tooltip>
-          <p className="g-input-msg-v1 import-msg">{this.props.label!.label.extension.wallet.repeatPassword}</p>
+          <p className="g-input-msg-v1 import-msg">{this.props.label!.label.wallet.repeatPassword}</p>
           <Tooltip
             position="top"
             message={this.msgs.rpsw[0] as string}
@@ -185,10 +185,10 @@ class Import extends React.Component<Props> {
 
         <div className="g-2btn-area">
           <Button params={btnCancel} onClick={this.handleCancel}>
-            {this.props.label!.label.extension.wallet.cancel}
+            {this.props.label!.label.wallet.cancel}
           </Button>
           <Button params={btnConfirm} disabled={!this.verifyInput} onClick={this.handleConfirm}>
-            {this.props.label!.label.extension.wallet.confirm}
+            {this.props.label!.label.wallet.confirm}
           </Button>
         </div>
       </div>

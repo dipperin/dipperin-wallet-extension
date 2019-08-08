@@ -22,7 +22,7 @@
     "webpack-cli": "^3.2.3"
   },
   "dependencies": {
-    "@dipperin/dipperin.js": "0.4.40",
+    "@dipperin/dipperin.js": "0.4.45",
     "@dipperin/lib": "^0.0.1",
     "consola": "^2.4.1"
   }

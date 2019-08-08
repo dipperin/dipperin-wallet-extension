@@ -82,7 +82,7 @@ class AccountInfo extends React.Component<AccountInfoProps> {
   changeAccountName = () => {
     if (!this.verifyAccountName) {
       // TODO: use tooltip
-      alert(this.props.label!.label.extension.account.accountName)
+      alert(this.props.label!.label.account.accountName)
       this.accountName = this.props.account!.activeAccount.name
       return
     }
@@ -151,7 +151,7 @@ class AccountInfo extends React.Component<AccountInfoProps> {
 
   render() {
     const activeAccount = this.props.account!.activeAccount
-    const copyTip = this.props.label!.label.extension.account.copySuccess
+    const copyTip = this.props.label!.label.account.copySuccess
     return (
       <div className="accounts-content">
         <div className="accounts-id-box">

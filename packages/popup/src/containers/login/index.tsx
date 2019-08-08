@@ -40,10 +40,10 @@ class Login extends React.Component<LoginProps> {
         <div className="dipperin-logo login-logo" />
         <h1 className="login-title g-title-v1">DipperinLink</h1>
         <Button params={btnToImport} onClick={this.handlePushToImport}>
-          {this.props.label!.label.extension.wallet.importWallet}
+          {this.props.label!.label.wallet.importWallet}
         </Button>
         <Button params={btnToCreate} onClick={this.handlePushToCreate}>
-          {this.props.label!.label.extension.wallet.createWallet}
+          {this.props.label!.label.wallet.createWallet}
         </Button>
       </div>
     )

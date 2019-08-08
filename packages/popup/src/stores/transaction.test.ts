@@ -1,8 +1,8 @@
-import { MockApi } from '@/tests/mock/api'
+import { mockApi } from '@/tests/mock/api'
 import TransactionStore from './transaction'
 
 describe('transaction Store', () => {
-  const mockApi = MockApi()
+  // const mockApi = MockApi()
   let transaction: TransactionStore
   it('constructor', () => {
     mockApi.onUpdateStatus = jest.fn().mockImplementation(cb => {
@@ -17,16 +17,16 @@ describe('transaction Store', () => {
     }).not.toThrow()
   })
 
-  it('getMinTransactionFee', async () => {
-    mockApi.getMinTxFee = jest.fn().mockResolvedValue('0.00001')
-    const sendParam = {
-      address: '0x0000723c7780e40199937eE2207bC7008434b7C0eeFF',
-      amount: '1',
-      memo: 'xxx'
-    }
-    const res = await transaction.getMinTransactionFee(sendParam)
-    expect(res).toBe('0.00001')
-  })
+  // it('getMinTransactionFee', async () => {
+  //   mockApi.getMinTxFee = jest.fn().mockResolvedValue('0.00001')
+  //   const sendParam = {
+  //     address: '0x0000723c7780e40199937eE2207bC7008434b7C0eeFF',
+  //     amount: '1',
+  //     memo: 'xxx'
+  //   }
+  //   const res = await transaction.getMinTransactionFee(sendParam)
+  //   expect(res).toBe('0.00001')
+  // })
 
   it('sendTransaction', async () => {
     mockApi.sendTransaction = jest.fn().mockResolvedValue(true)

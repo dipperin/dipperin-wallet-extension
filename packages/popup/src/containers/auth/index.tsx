@@ -85,13 +85,13 @@ class Auth extends React.Component<AuthProps> {
         <div className="dipperin-logo auth-logo" />
         <h1 className="auth-title">{this.appName}</h1>
         {/* // TODO: fix to a var */}
-        <p className="g-p-info auth-info">{this.props.label!.label.extension.send.authTip}</p>
+        <p className="g-p-info auth-info">{this.props.label!.label.send.authTip}</p>
         <div className="g-2btn-area auth-btn">
           <Button params={btnCancel} onClick={this.toClose}>
-            {this.props.label!.label.extension.wallet.cancel}
+            {this.props.label!.label.wallet.cancel}
           </Button>
           <Button params={btnConfirm} onClick={this.agreeAuth}>
-            {this.props.label!.label.extension.wallet.confirm}
+            {this.props.label!.label.wallet.confirm}
           </Button>
         </div>
       </div>

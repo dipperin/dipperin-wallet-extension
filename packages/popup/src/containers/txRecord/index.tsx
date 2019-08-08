@@ -71,7 +71,7 @@ class TxRecord extends React.Component<SettingsProps> {
 
   @computed
   get pageTitle() {
-    return this.showDetail ? this.props.label!.label.extension.wallet.transactionDetail : ''
+    return this.showDetail ? this.props.label!.label.wallet.transactionDetail : ''
   }
 
   constructor(props) {

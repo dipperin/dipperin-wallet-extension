@@ -28,10 +28,12 @@ export const HOST = 'http://14.17.65.122:3035'
 
 export const REMOTE_TEST = 'remoteTest'
 export const REMOTE_MECURY = 'remoteMecury'
+export const REMOTE_VENUS = 'remoteVenus'
 
 export const NET_HOST_OBJ = {
   [REMOTE_TEST]: 'http://172.16.5.201:3035',
-  [REMOTE_MECURY]: 'http://14.17.65.122:3035'
+  [REMOTE_MECURY]: 'http://14.17.65.122:3035',
+  [REMOTE_VENUS]: 'http://172.16.5.201:3035'
 }
 
 export const HAS_TEST_NET = false
@@ -112,6 +114,7 @@ export const CHANGE_ACTIVE_ACCOUNT = 'changeActiveAccount'
 export const UPDATE_ACCOUNT_NAME = 'editAccountName'
 export const DELETE_ACCOUNT = 'deleteAccount'
 export const GET_MIN_TRANSACTION_FEE = 'getMinTransactionFee'
+export const GET_ESTIMATE_GAS = 'getEstimateGas'
 export const SEND_TRANSACTION = 'sendTransaction'
 export const GET_TRANSACTIONS = 'getTransactions'
 export const RESET_WALLET = 'resetWallet'

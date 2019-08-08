@@ -9,7 +9,8 @@ import {
 export default class TransactionModel {
   private _signedTransactionData!: string
   private _transactionHash!: string
-  private _fee: string
+  private _gas: string
+  private _gasPrice: string
   private _status: string
   private _timestamp!: number
 
@@ -33,7 +34,8 @@ export default class TransactionModel {
       status,
       hashLock,
       transactionHash,
-      fee,
+      gas,
+      gasPrice,
       timestamp,
       uuid
     } = transaction
@@ -51,18 +53,12 @@ export default class TransactionModel {
       this._transactionHash = transactionHash as string
     }
 
-    if (fee && fee !== '0') {
-      this._fee = fee
-    } else {
-      this._fee = Accounts.getTransactionFee({
-        extraData,
-        fee: '0',
-        hashLock,
-        nonce,
-        timeLock,
-        to,
-        value
-      })
+    if (gas) {
+      this._gas = gas
+    }
+
+    if (gasPrice) {
+      this._gasPrice = gasPrice
     }
 
     if (timestamp) {
@@ -117,8 +113,12 @@ export default class TransactionModel {
     return this._transactionHash
   }
 
-  get fee() {
-    return Utils.fromUnit(this._fee)
+  get gas() {
+    return this._gas
+  }
+
+  get gasPrice() {
+    return this._gasPrice
   }
 
   get status() {
@@ -156,13 +156,14 @@ export default class TransactionModel {
     const signedTransaction = Accounts.signTransaction(
       {
         extraData: this.extraData,
-        fee: this._fee,
         hashLock: this._hashLock,
         nonce: this._nonce,
         timeLock: this.timeLock,
         to: this._to,
         value: this._value,
-        from: this._from
+        from: this._from,
+        gas: this.gas,
+        gasPrice: this.gasPrice
       },
       privateKey,
       chainId
@@ -175,7 +176,8 @@ export default class TransactionModel {
   toJS(): TransactionObj {
     return {
       extraData: this._extraData,
-      fee: this._fee,
+      gas: this._gas,
+      gasPrice: this._gasPrice,
       from: this._from,
       hashLock: this._hashLock,
       nonce: this._nonce,
@@ -197,7 +199,8 @@ export interface TransactionObj {
   to: string
   from: string
   extraData?: string
-  fee?: string
+  gas?: string
+  gasPrice?: string
   status?: string
   timeLock?: number
   timestamp?: number
@@ -208,8 +211,9 @@ export interface TransactionObj {
 export interface SendTxParams {
   address: string
   amount: string
-  memo: string
-  fee?: string
+  memo?: string
+  gas?: string
+  gasPrice?: string
 }
 
 export interface TxStatusParams {

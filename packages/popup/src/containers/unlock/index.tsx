@@ -25,9 +25,9 @@ const ResetModal = (props: ResetModalProp) => (
   <div className="unlock-modal">
     <span className="unlock-close-icon" onClick={props.onClose} />
     <div className="unlock-icon-box" />
-    <div className="unlock-modal-title">{props.label.label!.extension.wallet.forgetPasswordTitle}</div>
+    <div className="unlock-modal-title">{props.label.label!.wallet.forgetPasswordTitle}</div>
     <p className="unlock-modal-paragh">
-      <span dangerouslySetInnerHTML={{ __html: props.label.label!.extension.wallet.forgetPasswordWord }} />
+      <span dangerouslySetInnerHTML={{ __html: props.label.label!.wallet.forgetPasswordWord }} />
     </p>
     <div className="unlock-modal-btnbox">
       <button className="unlock-modal-cancel" onClick={props.onClose}>
@@ -138,9 +138,9 @@ class Unlock extends React.Component<UnlockProps> {
     }
     return (
       <div className="bg-blue">
-        <div className="unlock-header">{this.props.label!.label.extension.wallet.unlockWallet}</div>
+        <div className="unlock-header">{this.props.label!.label.wallet.unlockWallet}</div>
         <div className="unlock-form-box">
-          <p className="g-input-msg-v1">{this.props.label!.label.extension.wallet.password}</p>
+          <p className="g-input-msg-v1">{this.props.label!.label.wallet.password}</p>
           <Tooltip position="bottom" displayTooltip={this.displayTooltip} message={this.tooltipMsg} size={210}>
             <input
               className="g-input-v1"
@@ -152,10 +152,10 @@ class Unlock extends React.Component<UnlockProps> {
           </Tooltip>
         </div>
         <Button params={btnConfirm} disabled={!this.password} onClick={this.submitPassword}>
-          {this.props.label!.label.extension.wallet.confirm}
+          {this.props.label!.label.wallet.confirm}
         </Button>
         <p className="accounts-txRecordLink" onClick={this.handleForgetPassword}>
-          {this.props.label!.label.extension.wallet.forgetPassword}
+          {this.props.label!.label.wallet.forgetPassword}
         </p>
         {this.modalHandler.show && (
           <ResetModal

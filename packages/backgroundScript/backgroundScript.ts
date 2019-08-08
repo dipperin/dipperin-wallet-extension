@@ -1,6 +1,6 @@
 import { Host } from '@dipperin/lib/duplex'
 import { requestHandle } from '@dipperin/lib/utils'
-import Consola from 'consola'
+// import Consola from 'consola'
 import HandleService from './handleService'
 import BackgroundAPI from './api/background'
 import {
@@ -18,7 +18,7 @@ import {
   GET_MNEMONIC,
   CHANGE_ACTIVE_ACCOUNT,
   GET_ACTIVE_ACCOUNT,
-  GET_MIN_TRANSACTION_FEE,
+  // GET_MIN_TRANSACTION_FEE,
   SEND_TRANSACTION,
   GET_TRANSACTIONS,
   UPDATE_ACCOUNT_NAME,
@@ -36,15 +36,18 @@ import {
   CHANGE_NET,
   GET_CURRENT_NET,
   GET_APP_NAME,
-  UPDATE_ACCOUNT_LOCK_BALANCE
+  UPDATE_ACCOUNT_LOCK_BALANCE,
+  GET_ESTIMATE_GAS
 } from '@dipperin/lib/constants'
 import { AccountBalanceParams, AccountLockBalanceParams } from '@dipperin/lib/models/account'
 import { TxStatusParams } from '@dipperin/lib/models/transaction'
 import { addWhiteList, isApproved } from './storage'
 
-const log = Consola.withTag('background-script').create({
-  level: 5
-})
+import { backgroundLog as log } from '@dipperin/lib/log'
+
+// const log = Consola.withTag('background-script').create({
+//   level: 5
+// })
 
 class BackgroundScript {
   appName?: string
@@ -61,7 +64,7 @@ class BackgroundScript {
   }
 
   run() {
-    log.debug('background script init')
+    log.info('background script init')
     this.bindPopupDuplex()
     this.bindTabDuplex()
     this.bindServiceEvent()
@@ -69,12 +72,12 @@ class BackgroundScript {
 
   private bindPopupDuplex() {
     this.duplex.on('popup:connect', () => {
-      log.debug('popup connect')
+      log.info('popup connect')
       this.service.popupConnect()
     })
 
     this.duplex.on('popup:disconnect', () => {
-      log.debug('popup disconnect')
+      log.info('popup disconnect')
       this.service.popupDisconnect()
     })
 
@@ -91,7 +94,8 @@ class BackgroundScript {
     this.duplex.on(CHANGE_ACTIVE_ACCOUNT, this.service.changeActiveAccount)
     this.duplex.on(UPDATE_ACCOUNT_NAME, this.service.updateAccountName)
     this.duplex.on(DELETE_ACCOUNT, this.service.deleteAccount)
-    this.duplex.on(GET_MIN_TRANSACTION_FEE, this.service.getMinTxFee)
+    // this.duplex.on(GET_MIN_TRANSACTION_FEE, this.service.getMinTxFee)
+    this.duplex.on(GET_ESTIMATE_GAS, this.service.getEstimateGas)
     this.duplex.on(SEND_TRANSACTION, this.service.sendTx)
     this.duplex.on(GET_TRANSACTIONS, this.service.getTxs)
     this.duplex.on(RESET_WALLET, this.service.resetWallet)

@@ -84,7 +84,7 @@ class NavHeader extends React.Component<NavHeaderProps> {
         {this.showModal && (
           <div className="nav-modal" onClick={this.stopPropagation}>
             <div className="nav-addAccount-box">
-              <span className="nav-myAccount">{this.props.label!.label.extension.account.myAccounts}</span>
+              <span className="nav-myAccount">{this.props.label!.label.account.myAccounts}</span>
               <span className="nav-addAccount" onClick={this.turnToCreateAccount} />
             </div>
             <div className="nav-accountList-box">
@@ -105,7 +105,7 @@ class NavHeader extends React.Component<NavHeaderProps> {
             </div>
             <div className="nav-setting-box" onClick={this.turnToSetting}>
               <span className="nav-setting-icon" />
-              <span className="nav-setting-word">{this.props.label!.label.extension.setting.setting}</span>
+              <span className="nav-setting-word">{this.props.label!.label.setting.setting}</span>
             </div>
           </div>
         )}

@@ -13,7 +13,8 @@ import {
   CHNAGE_ACTIVE_ACCOUNT,
   SEND_SUCCESS,
   NET_HOST_OBJ,
-  REMOTE_MECURY
+  // REMOTE_MECURY,
+  REMOTE_VENUS
   // REMOTE_TEST
 } from '@dipperin/lib/constants'
 import WalletStore from '../store/wallet'
@@ -36,7 +37,7 @@ class RootStore extends EventEmitter {
   appName: string | undefined = undefined
   private _isConnecting: boolean = false
   private _appState: number = APP_STATE.HAS_NO_WALLET
-  private _currentNet: string = REMOTE_MECURY
+  private _currentNet: string = REMOTE_VENUS
   private _dipperin: Dipperin
   private _wallet: WalletStore
   private _account: AccountStore
@@ -89,7 +90,7 @@ class RootStore extends EventEmitter {
 
   async getCurrentBlock(): Promise<any> {
     const res = await this._dipperin.dr.getCurrentBlock()
-    console.log('Current Block:', res)
+    log.debug('Current Block:', res)
     return res
   }
 
@@ -106,7 +107,7 @@ class RootStore extends EventEmitter {
       const nowTimeStamp = new Date().valueOf()
       const timeDiff = nowTimeStamp - this._disconnectTimestamp
       if (timeDiff > AUTO_LOCK_WALLET) {
-        log.debug(`lock ${AUTO_LOCK_WALLET}`)
+        log.debug(`lock`, AUTO_LOCK_WALLET)
         // console.log('lock', AUTO_LOCK_WALLET)
         clearInterval(this._interval)
         this._wallet.lockWallet()
@@ -272,8 +273,13 @@ class RootStore extends EventEmitter {
    * get min tx fee
    * @param tx: address, amount, memo
    */
-  getMinTxFee(tx: SendTxParams): string {
-    return this._tx.getTransactionFee(this._account.activeAccount, tx)
+  // getMinTxFee(tx: SendTxParams): string {
+  //   return this._tx.getTransactionFee(this._account.activeAccount, tx)
+  // }
+
+  async getEstimateGas(tx: SendTxParams): Promise<string> {
+    const estimateGas = await this._tx.getEstimateGas(this._wallet.hdAccount, this._account.activeAccount, tx)
+    return estimateGas
   }
 
   /**
@@ -290,12 +296,11 @@ class RootStore extends EventEmitter {
   /**
    * app send tx
    */
-  async appSendTx(txFee: string): Promise<string | void> {
+  async appSendTx(): Promise<string | void> {
     const tx: SendTxParams = {
       address: this.sendData.to,
       amount: this.sendData.value,
-      memo: this.sendData.extraData,
-      fee: txFee
+      memo: this.sendData.extraData
     }
     const res = await this._tx.confirmTransaction(
       this._wallet.hdAccount,

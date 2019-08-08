@@ -52,11 +52,11 @@ class Accounts extends React.Component<AccountsProps> {
         {activeAccount && <AccountInfo />}
 
         <Button params={btnSend} onClick={this.turnToSend}>
-          {this.props.label!.label.extension.account.send}
+          {this.props.label!.label.account.send}
         </Button>
         <p className="accounts-txRecordLink" onClick={this.turnToTxRecord}>
           <img src={txRecordIcon} className="accounts-txRecordIcon" />
-          {this.props.label!.label.extension.account.seeTxs}
+          {this.props.label!.label.account.seeTxs}
         </p>
       </div>
     )

@@ -1,8 +1,8 @@
-import { MockApi } from '@/tests/mock/api'
+import { mockApi } from '@/tests/mock/api'
 import WalletStore from '@/stores/wallet'
 
 describe('wallet Store', () => {
-  const mockApi = MockApi()
+  // const mockApi = MockApi()
   let wallet: WalletStore
 
   it('constructor', () => {
