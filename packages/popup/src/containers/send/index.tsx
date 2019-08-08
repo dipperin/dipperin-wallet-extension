@@ -7,6 +7,7 @@ import Account from '@/stores/account'
 import History from '@/stores/history'
 import Transaction from '@/stores/transaction'
 import Label from '@/stores/label'
+import Layout from '@/stores/layout'
 
 import NavHeader from '@/components/navHeader'
 import Modal from '@/components/modal'
@@ -27,9 +28,10 @@ interface SendProps {
   history?: History
   transaction?: Transaction
   label?: Label
+  layout?: Layout
 }
 
-@inject('account', 'history', 'transaction', 'label')
+@inject('account', 'history', 'transaction', 'label', 'layout')
 @observer
 class Send extends React.Component<SendProps> {
   @observable
@@ -171,18 +173,25 @@ class Send extends React.Component<SendProps> {
 
   sendTransfer = async () => {
     const tx = this.genTx(this.sendToAddress, this.sendAmount, this.gasPrice)
+    this.props.layout!.handleOpenLoading()
     const res = this.props.transaction!.verifyTx(tx)
     if (res.success) {
       log.debug('sendTransfer', 'verifyTx success')
       try {
         await this.props.transaction!.sendTransaction(tx)
-        this.showMsg(this.props.label!.label.send.sendSuccess, this.turnToAccounnts)
+        this.props.layout!.handleCloseLoading(() => {
+          this.showMsg(this.props.label!.label.send.sendSuccess, this.turnToAccounnts)
+        })
       } catch (e) {
         log.error('send-handleTransfer:', e)
-        this.showMsg(this.translateErrorInfo(e as string))
+        this.props.layout!.handleCloseLoading(() => {
+          this.showMsg(this.translateErrorInfo(e as string))
+        })
       }
     } else {
-      this.showMsg(res.info as string)
+      this.props.layout!.handleCloseLoading(() => {
+        this.showMsg(res.info as string)
+      })
     }
   }
 
