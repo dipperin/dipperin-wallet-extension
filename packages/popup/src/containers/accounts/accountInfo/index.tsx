@@ -112,9 +112,7 @@ class AccountInfo extends React.Component<AccountInfoProps> {
     input.select()
     if (document.execCommand('copy')) {
       document.execCommand('copy')
-      // TODO: add alert to tell user Replicating Success
       this.showTooltip()
-      // alert('Replicating Success!')
     }
     document.body.removeChild(input)
   }
