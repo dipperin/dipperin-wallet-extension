@@ -149,6 +149,14 @@ class AccountInfo extends React.Component<AccountInfoProps> {
     }, 2000)
   }
 
+  formatNumber = (num: number, w: number) => {
+    const m = 10 ** w
+    const b = Math.floor(num * m) / m
+    return b.toLocaleString('zh-Hans', {
+      maximumFractionDigits: w
+    })
+  }
+
   render() {
     const activeAccount = this.props.account!.activeAccount
     const copyTip = this.props.label!.label.account.copySuccess
@@ -188,11 +196,9 @@ class AccountInfo extends React.Component<AccountInfoProps> {
           <span
             className="accounts-balance"
             title={`${Number(activeAccount.balance).toLocaleString('zh-Hans', {
-              maximumFractionDigits: 9
+              maximumFractionDigits: 18
             })} DIP`}
-          >{`${Number(activeAccount.balance).toLocaleString('zh-Hans', {
-            maximumFractionDigits: 9
-          })} DIP`}</span>
+          >{`${this.formatNumber(Number(activeAccount.balance), 6)} DIP`}</span>
         </div>
 
         {activeAccount.lockBalance && activeAccount.lockBalance !== '0' && (
@@ -201,11 +207,9 @@ class AccountInfo extends React.Component<AccountInfoProps> {
             <span
               className="accounts-lockbalance"
               title={`${Number(activeAccount.lockBalance).toLocaleString('zh-Hans', {
-                maximumFractionDigits: 9
+                maximumFractionDigits: 18
               })} DIP`}
-            >{` ${Number(activeAccount.lockBalance).toLocaleString('zh-Hans', {
-              maximumFractionDigits: 9
-            })} DIP`}</span>
+            >{` ${this.formatNumber(Number(activeAccount.lockBalance), 6)} DIP`}</span>
           </div>
         )}
 
