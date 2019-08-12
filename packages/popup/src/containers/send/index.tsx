@@ -195,6 +195,19 @@ class Send extends React.Component<SendProps> {
     }
   }
 
+  @action
+  handleAddGasPrice = () => {
+    this.gasPrice = String(Number(this.gasPrice) + 1)
+    log.debug('gasPrice', this.gasPrice)
+  }
+
+  @action
+  handleSubGasPrice = () => {
+    if (Number(this.gasPrice) > 1) {
+      this.gasPrice = String(Number(this.gasPrice) - 1)
+    }
+  }
+
   handleTransfer = _.throttle(this.sendTransfer, 2000)
 
   render() {
@@ -229,18 +242,28 @@ class Send extends React.Component<SendProps> {
             onBlur={this.getEstimateGas}
           />
           <p className="g-input-msg-v1 send-msg-v2">
-            {label.gasPrice}{' '}
-            <span className="send-reminder">
+            {label.poundage}{' '}
+            {/* <span className="send-reminder">
               {label.currentPoundageIs} {Utils.fromUnit(String(this.fee))}
-            </span>
+            </span> */}
           </p>
-          <input
-            className="g-input-v1"
-            type="number"
-            value={this.gasPrice}
-            onChange={this.handleGasPrice}
-            onBlur={this.handleBlurGasPrice}
-          />
+          <div className="send-poundage-box">
+            <input
+              className="g-input-v1 send-poundage-input"
+              type="text"
+              value={`${Utils.fromUnit(String(this.fee))} DIP`}
+              // onChange={this.handleGasPrice}
+              // onBlur={this.handleBlurGasPrice}
+              disabled={true}
+            />
+            <div className="send-poundage-changer">
+              <span className={`send-poundage-add`} onClick={this.handleAddGasPrice} />
+              <span
+                className={`send-poundage-sub ${this.gasPrice === '1' ? 'send-poundage-disabled' : ''}`}
+                onClick={this.handleSubGasPrice}
+              />
+            </div>
+          </div>
         </div>
         <div className="send-button-box">
           <Button params={btnSend} onClick={this.handleTransfer}>

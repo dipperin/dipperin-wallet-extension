@@ -66,3 +66,79 @@
   background: url(../../images/close_slices/close@2x.png) no-repeat;
   cursor: pointer;
 }
+
+.send-poundage-box {
+  position: relative;
+}
+
+.send-poundage-input {
+  color: #bbb;
+  font-weight: 600;
+}
+
+.send-poundage-changer {
+  height: 22px;
+  width: 15px;
+  top: 7px;
+  right: 13px;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.send-poundage-add {
+  border-width: 0 6px 8px 6px;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 8px solid #fff;
+}
+
+.send-poundage-add:active {
+  position: relative;
+  top: -2px;
+  border-width: 0 8px 10px 8px;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 10px solid #fff;
+}
+
+.send-poundage-add:hover {
+  cursor: pointer;
+}
+
+.send-poundage-sub {
+  border-width: 8px 6px 0 6px;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 8px solid #fff;
+}
+
+.send-poundage-sub:active {
+  position: relative;
+  bottom: -2px;
+  border-width: 10px 8px 0 8px;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 10px solid #fff;
+}
+
+.send-poundage-sub:hover {
+  cursor: pointer;
+}
+
+.send-poundage-disabled {
+  border-top: 8px solid #999 !important;
+}
+
+.send-poundage-disabled:hover {
+  cursor: not-allowed !important;
+}
+
+.send-poundage-disabled:active {
+  border-width: 8px 6px 0 6px !important;
+  border-left: 6px solid transparent !important;
+  border-right: 6px solid transparent !important;
+  border-top: 8px solid #999 !important;
+}
