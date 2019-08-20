@@ -64,7 +64,7 @@ class NavHeader extends React.Component<NavHeaderProps> {
     e.nativeEvent.stopImmediatePropagation()
   }
 
-  changeActiveAccount = (id: string) => e => {
+  changeActiveAccount = (id: string) => () => {
     this.props.account!.changeCurrentAccount(id)
   }
 

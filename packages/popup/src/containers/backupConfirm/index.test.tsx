@@ -1,5 +1,6 @@
 import { shallow, ShallowWrapper } from 'enzyme'
 import React from 'react'
+import '@/tests/mock/mockChrome'
 import History from '../../stores/history'
 import Wallet from '../../stores/wallet'
 import Layout from '../../stores/layout'

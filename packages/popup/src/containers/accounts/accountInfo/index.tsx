@@ -43,11 +43,17 @@ class AccountInfo extends React.Component<AccountInfoProps> {
     this.accountName = e.target.value
   }
 
+  @action
+  updateName = (name: string) => {
+    this.accountName = name
+  }
+
   constructor(props) {
     super(props)
     // this.props.account!.updateAccountStore()
     autorun(() => {
-      this.accountName = this.props.account!.activeAccount.name
+      // this.accountName = this.props.account!.activeAccount.name
+      this.updateName(this.props.account!.activeAccount.name)
     })
   }
 

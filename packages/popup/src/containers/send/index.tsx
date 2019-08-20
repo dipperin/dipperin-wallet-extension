@@ -132,12 +132,12 @@ class Send extends React.Component<SendProps> {
     }
   }
 
-  @action
-  handleBlurGasPrice = () => {
-    if (this.gasPrice === '') {
-      this.gasPrice = '1'
-    }
-  }
+  // @action
+  // handleBlurGasPrice = () => {
+  //   if (this.gasPrice === '') {
+  //     this.gasPrice = '1'
+  //   }
+  // }
 
   genTx = (address: string, amount: string, gasPrice?: string) => {
     const baseTx = {

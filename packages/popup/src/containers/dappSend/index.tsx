@@ -129,6 +129,13 @@ class DappSend extends React.Component<DappSendProps> {
   }
 
   @action
+  handleGasPrice = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (/^([1-9][0-9]*)?$/.test(e.target.value)) {
+      this.gasPrice = e.target.value
+    }
+  }
+
+  @action
   updateGasPrice = () => {
     if (!this.verifyGasPrince) {
       this.gasPrice = '1'
@@ -137,13 +144,9 @@ class DappSend extends React.Component<DappSendProps> {
 
   @action
   setGas = (newGas: string) => {
-    this.gas = newGas
-  }
-
-  @action
-  handleGasPrice = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (/^([1-9][0-9]*)?$/.test(e.target.value)) {
-      this.gasPrice = e.target.value
+    const re = /^[0-9.]+$/
+    if (re.test(newGas)) {
+      this.gas = newGas
     }
   }
 
@@ -166,8 +169,8 @@ class DappSend extends React.Component<DappSendProps> {
 
   getEstimateGas = async () => {
     if (this.sendToAddress && this.sendAmount) {
-      const tx = this.genTx(this.sendToAddress, this.sendAmount)
       try {
+        const tx = this.genTx(this.sendToAddress, this.sendAmount)
         const res = await this.props.transaction!.getEstimateGas(tx)
         log.debug('Send-getEstimateGas-res:', res)
         this.setGas(res as string)
@@ -231,8 +234,12 @@ class DappSend extends React.Component<DappSendProps> {
   }
 
   formatExtraData = () => {
-    const dataList: string[] = JSON.parse(this.extraData || '[]') as string[]
-    return dataList.join('-')
+    try {
+      const dataList: string[] = JSON.parse(this.extraData || '[]') as string[]
+      return dataList.join('-')
+    } catch (e) {
+      return this.extraData
+    }
   }
 
   render() {

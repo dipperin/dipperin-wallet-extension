@@ -1,5 +1,6 @@
 import { shallow, ShallowWrapper } from 'enzyme'
 import React from 'react'
+import '@/tests/mock/mockChrome'
 import History from '../../stores/history'
 import { mockApi } from '../../tests/mock/api'
 import Label from '../../stores/label'

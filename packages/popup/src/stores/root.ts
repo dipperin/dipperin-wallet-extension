@@ -29,10 +29,6 @@ class RootStore {
     this.layout = new Layout()
     this.label = new Label()
   }
-
-  // getLang = () => {
-
-  // }
 }
 
 export default RootStore

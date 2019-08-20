@@ -31,7 +31,7 @@ class Auth extends React.Component<AuthProps> {
     this.props
       .wallet!.getAppName()!
       .then(data => {
-        console.log('appname', data)
+        // console.log('appname', data)
         this.appName = data as string
       })
       .catch(e => console.log('getAppName error', e))

@@ -50,12 +50,12 @@ class SetPassword extends React.Component<Props> {
   }
 
   @action
-  handlePassword = e => {
+  handlePassword = (e: React.ChangeEvent<{ value: string }>) => {
     this.input.password = e.target.value
   }
 
   @action
-  handleRepeatPassword = e => {
+  handleRepeatPassword = (e: React.ChangeEvent<{ value: string }>) => {
     this.input.repeatPassword = e.target.value
   }
 
@@ -81,7 +81,7 @@ class SetPassword extends React.Component<Props> {
 
   handleToBackup = _.throttle(this.setPassword, 1000, { trailing: false })
 
-  handleonKeyDown = e => {
+  handleonKeyDown = (e: React.KeyboardEvent) => {
     if (e.keyCode === 13 && this.verifyInput) {
       this.handleToBackup()
     }

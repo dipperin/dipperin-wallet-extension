@@ -43,12 +43,12 @@ class Import extends React.Component<Props> {
   }
 
   @action
-  handlePassword = e => {
+  handlePassword = (e: React.ChangeEvent<{ value: string }>) => {
     this.input.password = e.target.value
   }
 
   @action
-  handleRepeatPassword = e => {
+  handleRepeatPassword = (e: React.ChangeEvent<{ value: string }>) => {
     this.input.repeatPassword = e.target.value
   }
 
@@ -63,7 +63,7 @@ class Import extends React.Component<Props> {
   }
 
   @action
-  handleMnemonic = e => {
+  handleMnemonic = (e: React.ChangeEvent<{ value: string }>) => {
     this.mnemonic = e.target.value
   }
 
@@ -88,7 +88,7 @@ class Import extends React.Component<Props> {
 
   handleConfirm = _.throttle(this.importWallet, 4000, { trailing: false })
 
-  handleonKeyDown = e => {
+  handleonKeyDown = (e: React.KeyboardEvent) => {
     if (e.keyCode === 13 && this.verifyInput) {
       this.handleConfirm()
     }

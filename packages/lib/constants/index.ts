@@ -33,7 +33,7 @@ export const REMOTE_VENUS = 'remoteVenus'
 export const NET_HOST_OBJ = {
   [REMOTE_TEST]: 'http://172.16.5.201:3035',
   [REMOTE_MECURY]: 'http://14.17.65.122:3035',
-  [REMOTE_VENUS]: 'http://172.16.5.201:3035'
+  [REMOTE_VENUS]: 'http://14.17.65.122:3035'
 }
 
 export const HAS_TEST_NET = false
@@ -73,7 +73,7 @@ export enum ACCOUNT {
  */
 export const DEFAULT_TX_FEE = '0'
 export const DEFAULT_HASH_LOCK = ''
-export const DEFAULT_CHAIN_ID = '0x01'
+export const DEFAULT_CHAIN_ID = '0x02'
 export const DEFAULT_ACTIVE_ACCOUNT_ID = '1'
 
 export const TRANSACTION_STATUS_PENDING = 'pending'

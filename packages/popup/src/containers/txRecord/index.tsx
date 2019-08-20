@@ -74,6 +74,11 @@ class TxRecord extends React.Component<SettingsProps> {
     return this.showDetail ? this.props.label!.label.wallet.transactionDetail : ''
   }
 
+  @action
+  setTransactions = (txs: TransactionObj[]) => {
+    this.transactions = txs
+  }
+
   constructor(props) {
     super(props)
 
@@ -81,14 +86,16 @@ class TxRecord extends React.Component<SettingsProps> {
       () => this.props.account!.activeAccount.address,
       address => {
         this.props.transaction!.getTransactions(address)!.then((res: TransactionObj[]) => {
-          console.log(res)
-          this.transactions = res
+          // console.log(res)
+          this.setTransactions(res)
+          // this.transactions = res
         })
       }
     )
     const currentAddress = this.props.account!.activeAccount.address
     this.props.transaction!.getTransactions(currentAddress)!.then((res: TransactionObj[]) => {
-      this.transactions = res
+      // this.transactions = res
+      this.setTransactions(res)
     })
   }
 
@@ -96,17 +103,24 @@ class TxRecord extends React.Component<SettingsProps> {
     this.props.history!.historyPush(ACCOUNT_PAGE)
   }
 
+  /**
+   * @example 1566208829481 -> 19/08/19 18:00:29
+   */
   formatTime = (timestamp?: number) => {
     let ret: string = ''
     if (timestamp) {
       const t = new Date(timestamp)
-      ret = `${String(t.getFullYear()).slice(2)}/${String(
-        t.getMonth() + 1
-      )}/${t.getDate()} ${t.getHours()}:${t.getMinutes()}`
+      ret = `${String(t.getFullYear()).slice(2)}/${String(t.getMonth() + 1).padStart(
+        2,
+        '0'
+      )}/${t.getDate()} ${t.getHours()}:${String(t.getMinutes()).padStart(2, '0')}`
     }
     return ret
   }
 
+  /**
+   * @example '0x00008AD27452ACD62e646088A76D098156B2358357ff' -> '0x0...57ff'
+   */
   formatAddress = (address?: string) => {
     let ret: string = ''
     if (address) {
