@@ -50,12 +50,12 @@ class SetPassword extends React.Component<Props> {
   }
 
   @action
-  handlePassword = e => {
+  handlePassword = (e: React.ChangeEvent<{ value: string }>) => {
     this.input.password = e.target.value
   }
 
   @action
-  handleRepeatPassword = e => {
+  handleRepeatPassword = (e: React.ChangeEvent<{ value: string }>) => {
     this.input.repeatPassword = e.target.value
   }
 
@@ -81,7 +81,7 @@ class SetPassword extends React.Component<Props> {
 
   handleToBackup = _.throttle(this.setPassword, 1000, { trailing: false })
 
-  handleonKeyDown = e => {
+  handleonKeyDown = (e: React.KeyboardEvent) => {
     if (e.keyCode === 13 && this.verifyInput) {
       this.handleToBackup()
     }
@@ -129,8 +129,8 @@ class SetPassword extends React.Component<Props> {
         <AppHeader />
         <div className="create-modal">
           <p className="g-input-msg-v1">
-            {this.props.label!.label.extension.wallet.setPassword}
-            <span className="g-tip">{this.props.label!.label.extension.wallet.atLeast}</span>
+            {this.props.label!.label.wallet.setPassword}
+            <span className="g-tip">{this.props.label!.label.wallet.atLeast}</span>
           </p>
           <Tooltip
             position="top"
@@ -146,7 +146,7 @@ class SetPassword extends React.Component<Props> {
               onBlur={this.handlePswBlur}
             />
           </Tooltip>
-          <p className="g-input-msg-v1">{this.props.label!.label.extension.wallet.repeatPassword}</p>
+          <p className="g-input-msg-v1">{this.props.label!.label.wallet.repeatPassword}</p>
           <Tooltip
             position="bottom"
             message={this.msgs.rpsw[0] as string}
@@ -166,10 +166,10 @@ class SetPassword extends React.Component<Props> {
 
         <div className="g-2btn-area">
           <Button params={btnCancel} onClick={this.toQuit}>
-            {this.props.label!.label.extension.wallet.cancel}
+            {this.props.label!.label.wallet.cancel}
           </Button>
           <Button params={btnConfirm} onClick={this.handleToBackup} disabled={!this.verifyInput}>
-            {this.props.label!.label.extension.wallet.confirm}
+            {this.props.label!.label.wallet.confirm}
           </Button>
         </div>
       </div>

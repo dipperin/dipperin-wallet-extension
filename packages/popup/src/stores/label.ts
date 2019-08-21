@@ -1,5 +1,5 @@
 import { observable, action, computed } from 'mobx'
-import { i18n } from '@/i18n'
+import { i18n, I18nCollection } from '@/i18n'
 
 class Label {
   @observable
@@ -18,15 +18,19 @@ class Label {
   }
 
   private getLang = () => {
-    chrome.storage.sync.get('lang', item => {
-      if (item && item.lang) {
-        this.updateLang(item.lang)
-      }
-    })
+    try {
+      chrome.storage.sync.get('lang', item => {
+        if (item && item.lang) {
+          this.updateLang(item.lang)
+        }
+      })
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   @computed
-  get label() {
+  get label(): I18nCollection {
     return i18n[this.lang]
   }
 }

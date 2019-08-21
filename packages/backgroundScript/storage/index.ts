@@ -72,6 +72,11 @@ export const addAccount = async (account: AccountObj) => {
   setData(ACCOUNTS, preAccounts)
 }
 
+export const removeAccount = async (id: string) => {
+  const preAccounts = await getAccounts()
+  setData(ACCOUNTS, preAccounts.filter(item => item.id !== id))
+}
+
 export const deleteAccount = async (id: string) => {
   const preAccounts = await getAccounts()
   const accounts = preAccounts.filter(account => {
@@ -87,7 +92,7 @@ export const deleteAccount = async (id: string) => {
  * @param key update key
  * @param value update value
  */
-type Key = ACCOUNT.BALANCE | ACCOUNT.NAME
+type Key = ACCOUNT.BALANCE | ACCOUNT.NAME | ACCOUNT.LOCK_BALANCE
 export const updateAccountInfo = async (id: string, key: Key, value: string) => {
   const preAccounts = await getAccounts()
   const accounts = preAccounts.map(account => {

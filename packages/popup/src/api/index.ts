@@ -12,7 +12,7 @@ import {
   DELETE_ACCOUNT,
   GET_ACTIVE_ACCOUNT,
   CHANGE_ACTIVE_ACCOUNT,
-  GET_MIN_TRANSACTION_FEE,
+  // GET_MIN_TRANSACTION_FEE,
   SEND_TRANSACTION,
   GET_TRANSACTIONS,
   UPDATE_TX_STATUS,
@@ -23,17 +23,22 @@ import {
   GET_APP_TX,
   APP_SEND,
   CHANGE_NET,
-  GET_CURRENT_NET
+  GET_CURRENT_NET,
+  GET_APP_NAME,
+  GET_ESTIMATE_GAS
 } from '@dipperin/lib/constants'
 import { popupLog as log } from '@dipperin/lib/log'
 import { SendTxParams } from '@dipperin/lib/models/transaction'
 import { AccountNameParams } from '@dipperin/lib/models/account'
+import Root from '../stores/root'
 
 class API {
   private duplex: PopupType
+  store: Root
 
-  constructor(duplex: PopupType) {
+  constructor(duplex: PopupType, root: Root) {
     this.duplex = duplex
+    this.store = root
   }
 
   /** for history store  */
@@ -93,6 +98,11 @@ class API {
     this.duplex.send(CHANGE_NET, remoteNode)
   }
 
+  getAppName = () => {
+    log.debug(`_api getAppName`)
+    return this.duplex.send(GET_APP_NAME, '', true)
+  }
+
   /** for account store  */
 
   getAccounts = () => {
@@ -120,8 +130,12 @@ class API {
   }
 
   /** for transaction store  */
-  getMinTxFee = (tx: SendTxParams) => {
-    return this.duplex.send(GET_MIN_TRANSACTION_FEE, tx, true)
+  // getMinTxFee = (tx: SendTxParams) => {
+  //   return this.duplex.send(GET_MIN_TRANSACTION_FEE, tx, true)
+  // }
+
+  getEstimateGas = (tx: SendTxParams) => {
+    return this.duplex.send(GET_ESTIMATE_GAS, tx, true)
   }
 
   sendTransaction = (tx: SendTxParams) => {
@@ -146,8 +160,8 @@ class API {
   /**
    * send tx for app
    */
-  sendTxForApp = (txFee: string) => {
-    return this.duplex.send(APP_SEND, txFee, true)
+  sendTxForApp = (tx: SendTxParams) => {
+    return this.duplex.send(APP_SEND, tx, true)
   }
 
   /** EventListener */

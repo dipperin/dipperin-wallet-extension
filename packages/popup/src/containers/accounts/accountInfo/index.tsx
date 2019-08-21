@@ -6,6 +6,8 @@ import Account from '@/stores/account'
 import Label from '@/stores/label'
 import Tooltip from '@/components/tooltip'
 import { genAvatar } from '@/utils'
+// image
+import WhiteLock from '@/images/whiteLock.png'
 
 interface AccountInfoProps {
   account?: Account
@@ -41,11 +43,17 @@ class AccountInfo extends React.Component<AccountInfoProps> {
     this.accountName = e.target.value
   }
 
+  @action
+  updateName = (name: string) => {
+    this.accountName = name
+  }
+
   constructor(props) {
     super(props)
     // this.props.account!.updateAccountStore()
     autorun(() => {
-      this.accountName = this.props.account!.activeAccount.name
+      // this.accountName = this.props.account!.activeAccount.name
+      this.updateName(this.props.account!.activeAccount.name)
     })
   }
 
@@ -80,7 +88,7 @@ class AccountInfo extends React.Component<AccountInfoProps> {
   changeAccountName = () => {
     if (!this.verifyAccountName) {
       // TODO: use tooltip
-      alert(this.props.label!.label.extension.account.accountName)
+      alert(this.props.label!.label.account.accountName)
       this.accountName = this.props.account!.activeAccount.name
       return
     }
@@ -110,9 +118,7 @@ class AccountInfo extends React.Component<AccountInfoProps> {
     input.select()
     if (document.execCommand('copy')) {
       document.execCommand('copy')
-      // TODO: add alert to tell user Replicating Success
       this.showTooltip()
-      // alert('Replicating Success!')
     }
     document.body.removeChild(input)
   }
@@ -147,9 +153,17 @@ class AccountInfo extends React.Component<AccountInfoProps> {
     }, 2000)
   }
 
+  formatNumber = (num: number, w: number) => {
+    const m = 10 ** w
+    const b = Math.floor(num * m) / m
+    return b.toLocaleString('zh-Hans', {
+      maximumFractionDigits: w
+    })
+  }
+
   render() {
     const activeAccount = this.props.account!.activeAccount
-    const copyTip = this.props.label!.label.extension.account.copySuccess
+    const copyTip = this.props.label!.label.account.copySuccess
     return (
       <div className="accounts-content">
         <div className="accounts-id-box">
@@ -186,12 +200,22 @@ class AccountInfo extends React.Component<AccountInfoProps> {
           <span
             className="accounts-balance"
             title={`${Number(activeAccount.balance).toLocaleString('zh-Hans', {
-              maximumFractionDigits: 9
+              maximumFractionDigits: 18
             })} DIP`}
-          >{`${Number(activeAccount.balance).toLocaleString('zh-Hans', {
-            maximumFractionDigits: 4
-          })} DIP`}</span>
+          >{`${this.formatNumber(Number(activeAccount.balance), 6)} DIP`}</span>
         </div>
+
+        {activeAccount.lockBalance && activeAccount.lockBalance !== '0' && (
+          <div className="accounts-lockbalance-box">
+            <img src={WhiteLock} />
+            <span
+              className="accounts-lockbalance"
+              title={`${Number(activeAccount.lockBalance).toLocaleString('zh-Hans', {
+                maximumFractionDigits: 18
+              })} DIP`}
+            >{` ${this.formatNumber(Number(activeAccount.lockBalance), 6)} DIP`}</span>
+          </div>
+        )}
 
         <div className="accounts-address-box">
           <span className="accounts-name-nothing" />

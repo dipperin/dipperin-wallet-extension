@@ -1,6 +1,6 @@
 import { Host } from '@dipperin/lib/duplex'
 import { requestHandle } from '@dipperin/lib/utils'
-import Consola from 'consola'
+// import Consola from 'consola'
 import HandleService from './handleService'
 import BackgroundAPI from './api/background'
 import {
@@ -18,7 +18,7 @@ import {
   GET_MNEMONIC,
   CHANGE_ACTIVE_ACCOUNT,
   GET_ACTIVE_ACCOUNT,
-  GET_MIN_TRANSACTION_FEE,
+  // GET_MIN_TRANSACTION_FEE,
   SEND_TRANSACTION,
   GET_TRANSACTIONS,
   UPDATE_ACCOUNT_NAME,
@@ -34,15 +34,20 @@ import {
   GET_APP_TX,
   SET_PASSWORD,
   CHANGE_NET,
-  GET_CURRENT_NET
+  GET_CURRENT_NET,
+  GET_APP_NAME,
+  UPDATE_ACCOUNT_LOCK_BALANCE,
+  GET_ESTIMATE_GAS
 } from '@dipperin/lib/constants'
-import { AccountBalanceParams } from '@dipperin/lib/models/account'
+import { AccountBalanceParams, AccountLockBalanceParams } from '@dipperin/lib/models/account'
 import { TxStatusParams } from '@dipperin/lib/models/transaction'
 import { addWhiteList, isApproved } from './storage'
 
-const log = Consola.withTag('background-script').create({
-  level: 5
-})
+import { backgroundLog as log } from '@dipperin/lib/log'
+
+// const log = Consola.withTag('background-script').create({
+//   level: 5
+// })
 
 class BackgroundScript {
   appName?: string
@@ -59,7 +64,7 @@ class BackgroundScript {
   }
 
   run() {
-    log.debug('background script init')
+    log.info('background script init')
     this.bindPopupDuplex()
     this.bindTabDuplex()
     this.bindServiceEvent()
@@ -67,12 +72,12 @@ class BackgroundScript {
 
   private bindPopupDuplex() {
     this.duplex.on('popup:connect', () => {
-      log.debug('popup connect')
+      log.info('popup connect')
       this.service.popupConnect()
     })
 
     this.duplex.on('popup:disconnect', () => {
-      log.debug('popup disconnect')
+      log.info('popup disconnect')
       this.service.popupDisconnect()
     })
 
@@ -89,13 +94,15 @@ class BackgroundScript {
     this.duplex.on(CHANGE_ACTIVE_ACCOUNT, this.service.changeActiveAccount)
     this.duplex.on(UPDATE_ACCOUNT_NAME, this.service.updateAccountName)
     this.duplex.on(DELETE_ACCOUNT, this.service.deleteAccount)
-    this.duplex.on(GET_MIN_TRANSACTION_FEE, this.service.getMinTxFee)
+    // this.duplex.on(GET_MIN_TRANSACTION_FEE, this.service.getMinTxFee)
+    this.duplex.on(GET_ESTIMATE_GAS, this.service.getEstimateGas)
     this.duplex.on(SEND_TRANSACTION, this.service.sendTx)
     this.duplex.on(GET_TRANSACTIONS, this.service.getTxs)
     this.duplex.on(RESET_WALLET, this.service.resetWallet)
     this.duplex.on(APP_SEND, this.service.appSendTx)
     this.duplex.on(CHANGE_NET, this.service.changeNet)
     this.duplex.on(GET_CURRENT_NET, this.service.getCurrentNet)
+    this.duplex.on(GET_APP_NAME, this.service.getAppName)
     /**
      * for app event
      */
@@ -153,6 +160,10 @@ class BackgroundScript {
       this.api.updateAccountBalance(params)
     })
 
+    this.service.on(UPDATE_ACCOUNT_LOCK_BALANCE, (param: AccountLockBalanceParams) => {
+      this.api.updateAccountLockBalance(param)
+    })
+
     // update tx status
     this.service.on(UPDATE_TX_STATUS, (params: TxStatusParams) => {
       this.api.updateTxStatus(params)
@@ -196,6 +207,7 @@ class BackgroundScript {
    */
   private async approve(appName: string, resolve, uuid: string) {
     this.appName = appName
+    this.service.appName = appName
     const res: ApproveRes = {
       popupExist: !!this.popupId,
       isHaveWallet: this.service.isHaveWallet,
@@ -235,6 +247,7 @@ class BackgroundScript {
     this.api.approveSuccess(params)
     console.log(params)
     this.appName = undefined
+    this.service.appName = undefined
     // close popup by id
     if (this.popupId) {
       chrome.windows.remove(this.popupId)
@@ -354,6 +367,11 @@ class BackgroundScript {
       }
       chrome.windows.onRemoved.addListener(this.windowRemoveListener)
     })
+  }
+
+  getAppName = (): string => {
+    console.log('appName: ' + this.appName)
+    return this.appName
   }
 }
 

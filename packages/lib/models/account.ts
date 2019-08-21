@@ -6,6 +6,7 @@ class Account {
   private _id: string
   private _path: string
   private _balance: string
+  private _lockBalance: string | undefined
   private _nonce: string = DEFAULT_NONCE
 
   constructor(account: AccountObj) {
@@ -14,6 +15,7 @@ class Account {
     this._id = account.id
     this._path = account.path
     this._balance = account.balance
+    this._lockBalance = account.lockBalance
   }
 
   set name(name: string) {
@@ -46,6 +48,16 @@ class Account {
     }
   }
 
+  get lockBalance(): string | undefined {
+    return this._lockBalance
+  }
+
+  set lockBalance(balance: string | undefined) {
+    if (balance !== '') {
+      this._lockBalance = balance
+    }
+  }
+
   get balance(): string {
     return this._balance
   }
@@ -67,7 +79,8 @@ class Account {
       address: this._address,
       id: this._id,
       path: this._path,
-      balance: this._balance
+      balance: this._balance,
+      lockBalance: this._lockBalance
     }
   }
 }
@@ -80,11 +93,17 @@ export interface AccountObj {
   id: string
   path: string
   balance: string
+  lockBalance?: string
 }
 
 export interface AccountBalanceParams {
   id: string
   balance: string
+}
+
+export interface AccountLockBalanceParams {
+  id: string
+  lockBalance: string
 }
 
 export interface AccountNameParams {

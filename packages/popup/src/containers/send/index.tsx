@@ -1,5 +1,5 @@
 import React from 'react'
-import { action, observable, autorun, computed } from 'mobx'
+import { action, observable, computed } from 'mobx'
 import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
 
@@ -7,6 +7,7 @@ import Account from '@/stores/account'
 import History from '@/stores/history'
 import Transaction from '@/stores/transaction'
 import Label from '@/stores/label'
+import Layout from '@/stores/layout'
 
 import NavHeader from '@/components/navHeader'
 import Modal from '@/components/modal'
@@ -15,9 +16,10 @@ import { verifyNumber } from '@/utils'
 
 import './sendStyle.css'
 
-import { APP_STATE, ORIGIN_FEE } from '@dipperin/lib/constants'
+import { APP_STATE } from '@dipperin/lib/constants'
 import Button from '@/components/button'
 import { popupLog as log } from '@dipperin/lib/log'
+import { Utils } from '@dipperin/dipperin.js'
 
 const { ACCOUNT_PAGE, SETTING_PAGE } = APP_STATE
 
@@ -26,9 +28,10 @@ interface SendProps {
   history?: History
   transaction?: Transaction
   label?: Label
+  layout?: Layout
 }
 
-@inject('account', 'history', 'transaction', 'label')
+@inject('account', 'history', 'transaction', 'label', 'layout')
 @observer
 class Send extends React.Component<SendProps> {
   @observable
@@ -38,10 +41,10 @@ class Send extends React.Component<SendProps> {
   sendAmount: string = ''
 
   @observable
-  minFee: string = String(ORIGIN_FEE)
+  gas: string = '21000'
 
   @observable
-  sendPoundage: string = String(ORIGIN_FEE)
+  gasPrice: string = '1'
 
   @observable
   modalHandler = {
@@ -49,29 +52,27 @@ class Send extends React.Component<SendProps> {
     show: false
   }
 
-  constructor(props) {
-    super(props)
-    autorun(() => {
-      this.getMinFee()
-    })
+  @computed
+  get fee() {
+    return Number(this.gasPrice) * Number(this.gas)
   }
 
   @computed
-  get verifyPoundage() {
-    return Number(this.sendPoundage) >= Number(this.minFee)
+  get verifyGasPrince() {
+    return Number(this.gasPrice) >= 1
   }
 
   @action
-  updatePoundage = () => {
-    if (!this.verifyPoundage) {
-      this.sendPoundage = this.minFee
+  updateGasPrice = () => {
+    if (!this.verifyGasPrince) {
+      this.gasPrice = '1'
     }
   }
 
   @action
-  setMinFee = fee => {
-    if (Number(fee) > ORIGIN_FEE) {
-      this.minFee = fee
+  setGas = (newGas: string | undefined) => {
+    if (newGas) {
+      this.gas = newGas
     }
   }
 
@@ -88,25 +89,16 @@ class Send extends React.Component<SendProps> {
     }, 2000)
   }
 
-  // verifyNumber = (input: string) => {
-  //   const re = /^[0-9.]+$/
-  //   return re.test(input)
-  // }
-
-  getMinFee = () => {
+  getEstimateGas = async () => {
     if (this.sendToAddress && this.sendAmount) {
       const tx = this.genTx(this.sendToAddress, this.sendAmount)
-      // console.log('getMinFee', tx)
-      this.props
-        .transaction!.getMinTransactionFee(tx)!
-        .then((res: string) => {
-          log.debug('Send-getMinFee-res:' + res)
-          this.setMinFee(res)
-          this.updatePoundage()
-        })!
-        .catch(e => {
-          log.error('send-getMinFee-error:' + e)
-        })
+      try {
+        const res = await this.props.transaction!.getEstimateGas(tx)
+        log.debug('Send-getEstimateGas-res:', res)
+        this.setGas(res as string)
+      } catch (e) {
+        log.error('send-getEstimateGas-error:' + e)
+      }
     }
   }
 
@@ -119,8 +111,10 @@ class Send extends React.Component<SendProps> {
   }
 
   @action
-  handleAddress = e => {
-    this.sendToAddress = e.target.value
+  handleAddress = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (/^0?(0x)?(0x[0-9a-fA-F]{0,44})?$/.test(e.target.value)) {
+      this.sendToAddress = e.target.value
+    }
   }
 
   @action
@@ -132,28 +126,29 @@ class Send extends React.Component<SendProps> {
   }
 
   @action
-  handlePoundage = e => {
-    if (!verifyNumber(e.target.value)) {
-      return
+  handleGasPrice = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (/^([1-9][0-9]*)?$/.test(e.target.value)) {
+      this.gasPrice = e.target.value
     }
-    // console.log('handlePoundage',this.verifyNumber(e.target.value))
-    this.sendPoundage = e.target.value
   }
 
-  verifyBalance = () => {
-    const accountBalance = this.props.account!.activeAccount.balance
-    return Number(accountBalance) >= Number(this.sendPoundage) + Number(this.sendAmount)
-  }
+  // @action
+  // handleBlurGasPrice = () => {
+  //   if (this.gasPrice === '') {
+  //     this.gasPrice = '1'
+  //   }
+  // }
 
-  genTx = (address: string, amount: string, fee?: string) => {
+  genTx = (address: string, amount: string, gasPrice?: string) => {
     const baseTx = {
       address,
       amount,
-      memo: 'from dipperin wallet extension'
+      memo: ''
     }
-    if (fee) {
+    if (gasPrice) {
       return {
-        fee,
+        gasPrice,
+        gas: this.gas,
         ...baseTx
       }
     } else {
@@ -161,45 +156,55 @@ class Send extends React.Component<SendProps> {
     }
   }
 
-  verifyTx = () => {
-    if (!this.sendToAddress) {
-      return { success: false, info: this.props.label!.label.extension.send.errorAddress }
-    } else if (!this.sendAmount) {
-      return { success: false, info: this.props.label!.label.extension.send.errorAmount }
-    } else if (!this.sendPoundage) {
-      return { success: false, info: this.props.label!.label.extension.send.errorPoundage }
-    } else if (!this.verifyBalance()) {
-      return { success: false, info: this.props.label!.label.extension.send.errorBalance }
-    } else {
-      return { success: true }
-    }
-  }
-
-  translateErrorInfo = (error: string) => {
+  translateErrorInfo = (error: string): string => {
+    const send = this.props.label!.label.send
     const frequent = [
       'ResponseError: Returned error: "this transaction already in tx pool"',
-      'ResponseError: Returned error: "new fee is too low to replace old one"',
       'ResponseError: Returned error: "tx nonce is invalid"'
     ]
     if (frequent.includes(error)) {
-      return this.props.label!.label.extension.send.errorFrequent
+      return send.errorFrequent
     }
-    return error
+    if (error === 'ResponseError: Returned error: "new fee is too low to replace old one"') {
+      return send.lowFee
+    }
+    return send.errorFrequent
   }
 
   sendTransfer = async () => {
-    const res = this.verifyTx()
+    const tx = this.genTx(this.sendToAddress, this.sendAmount, this.gasPrice)
+    this.props.layout!.handleOpenLoading()
+    const res = this.props.transaction!.verifyTx(tx)
     if (res.success) {
-      const tx = this.genTx(this.sendToAddress, this.sendAmount, this.sendPoundage)
+      log.debug('sendTransfer', 'verifyTx success')
       try {
         await this.props.transaction!.sendTransaction(tx)
-        this.showMsg(this.props.label!.label.extension.send.sendSuccess, this.turnToAccounnts)
+        this.props.layout!.handleCloseLoading(() => {
+          this.showMsg(this.props.label!.label.send.sendSuccess, this.turnToAccounnts)
+        })
       } catch (e) {
-        console.log('send-handleTransfer-error:', e)
-        this.showMsg(this.translateErrorInfo(e as string))
+        log.error('send-handleTransfer:', e)
+        this.props.layout!.handleCloseLoading(() => {
+          this.showMsg(this.translateErrorInfo(e as string))
+        })
       }
     } else {
-      this.showMsg(res.info as string)
+      this.props.layout!.handleCloseLoading(() => {
+        this.showMsg(res.info as string)
+      })
+    }
+  }
+
+  @action
+  handleAddGasPrice = () => {
+    this.gasPrice = String(Number(this.gasPrice) + 1)
+    log.debug('gasPrice', this.gasPrice)
+  }
+
+  @action
+  handleSubGasPrice = () => {
+    if (Number(this.gasPrice) > 1) {
+      this.gasPrice = String(Number(this.gasPrice) - 1)
     }
   }
 
@@ -210,34 +215,59 @@ class Send extends React.Component<SendProps> {
     const btnSend = {
       classes: []
     }
+    const label = this.props.label!.label.send
     return (
       <div className="bg-blue">
         <NavHeader />
         <div className="send-content-box">
           <span className="send-close-icon" onClick={this.turnToAccounnts} />
           <div className="send-balance-info">
-            <span className="send-balance-title">{this.props.label!.label.extension.send.accountBalance}:</span>
+            <span className="send-balance-title">{label.accountBalance}:</span>
             <span className="send-balance-amount">{` ${activeAccount.balance} DIP`}</span>
           </div>
-          <p className="g-input-msg-v1">{this.props.label!.label.extension.send.receinerAddress}</p>
-          <input className="g-input-v1" type="text" value={this.sendToAddress} onChange={this.handleAddress} />
-          <p className="g-input-msg-v1 send-msg-v1">{this.props.label!.label.extension.send.amount}</p>
-          <input className="g-input-v1" type="number" value={this.sendAmount} onChange={this.handleAmount} />
-          <p className="g-input-msg-v1 send-msg-v2">
-            {this.props.label!.label.extension.send.poundage}{' '}
-            <span className="send-reminder">{this.props.label!.label.extension.send.moreThan} 0.00001</span>
-          </p>
+          <p className="g-input-msg-v1">{label.receinerAddress}</p>
+          <input
+            className="g-input-v1"
+            type="text"
+            value={this.sendToAddress}
+            onChange={this.handleAddress}
+            onBlur={this.getEstimateGas}
+          />
+          <p className="g-input-msg-v1 send-msg-v1">{label.amount}</p>
           <input
             className="g-input-v1"
             type="number"
-            value={this.sendPoundage}
-            onChange={this.handlePoundage}
-            onBlur={this.updatePoundage}
+            value={this.sendAmount}
+            onChange={this.handleAmount}
+            onBlur={this.getEstimateGas}
           />
+          <p className="g-input-msg-v1 send-msg-v2">
+            {label.poundage}{' '}
+            {/* <span className="send-reminder">
+              {label.currentPoundageIs} {Utils.fromUnit(String(this.fee))}
+            </span> */}
+          </p>
+          <div className="send-poundage-box">
+            <input
+              className="g-input-v1 send-poundage-input"
+              type="text"
+              value={`${Utils.fromUnit(String(this.fee))} DIP`}
+              // onChange={this.handleGasPrice}
+              // onBlur={this.handleBlurGasPrice}
+              disabled={true}
+            />
+            <div className="send-poundage-changer">
+              <span className={`send-poundage-add`} onClick={this.handleAddGasPrice} />
+              <span
+                className={`send-poundage-sub ${this.gasPrice === '1' ? 'send-poundage-disabled' : ''}`}
+                onClick={this.handleSubGasPrice}
+              />
+            </div>
+          </div>
         </div>
         <div className="send-button-box">
           <Button params={btnSend} onClick={this.handleTransfer}>
-            {this.props.label!.label.extension.send.send} DIP
+            {label.send} DIP
           </Button>
         </div>
         <Modal showModal={this.modalHandler.show} size={250}>

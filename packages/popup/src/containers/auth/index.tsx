@@ -1,4 +1,5 @@
 import React from 'react'
+import { observable } from 'mobx'
 import { inject, observer } from 'mobx-react'
 
 import History from '@/stores/history'
@@ -17,10 +18,23 @@ interface AuthProps {
 @inject('wallet', 'history', 'label')
 @observer
 class Auth extends React.Component<AuthProps> {
+  @observable
+  appName: string = ''
   constructor(props) {
     super(props)
     this.adjustWindow()
     this.autoCloseWindow()
+    this.getAppName()
+  }
+
+  getAppName = async () => {
+    this.props
+      .wallet!.getAppName()!
+      .then(data => {
+        // console.log('appname', data)
+        this.appName = data as string
+      })
+      .catch(e => console.log('getAppName error', e))
   }
 
   autoCloseWindow = () => {
@@ -69,15 +83,15 @@ class Auth extends React.Component<AuthProps> {
     return (
       <div className="bg-blue">
         <div className="dipperin-logo auth-logo" />
-        <h1 className="auth-title">Rich Bet</h1>
+        <h1 className="auth-title">{this.appName}</h1>
         {/* // TODO: fix to a var */}
-        <p className="g-p-info auth-info">{this.props.label!.label.extension.send.authTip}</p>
+        <p className="g-p-info auth-info">{this.props.label!.label.send.authTip}</p>
         <div className="g-2btn-area auth-btn">
           <Button params={btnCancel} onClick={this.toClose}>
-            {this.props.label!.label.extension.wallet.cancel}
+            {this.props.label!.label.wallet.cancel}
           </Button>
           <Button params={btnConfirm} onClick={this.agreeAuth}>
-            {this.props.label!.label.extension.wallet.confirm}
+            {this.props.label!.label.wallet.confirm}
           </Button>
         </div>
       </div>

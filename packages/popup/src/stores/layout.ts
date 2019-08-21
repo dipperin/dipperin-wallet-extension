@@ -46,7 +46,7 @@ class Layout {
     this.setLoadingTime(new Date().getTime())
     setTimeout(() => {
       this.closeLoading()
-    }, 4000)
+    }, 8000)
   }
 
   // toggleLoading = (cb?: () => void) => {

@@ -61,14 +61,14 @@ class CreateAccount extends React.Component<CreateAccountProps> {
 
   createAccount = () => {
     if (!this.verifyAccountName) {
-      this.showTip(this.props.label!.label.extension.account.accountNameLimit)
+      this.showTip(this.props.label!.label.account.accountNameLimit)
       // alert('The account name is limited to 10 characters or 20 letter.')
       return
     }
     this.props
       .account!.addAccount(this.accountName)!
       .then(res => {
-        log.success('createAccount-handleCreateAccount')
+        log.debug('createAccount-handleCreateAccount')
         // console.log('createAccount-handleCreateAccount-res:', res)
       })
       .catch(e => {
@@ -119,7 +119,7 @@ class CreateAccount extends React.Component<CreateAccountProps> {
         <div className="ca-close-box">
           <span className="ca-close-icon" onClick={this.handleCancel} />
         </div>
-        <div className="ca-label">{this.props.label!.label.extension.account.accountName}</div>
+        <div className="ca-label">{this.props.label!.label.account.accountName}</div>
         <div className="ca-input-box">
           <Tooltip position="bottom" message={this.tooltipMsg} displayTooltip={this.displayTooltip} size={310}>
             <input
@@ -133,10 +133,10 @@ class CreateAccount extends React.Component<CreateAccountProps> {
         </div>
         <div className="g-2btn-area ca-btn-box">
           <Button params={btnCancel} onClick={this.handleCancel}>
-            {this.props.label!.label.extension.account.cancel}
+            {this.props.label!.label.account.cancel}
           </Button>
           <Button params={btnConfirm} disabled={!this.accountName} onClick={this.handleCreateAccount}>
-            {this.props.label!.label.extension.account.confirm}
+            {this.props.label!.label.account.confirm}
           </Button>
         </div>
       </div>

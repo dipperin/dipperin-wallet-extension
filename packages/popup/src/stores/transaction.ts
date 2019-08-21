@@ -1,12 +1,9 @@
 import API from '@/api'
 import { action, observable } from 'mobx'
 import { TxStatusParams, TransactionObj, SendTxParams } from '@dipperin/lib/models/transaction'
-import { popupLog as log } from '@dipperin/lib/log'
-// import Consola from 'consola'
+// import { popupLog as log } from '@dipperin/lib/log'
+import { Utils } from '@dipperin/dipperin.js'
 
-// const log = Consola.withTag('popup-transactionStore').create({
-//   level: 5
-// })
 class Transaction {
   private _api: API
 
@@ -29,8 +26,16 @@ class Transaction {
     })
   }
 
-  getMinTransactionFee = (tx: SendTxParams) => {
-    return this._api.getMinTxFee(tx)
+  // getMinTransactionFee = (tx: SendTxParams) => {
+  //   return this._api.getMinTxFee(tx)
+  // }
+
+  getEstimateGas = (tx: SendTxParams) => {
+    return this._api.getEstimateGas(tx)
+  }
+
+  getTransactions = (address: string) => {
+    return this._api.getTransaction(address)
   }
 
   sendTransaction = (tx: SendTxParams) => {
@@ -41,56 +46,28 @@ class Transaction {
     return this._api.getAppTx() as Promise<AppTx>
   }
 
-  sendTxForApp = (txFee: string) => {
-    return this._api.sendTxForApp(txFee)
+  sendTxForApp = (tx: SendTxParams) => {
+    return this._api.sendTxForApp(tx)
+  }
+
+  verifyBalance = (tx: SendTxParams) => {
+    const accountBalance = this._api.store.account.activeAccount.balance
+    const fee = tx.gas && tx.gasPrice ? Number(tx.gasPrice) * Number(tx.gas) : 0
+    return Number(accountBalance) >= Number(Utils.fromUnit(String(fee))) + Number(tx.amount)
   }
 
   verifyTx = (txParam: SendTxParams) => {
     // TODO: add info to constant
+    const label = this._api.store.label.label
     if (!txParam.address) {
-      return { success: false, info: "You have to input receiner's address!" }
+      return { success: false, info: label.send.errorAddress }
     } else if (!txParam.amount) {
-      return { success: false, info: 'You have to input the amount!' }
-    } else if (!txParam.memo) {
-      return { success: false, info: 'You have to input the poundage!' }
+      return { success: false, info: label.send.errorAmount }
+    } else if (!this.verifyBalance(txParam)) {
+      return { success: false, info: label.send.errorBalance }
     } else {
       return { success: true }
     }
-  }
-  sendAppTx = async (txParam: SendTxParams) => {
-    const res = this.verifyTx(txParam)
-    const response = {
-      success: false,
-      info: ''
-    }
-    if (res.success) {
-      try {
-        await this.sendTxForApp(txParam.fee as string)
-        log.success('Send App Transaction Success!')
-        response.success = true
-        response.info = 'The transaction has been sent!'
-      } catch (err) {
-        response.info = 'The transaction has been sent!'
-        log.error('Send App Transaction Error:' + err)
-        // TODO:
-        // response.info = this.translateErrorInfo(err as string)
-        response.info = 'Your action is too frequent, please try later.'
-      }
-    } else {
-      response.info = res.info as string
-    }
-    return response
-  }
-
-  translateErrorInfo = (error: string): string => {
-    const frequent = [
-      'ResponseError: Returned error: "this transaction already in tx pool"',
-      'ResponseError: Returned error: "new fee is too low to replace old one"'
-    ]
-    if (frequent.includes(error)) {
-      return 'Your action is too frequent, please try later.'
-    }
-    return error
   }
 }
 

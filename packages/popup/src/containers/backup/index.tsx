@@ -86,7 +86,7 @@ class Backup extends React.Component<Props> {
           <p className="g-p-info">
             {/* Please copy down the mnemonic for your new account below. You will have to confirm the mnemonic on the next
             screen */}
-            {this.props.label!.label.extension.wallet.backupTips}
+            {this.props.label!.label.wallet.backupTips}
           </p>
 
           <textarea className="g-text-mnemonic backup-mnemonic" value={this.mnemonic} readOnly={true} />
@@ -94,10 +94,10 @@ class Backup extends React.Component<Props> {
 
         <div className="g-2btn-area">
           <Button params={btnCancel} onClick={this.toSetPassword}>
-            {this.props.label!.label.extension.wallet.cancel}
+            {this.props.label!.label.wallet.cancel}
           </Button>
           <Button params={btnConfirm} onClick={this.toBackupConfirm}>
-            {this.props.label!.label.extension.wallet.confirm}
+            {this.props.label!.label.wallet.confirm}
           </Button>
         </div>
       </div>

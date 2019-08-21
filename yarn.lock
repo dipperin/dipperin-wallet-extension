@@ -152,13 +152,15 @@
   dependencies:
     exec-sh "^0.3.2"
     minimist "^1.2.0"
-"@dipperin/dipperin.js@0.4.38":
-  version "0.4.38"
-  resolved "https://registry.yarnpkg.com/@dipperin/dipperin.js/-/dipperin.js-0.4.38.tgz#6ab1238073d9e3721414434c3e0c6e74f5f75291"
-  integrity sha512-4bkA1MPQ1SPUVmbXPRPCyzphnjHfuR4WdNZ3TsdL5W4wp+oiTGWBJyd5J+7ra7I+NMApY9j+mRc1GpN0B5K++Q==
+
+"@dipperin/dipperin.js@0.4.45":
+  version "0.4.45"
+  resolved "https://registry.yarnpkg.com/@dipperin/dipperin.js/-/dipperin.js-0.4.45.tgz#bd0d96d17fabce1f0548af1e91347ef3c767f001"
+  integrity sha512-E+1kH2CM8lxEw1bqbV5TLILBslCFo/yW3uD9gNwuoPbWQSGQizaj2YCO2GUSKc4Pa/Z2Mo+Q5PBPd32gBBJAsw==
   dependencies:
     axios "^0.18.0"
     bignumber.js "^7.2.1"
+    binary-parser "^1.4.0"
     crypto-js "^3.1.9-1"
     eventemitter3 "^3.1.0"
     isomorphic-ws "^4.0.1"
@@ -2554,6 +2556,11 @@ binary-extensions@^1.0.0:
   version "1.13.0"
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-1.13.0.tgz#9523e001306a32444b907423f1de2164222f6ab1"
   integrity sha512-EgmjVLMn22z7eGGv3kcnHwSnJXmFHjISTY9E/S5lIcTD3Oxw05QTcBLNkJFzcb3cNueUdF/IN4U+d78V0zO8Hw==
+
+binary-parser@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/binary-parser/-/binary-parser-1.4.0.tgz#5f32d9b28f2027968dc660b680699dc030a6ea92"
+  integrity sha512-z4TOFQFy5YzhEy50mM+WV6BRu3xo0Vpe5qEtVwnUZkhibuNrPKkBXTpzSs2xcSW6TMVeXas77fEsEVV+lj4/iw==
 
 bindings@^1.2.1:
   version "1.5.0"

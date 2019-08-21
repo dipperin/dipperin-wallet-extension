@@ -1,7 +1,7 @@
 import mockDuplex from './duplex'
-import API from '@/api'
+// import API from '@/api'
 
-export const MockApi = () => new API(mockDuplex)
+// export const MockApi = () => new API(mockDuplex)
 
 const api = {
   // duplex: new Popup(),
