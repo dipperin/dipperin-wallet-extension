@@ -1,8 +1,8 @@
 {
     "manifest_version": 2,
-    "name": "Dipperin",
-    "version": "0.1.1",
-    "version_name": "0.1.1",
+    "name": "Dipperin-chrome",
+    "version": "1.1.0",
+    "version_name": "1.1.0",
     "permissions": [
         "storage",
         "unlimitedStorage",

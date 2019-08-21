@@ -51,6 +51,10 @@ class Wallet {
   getCurrentNet = () => {
     return this._api.getCurrentNet()
   }
+
+  getAppName = () => {
+    return this._api.getAppName()
+  }
 }
 
 export default Wallet

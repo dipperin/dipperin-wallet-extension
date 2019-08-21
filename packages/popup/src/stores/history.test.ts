@@ -1,8 +1,8 @@
-import { MockApi } from '@/tests/mock/api'
+import { mockApi } from '@/tests/mock/api'
 import History from './history'
 
 describe('historyStore', () => {
-  const mockApi = MockApi()
+  // const mockApi = MockApi()
   let history: History
   mockApi.getCurrentPage = jest.fn().mockResolvedValue(1)
   it('constructor', () => {

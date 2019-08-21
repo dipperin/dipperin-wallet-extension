@@ -5,9 +5,10 @@ import {
   UPDATE_TX_STATUS,
   APPROVE_SUCCESS,
   CHANGE_ACTIVE_ACCOUNT,
-  SEND_SUCCESS
+  SEND_SUCCESS,
+  UPDATE_ACCOUNT_LOCK_BALANCE
 } from '@dipperin/lib/constants'
-import { AccountBalanceParams } from '@dipperin/lib/models/account'
+import { AccountBalanceParams, AccountLockBalanceParams } from '@dipperin/lib/models/account'
 import { TxStatusParams } from '@dipperin/lib/models/transaction'
 import { AppproveSuccessRes, SendSuccessParams } from '../backgroundScript'
 class BackgroundAPI {
@@ -25,6 +26,10 @@ class BackgroundAPI {
 
   updateAccountBalance(params: AccountBalanceParams) {
     this.duplex.send('popup', UPDATE_ACCOUNT_BALANCE, params, false)
+  }
+
+  updateAccountLockBalance(params: AccountLockBalanceParams) {
+    this.duplex.send('popup', UPDATE_ACCOUNT_LOCK_BALANCE, params, false)
   }
 
   updateTxStatus(params: TxStatusParams) {

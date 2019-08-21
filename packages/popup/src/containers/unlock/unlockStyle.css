@@ -15,3 +15,101 @@
   height: 208px;
   padding: 16px 25px;
 }
+
+.unlock-modal {
+  position: absolute;
+  top: 112px;
+  left: 47px;
+  width: 266px;
+  height: 266px;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.unlock-close-icon {
+  position: absolute;
+  display: block;
+  width: 17px;
+  height: 17px;
+  top: -3px;
+  right: 16px;
+  cursor: pointer;
+}
+
+.unlock-close-icon::after {
+  content: '×';
+  color: #9d9d9d;
+  opacity: 0.8;
+  font-size: 42px;
+}
+
+.unlock-icon-box {
+  position: absolute;
+  top: 15px;
+  left: 98px;
+  width: 70px;
+  height: 70px;
+  background: url(../../images/forgetPsw.png);
+  opacity: 0.65;
+  border-radius: 50%;
+}
+
+.unlock-modal-title {
+  position: absolute;
+  top: 99px;
+  width: 100%;
+  text-align: center;
+  color: #666666;
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.unlock-modal-paragh {
+  position: absolute;
+  top: 115px;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 20px;
+  color: #666666;
+  font-size: 12px;
+  line-height: 24px;
+  text-align: center;
+}
+
+.unlock-modal-btnbox {
+  position: absolute;
+  top: 214px;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.unlock-modal-cancel {
+  border: none;
+  width: 106px;
+  height: 38px;
+  background: rgba(168, 169, 186, 1);
+  border-radius: 19px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.unlock-modal-confirm {
+  border: none;
+  width: 106px;
+  height: 38px;
+  background: linear-gradient(-18deg, rgba(4, 106, 153, 1), rgba(4, 72, 153, 1));
+  border-radius: 19px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.unlock-lock-up {
+  width: 26px;
+  height: 34px;
+  border-radius: 13px;
+  border: 3px solid;
+  border-image: linear-gradient(180deg, rgba(126, 73, 187, 1), rgba(71, 127, 170, 1));
+}

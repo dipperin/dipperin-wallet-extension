@@ -5,13 +5,13 @@ import Dipperin, { AccountObject, Utils } from '@dipperin/dipperin.js'
 
 import { getTxByAddress, insertTx, updateTxStatus } from '../storage'
 import {
-  DEFAULT_TX_FEE,
   DEFAULT_CHAIN_ID,
   DEFAULT_HASH_LOCK,
   TRANSACTION_STATUS_FAIL,
   TRANSACTION_STATUS_SUCCESS,
   UPDATE_TX_STATUS
 } from '@dipperin/lib/constants'
+// import AccountStore from './account'
 
 import TransactionModel, { TransactionObj, SendTxParams, TxStatusParams } from '@dipperin/lib/models/transaction'
 import AccountModel from '@dipperin/lib/models/account'
@@ -104,12 +104,28 @@ class TransactionStore extends EventEmitter {
   }
 
   // address: string, amount: string, memo: string
-  getTransactionFee(activeAccount: AccountModel, tx: SendTxParams): string {
+  // getTransactionFee(activeAccount: AccountModel, tx: SendTxParams): string {
+  //   try {
+  //     const transaction = this.createNewTransaction(activeAccount, tx)
+  //     return transaction.fee
+  //   } catch (err) {
+  //     return DEFAULT_TX_FEE
+  //   }
+  // }
+
+  async getEstimateGas(hdAccount: AccountObject, activeAccount: AccountModel, tx: SendTxParams): Promise<string> {
+    const privateKey = hdAccount.derivePath(activeAccount.path).privateKey
     try {
+      tx.gas = '0'
+      tx.gasPrice = '1'
       const transaction = this.createNewTransaction(activeAccount, tx)
-      return transaction.fee
+      transaction.signTranaction(privateKey, DEFAULT_CHAIN_ID)
+      const res = await this._dipperin.dr.estimateGas(transaction.signedTransactionData)
+      log.debug('getEstimateGas response', res)
+      return String(Number(res).toString())
     } catch (err) {
-      return DEFAULT_TX_FEE
+      log.error('getEstimateGas:', err)
+      return '0'
     }
   }
 
@@ -122,13 +138,11 @@ class TransactionStore extends EventEmitter {
     const privateKey = hdAccount.derivePath(activeAccount.path).privateKey
     try {
       const transaction = this.createNewTransaction(activeAccount, tx, uuid)
-      console.log('confirmTransaction-transaction:', transaction)
+      log.debug('confirmTransaction-transaction:', transaction)
       transaction.signTranaction(privateKey, DEFAULT_CHAIN_ID)
-      log.debug(`confirmTransaction-signedTransaction: ${transaction.signedTransactionData}`)
-      // console.log('confirmTransaction-signedTransaction:', transaction.signedTransactionData)
-      // console.debug(`tx${JSON.stringify(transaction.toJS())}`)
-      // console.dir(transaction.toJS())
+      log.debug(`confirmTransaction-signedTransaction:`, transaction.signedTransactionData)
       const res = await this._dipperin.dr.sendSignedTransaction(transaction.signedTransactionData)
+      log.debug('confirmTransaction response', res)
       if (!isString(res)) {
         const errRes = res
 
@@ -143,6 +157,7 @@ class TransactionStore extends EventEmitter {
         this.appendTransaction(activeAccountAddress, [transaction.toJS()])
         // Plus account nonce
         activeAccount.plusNonce()
+        log.debug('confirmTransaction success')
         return {
           success: true,
           hash: transaction.transactionHash
@@ -180,7 +195,6 @@ class TransactionStore extends EventEmitter {
               tx =>
                 new TransactionModel({
                   extraData: tx.extraData,
-                  fee: tx.fee,
                   from: tx.from,
                   hashLock: tx.hashLock,
                   nonce: tx.nonce,
@@ -189,7 +203,9 @@ class TransactionStore extends EventEmitter {
                   timestamp: tx.timestamp,
                   to: tx.to,
                   transactionHash: tx.transactionHash,
-                  value: tx.value
+                  value: tx.value,
+                  gas: tx.gas,
+                  gasPrice: tx.gasPrice
                 })
             )
           )
@@ -213,14 +229,16 @@ class TransactionStore extends EventEmitter {
     const fromAccount = activeAccount
     const amountUnit = Utils.toUnit(tx.amount)
 
-    const feeUnit = tx.fee ? Utils.toUnit(tx.fee) : DEFAULT_TX_FEE
+    const gasUnit = tx.gas ? tx.gas : '0'
+
+    const gasPriceUnit = tx.gasPrice ? tx.gasPrice : '1'
 
     const accountAmount = Utils.toUnit(fromAccount.balance)
-    if (new BN(accountAmount).lt(new BN(amountUnit).plus(new BN(feeUnit)))) {
+    if (new BN(accountAmount).lt(new BN(amountUnit).plus(new BN(tx.gas).times(new BN(gasPriceUnit))))) {
+      log.error('createNewTransaction', 'no enough balance')
       throw new Errors.NoEnoughBalanceError()
     }
-    log.debug(`createNewTransaction，tx: ${tx}, uuid: ${uuid}`)
-    // console.log(tx, uuid, 'create')
+    log.debug(`createNewTransaction tx:`, tx, `uuid:`, uuid)
     return new TransactionModel({
       nonce: fromAccount.nonce,
       extraData: tx.memo,
@@ -228,7 +246,8 @@ class TransactionStore extends EventEmitter {
       hashLock: DEFAULT_HASH_LOCK,
       from: fromAccount.address,
       to: tx.address,
-      fee: feeUnit,
+      gas: gasUnit,
+      gasPrice: gasPriceUnit,
       uuid
     })
   }

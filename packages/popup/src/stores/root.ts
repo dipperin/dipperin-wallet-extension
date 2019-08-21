@@ -21,7 +21,7 @@ class RootStore {
 
   constructor() {
     this.duplex = new Popup()
-    this.api = new API(this.duplex)
+    this.api = new API(this.duplex, this)
     this.account = new Account(this.api)
     this.history = new History(this.api)
     this.wallet = new Wallet(this.api)
@@ -29,10 +29,6 @@ class RootStore {
     this.layout = new Layout()
     this.label = new Label()
   }
-
-  // getLang = () => {
-
-  // }
 }
 
 export default RootStore

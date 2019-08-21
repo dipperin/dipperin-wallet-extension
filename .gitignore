@@ -45,3 +45,5 @@ build
 .awcache
 
 *.zip
+
+packages/popup/src/coverage
