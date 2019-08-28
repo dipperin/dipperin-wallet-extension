@@ -153,9 +153,12 @@ class AccountInfo extends React.Component<AccountInfoProps> {
     }, 2000)
   }
 
-  formatNumber = (num: number, w: number) => {
+  formatNumber = (num: string, w: number) => {
+    const rex = new RegExp(`[0-9]*\.?[0-9]{0,${w}}`)
+    const fNum = rex.exec(num) ? rex.exec(num) : '0'
+    const nNum = Number(fNum)
     const m = 10 ** w
-    const b = Math.floor(num * m) / m
+    const b = Math.floor(nNum * m) / m
     return b.toLocaleString('zh-Hans', {
       maximumFractionDigits: w
     })
@@ -202,7 +205,7 @@ class AccountInfo extends React.Component<AccountInfoProps> {
             title={`${Number(activeAccount.balance).toLocaleString('zh-Hans', {
               maximumFractionDigits: 18
             })} DIP`}
-          >{`${this.formatNumber(Number(activeAccount.balance), 6)} DIP`}</span>
+          >{`${this.formatNumber(activeAccount.balance, 6)} DIP`}</span>
         </div>
 
         {activeAccount.lockBalance && activeAccount.lockBalance !== '0' && (
@@ -213,7 +216,7 @@ class AccountInfo extends React.Component<AccountInfoProps> {
               title={`${Number(activeAccount.lockBalance).toLocaleString('zh-Hans', {
                 maximumFractionDigits: 18
               })} DIP`}
-            >{` ${this.formatNumber(Number(activeAccount.lockBalance), 6)} DIP`}</span>
+            >{` ${this.formatNumber(activeAccount.lockBalance, 6)} DIP`}</span>
           </div>
         )}
 

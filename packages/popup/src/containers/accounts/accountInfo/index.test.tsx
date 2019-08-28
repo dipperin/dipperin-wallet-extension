@@ -129,6 +129,6 @@ describe('AccountInfo', () => {
   })
 
   it('formatNumber', () => {
-    expect(instance.formatNumber(10.99, 1)).toBe('10.9')
+    expect(instance.formatNumber('10.99', 1)).toBe('10.9')
   })
 })
