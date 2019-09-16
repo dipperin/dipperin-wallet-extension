@@ -52,18 +52,21 @@ class TransactionStore extends EventEmitter {
   }
 
   updateTransactionStatus() {
+    // log.debug(`updating transactions status........`)
     if (!this._transactionsMap) {
       return
     }
     for (const transactions of this._transactionsMap.values()) {
+      // log.debug(`updating transactions status........`, transactions)
       transactions
-        // .filter(tx => !tx.isEnded)
-        .filter(tx => !tx.isSuccess && !tx.isOverLongTime(getNowTimestamp()))
+        .filter(tx => !tx.isEnded)
+        // .filter(tx => !tx.isSuccess && !tx.isOverLongTime(getNowTimestamp()))
         .forEach(tx => {
           const txs = transactions
           this._dipperin.dr
             .getTransaction(tx.transactionHash)
             .then(res => {
+              // log.debug(`updateTransactionStatus`, res)
               if (!res.transaction) {
                 if (tx.isOverTime(getNowTimestamp()) || this.haveSameNonceSuccessTx(tx, txs)) {
                   // if (!res) {
@@ -79,7 +82,7 @@ class TransactionStore extends EventEmitter {
                 this.updateTxStatus(tx, TRANSACTION_STATUS_SUCCESS)
               }
             })
-            .catch(err => console.error(err))
+            .catch(err => log.error(`updateTransactionStatus`, err))
         })
     }
   }
