@@ -136,8 +136,14 @@ export const getTxByAddress = async (address: string): Promise<TransactionObj[]>
  */
 export const insertTx = async (tx: TransactionObj) => {
   const preTxs = await getTx()
+  // remove repeat
+  const ifRepeat = preTxs.some(ptx => ptx.transactionHash === tx.transactionHash)
+  if (ifRepeat) {
+    return
+  }
+
   preTxs.push(tx)
-  setData(TRANSACTIONS, preTxs)
+  await setData(TRANSACTIONS, preTxs)
 }
 
 /**
