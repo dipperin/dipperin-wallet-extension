@@ -1,9 +1,9 @@
 import React, { Fragment } from 'react'
-import { observable, action } from 'mobx'
 import { observer } from 'mobx-react'
 
 interface Props {
   maxPage: number
+  currentPage: number
   handlePage: (newPage: number) => void
 }
 
@@ -62,24 +62,19 @@ const emStyle: React.CSSProperties = {
 
 @observer
 class Pagination extends React.Component<Props> {
-  @observable
-  currentPage = 0
-
-  @action
   handlePageChange(num: number) {
     if (num >= 0 && num < this.props.maxPage) {
-      this.currentPage = num
       this.props.handlePage(num)
     }
   }
 
   getPageStyle = (index: number) => {
-    return this.currentPage === index ? cpageBtnStyle : pageBtnStyle
+    return this.props.currentPage === index ? cpageBtnStyle : pageBtnStyle
   }
 
   render() {
     const { maxPage } = this.props
-    const currentPage = this.currentPage
+    const currentPage = this.props.currentPage
     return (
       <div style={paginationStyle}>
         <span style={turnPageStyle} onClick={this.handlePageChange.bind(this, currentPage - 1)}>
@@ -110,7 +105,7 @@ class Pagination extends React.Component<Props> {
             )}
             {currentPage > 2 && <span style={emStyle}>...</span>}
             {currentPage > 2 && currentPage < maxPage - 3 && (
-              <span style={cpageBtnStyle} onClick={this.handlePageChange.bind(this, this.currentPage)}>
+              <span style={cpageBtnStyle} onClick={this.handlePageChange.bind(this, this.props.currentPage)}>
                 {currentPage + 1}
               </span>
             )}
