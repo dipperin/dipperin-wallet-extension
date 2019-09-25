@@ -1,7 +1,7 @@
 import EventEmitter from 'eventemitter3'
 import BN from 'bignumber.js'
 import { isString } from 'lodash'
-import Dipperin, { AccountObject, Utils } from '@dipperin/dipperin.js'
+import Dipperin, { AccountObject, Utils, helper } from '@dipperin/dipperin.js'
 
 import { getTxByAddress, insertTx, updateTxStatus } from '../storage'
 import {
@@ -52,18 +52,21 @@ class TransactionStore extends EventEmitter {
   }
 
   updateTransactionStatus() {
+    // log.debug(`updating transactions status........`)
     if (!this._transactionsMap) {
       return
     }
     for (const transactions of this._transactionsMap.values()) {
+      // log.debug(`updating transactions status........`, transactions)
       transactions
-        // .filter(tx => !tx.isEnded)
-        .filter(tx => !tx.isSuccess && !tx.isOverLongTime(getNowTimestamp()))
+        .filter(tx => !tx.isEnded)
+        // .filter(tx => !tx.isSuccess && !tx.isOverLongTime(getNowTimestamp()))
         .forEach(tx => {
           const txs = transactions
           this._dipperin.dr
             .getTransaction(tx.transactionHash)
             .then(res => {
+              // log.debug(`updateTransactionStatus`, res)
               if (!res.transaction) {
                 if (tx.isOverTime(getNowTimestamp()) || this.haveSameNonceSuccessTx(tx, txs)) {
                   // if (!res) {
@@ -79,12 +82,12 @@ class TransactionStore extends EventEmitter {
                 this.updateTxStatus(tx, TRANSACTION_STATUS_SUCCESS)
               }
             })
-            .catch(err => console.error(err))
+            .catch(err => log.error(`updateTransactionStatus`, err))
         })
     }
   }
 
-  appendTransaction(address: string, txs: TransactionObj[]) {
+  async appendTransaction(address: string, txs: TransactionObj[]) {
     const mTxs = txs.map(tx => {
       return new TransactionModel({
         ...tx,
@@ -100,7 +103,10 @@ class TransactionStore extends EventEmitter {
 
     this._transactionsMap.set(address, newTxs)
 
-    mTxs.forEach(tx => insertTx(tx.toJS()))
+    for (const tx of mTxs) {
+      await insertTx(tx.toJS())
+    }
+    // await mTxs.forEach(async tx => await insertTx(tx.toJS()))
   }
 
   // address: string, amount: string, memo: string
@@ -214,6 +220,12 @@ class TransactionStore extends EventEmitter {
         }
       })
     )
+    for (const account of accounts) {
+      const txMs = this._transactionsMap.get(account.address)
+      if (!(txMs.length > 0) || Number(txMs[0]!.nonce) > 1) {
+        await this.getHistoryTxRecord(account.address)
+      }
+    }
   }
 
   clear() {
@@ -277,6 +289,89 @@ class TransactionStore extends EventEmitter {
       status
     }
     this.emit(UPDATE_TX_STATUS, params)
+  }
+
+  /**
+   * get tx record from monitor api
+   */
+  getHistoryTxRecord = async (address: string) => {
+    log.debug(`getHistoryTxRecord`, address)
+    const apiUrl = 'http://14.17.65.122:8886/api/v1/account/txs'
+    try {
+      const headers = {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+      const options = {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ address, page: 1, per_page: 100 })
+      }
+      const response = await fetch(apiUrl, options)
+      const rawJson = await response.text()
+      const json = JSON.parse(rawJson)
+      log.debug(`get tx records`, json)
+      if (!json.success) {
+        return
+      }
+      let txs = json.tx_list.map(tx => {
+        return {
+          nonce: String(tx.nonce),
+          value: tx.amount,
+          to: tx.to_address,
+          from: tx.from_address,
+          extraData: tx.extra_data.length > 2 ? helper.Bytes.toString(tx.extra_data) : '',
+          gas: tx.cost.slice(1).replace(/^0*/, ''),
+          gasPrice: tx.gasPrice,
+          timestamp: Number(tx.timestamp.slice(0, 13)),
+          transactionHash: tx.hash,
+          uuid: ''
+        }
+      })
+      const txCount = json.total_count
+      let curCount = json.tx_list.length
+      let curPage = 1
+      // set a max loop number
+      const loopCount = Math.ceil((txCount * 2) / 100)
+      let curLoop = 1
+      while (curCount < txCount && curLoop < loopCount) {
+        curPage += 1
+        const options2 = {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({ address, page: curPage, per_page: 100 })
+        }
+        const res = await fetch(apiUrl, options2)
+        const rJson = await res.text()
+        const jsons = JSON.parse(rJson)
+        log.debug(`get tx records`, jsons)
+        txs = txs.concat(
+          jsons.tx_list.map(tx => {
+            return {
+              nonce: String(tx.nonce),
+              value: tx.amount,
+              to: tx.to_address,
+              from: tx.from_address,
+              extraData: tx.extra_data.length > 2 ? helper.Bytes.toString(tx.extra_data) : '',
+              gas: tx.cost.slice(1).replace(/^0*/, ''),
+              gasPrice: tx.gasPrice,
+              timestamp: Number(tx.timestamp.slice(0, 13)),
+              transactionHash: tx.hash,
+              uuid: ''
+            }
+          })
+        )
+        curCount += jsons.tx_list.length
+        curLoop += 1
+      }
+      txs = txs.filter(tx => {
+        return !this._transactionsMap.get(address).some(txModel => txModel.transactionHash === tx.transactionHash)
+      })
+      // console.log(curPage)
+      await this.appendTransaction(address, txs)
+    } catch (e) {
+      log.error(e)
+    }
   }
 }
 
