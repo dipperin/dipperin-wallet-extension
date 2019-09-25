@@ -242,6 +242,19 @@ class DappSend extends React.Component<DappSendProps> {
     }
   }
 
+  @action
+  handleAddGasPrice = () => {
+    this.gasPrice = String(Number(this.gasPrice) + 1)
+    log.debug('gasPrice', this.gasPrice)
+  }
+
+  @action
+  handleSubGasPrice = () => {
+    if (Number(this.gasPrice) > 1) {
+      this.gasPrice = String(Number(this.gasPrice) - 1)
+    }
+  }
+
   render() {
     const activeAccount = this.props.account!.activeAccount
     const btnCancel = {
@@ -283,19 +296,37 @@ class DappSend extends React.Component<DappSendProps> {
               <input className="g-input-v1" type="text" value={this.formatExtraData()} disabled={true} />
             </div>
           </div>
-          <p className="g-input-msg-v1 send-msg-v2">
+          <p className="g-input-msg-v1 send-msg-v2">{label.poundage} </p>
+          <div className="send-poundage-box">
+            <input
+              className="g-input-v1 send-poundage-input"
+              type="text"
+              value={`${Utils.fromUnit(String(this.fee))} DIP`}
+              // onChange={this.handleGasPrice}
+              // onBlur={this.handleBlurGasPrice}
+              disabled={true}
+            />
+            <div className="send-poundage-changer">
+              <span className={`send-poundage-add`} onClick={this.handleAddGasPrice} />
+              <span
+                className={`send-poundage-sub ${this.gasPrice === '1' ? 'send-poundage-disabled' : ''}`}
+                onClick={this.handleSubGasPrice}
+              />
+            </div>
+          </div>
+          {/* <p className="g-input-msg-v1 send-msg-v2">
             {label.gasPrice}{' '}
             <span className="send-reminder">
               {label.currentPoundageIs} {Utils.fromUnit(String(this.fee))}
             </span>
-          </p>
-          <input
+          </p> */}
+          {/* <input
             className="g-input-v1"
             type="number"
             value={this.gasPrice}
             onChange={this.handleGasPrice}
             onBlur={this.updateGasPrice}
-          />
+          /> */}
         </div>
         <div className="g-2btn-area dapp-button-box">
           <Button params={btnCancel} onClick={this.toQuit}>

@@ -179,7 +179,7 @@ class TxRecord extends React.Component<SettingsProps> {
                 ))}
               </div>
             </div>
-            <Pagination maxPage={this.maxPage} handlePage={this.handlePageChange} />
+            <Pagination maxPage={this.maxPage} currentPage={this.currentPage} handlePage={this.handlePageChange} />
           </Fragment>
         )}
         {this.showDetail && <TxDetail transaction={this.transaction!} onClose={this.handleCloseDetail} />}
