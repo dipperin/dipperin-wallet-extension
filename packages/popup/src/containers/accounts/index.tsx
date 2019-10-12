@@ -1,5 +1,5 @@
 import React from 'react'
-// import { observable, action } from 'mobx'
+import { observable, action } from 'mobx'
 import { observer, inject } from 'mobx-react'
 
 import Account from '@/stores/account'
@@ -27,8 +27,24 @@ interface AccountsProps {
 @inject('account', 'history', 'label')
 @observer
 class Accounts extends React.Component<AccountsProps> {
+  @observable
+  showDetail: boolean = false
+
   constructor(props) {
     super(props)
+  }
+
+  @action
+  setShowDetail = (flag: boolean) => {
+    this.showDetail = flag
+  }
+
+  handleShowDetail = () => {
+    this.setShowDetail(true)
+  }
+
+  handleCloseShowDetail = () => {
+    this.setShowDetail(false)
   }
 
   turnToSend = () => {
@@ -58,6 +74,8 @@ class Accounts extends React.Component<AccountsProps> {
           <img src={txRecordIcon} className="accounts-txRecordIcon" />
           {this.props.label!.label.account.seeTxs}
         </p>
+
+        {this.showDetail && <div>modal</div>}
       </div>
     )
   }
