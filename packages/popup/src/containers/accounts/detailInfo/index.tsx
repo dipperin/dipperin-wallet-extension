@@ -208,7 +208,7 @@ class DetailInfo extends Component<Props> {
               </div>
 
               <div className="accounts-modal-box">
-                <button className="accounts-btn-prv" onClick={this.handleTurnToExportPrivateKey}>
+                <button className="accounts-btn-prv" onClick={this.handleConfirmPsw}>
                   Confirm
                 </button>
               </div>
@@ -222,7 +222,7 @@ class DetailInfo extends Component<Props> {
 
               <div className="accounts-modal-psw-block">
                 <p className="accounts-modal-psw-label">这是你的私钥（点击复制）</p>
-                <input className="accounts-modal-priv-input" />
+                <input className="accounts-modal-priv-show" />
               </div>
 
               <div className="accounts-modal-notes-block">
@@ -232,7 +232,7 @@ class DetailInfo extends Component<Props> {
               </div>
 
               <div className="accounts-modal-box">
-                <button className="accounts-btn-prv" onClick={this.handleTurnToExportPrivateKey}>
+                <button className="accounts-btn-prv" onClick={this.handleConfirmPsw}>
                   Confirm
                 </button>
               </div>

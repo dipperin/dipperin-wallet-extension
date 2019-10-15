@@ -5,6 +5,7 @@
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.1);
+  z-index: 5;
 }
 
 .accounts-modal {
@@ -15,7 +16,7 @@
   height: 322px;
   border-radius: 10px;
   background: #fff;
-  z-index: 2;
+  z-index: 10;
   outline: none;
   user-select: none;
 }
@@ -27,7 +28,7 @@
   color: #9d9d9d;
   font-size: 38px;
   cursor: pointer;
-  z-index: 9;
+  z-index: 11;
 }
 
 .accounts-modal > .accounts-account-name-row {
@@ -127,4 +128,55 @@
   font-size: 16px;
   font-weight: 500;
   box-sizing: border-box;
+}
+
+.accounts-modal > .accounts-modal-psw-block {
+  width: 100%;
+  padding: 0 10px;
+  position: absolute;
+  top: 50px;
+}
+
+.accounts-modal > .accounts-modal-psw-block > .accounts-modal-psw-label {
+  color: #838899;
+  font-size: 10px;
+}
+
+.accounts-modal > .accounts-modal-psw-block > .accounts-modal-psw-input {
+  box-sizing: border-box;
+  width: 240px;
+  height: 34px;
+  background: rgba(242, 243, 247, 0.8);
+  border-radius: 4px;
+  border: none;
+  outline: none;
+  line-height: 34px;
+  padding: 0 10px;
+  font-size: 12px;
+  color: #0a174c;
+}
+
+.accounts-modal > .accounts-modal-psw-block > .accounts-modal-priv-show {
+  box-sizing: border-box;
+  width: 240px;
+  height: 68px;
+  background: rgba(242, 243, 247, 0.8);
+  border-radius: 4px;
+  border: none;
+  outline: none;
+  line-height: 34px;
+  padding: 0 10px;
+  font-size: 12px;
+  color: #0a174c;
+}
+
+.accounts-modal > .accounts-modal-notes-block {
+  position: absolute;
+  bottom: 75px;
+  padding: 0 10px;
+}
+
+.accounts-modal > .accounts-modal-notes-block > .accounts-modal-notes {
+  color: #b6265c;
+  font-size: 8px;
 }
