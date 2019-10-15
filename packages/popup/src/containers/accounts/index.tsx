@@ -8,6 +8,7 @@ import Label from '@/stores/label'
 
 // import AccountInfo from './accountInfo'
 import NavHeader from '@/components/navHeader'
+import DetailInfo from './detailInfo'
 import AccountInfo from './accountInfo'
 import './accountsStyle.css'
 
@@ -65,7 +66,7 @@ class Accounts extends React.Component<AccountsProps> {
       <div className="bg-blue">
         <NavHeader />
 
-        {activeAccount && <AccountInfo />}
+        {activeAccount && <AccountInfo showDetail={this.handleShowDetail} />}
 
         <Button params={btnSend} onClick={this.turnToSend}>
           {this.props.label!.label.account.send}
@@ -75,7 +76,7 @@ class Accounts extends React.Component<AccountsProps> {
           {this.props.label!.label.account.seeTxs}
         </p>
 
-        {this.showDetail && <div>modal</div>}
+        {this.showDetail && <DetailInfo account={this.props.account as any} onClose={this.handleCloseShowDetail} />}
       </div>
     )
   }

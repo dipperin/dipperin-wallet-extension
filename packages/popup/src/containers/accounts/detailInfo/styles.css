@@ -1,0 +1,130 @@
+.modal-curtain {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.accounts-modal {
+  position: absolute;
+  top: 102px;
+  left: 47px;
+  width: 266px;
+  height: 322px;
+  border-radius: 10px;
+  background: #fff;
+  z-index: 2;
+  outline: none;
+  user-select: none;
+}
+
+.accounts-modal > .accounts-close {
+  position: absolute;
+  top: 0;
+  right: 9px;
+  color: #9d9d9d;
+  font-size: 38px;
+  cursor: pointer;
+  z-index: 9;
+}
+
+.accounts-modal > .accounts-account-name-row {
+  position: absolute;
+  top: 20px;
+  height: 28px;
+  width: 100%;
+  text-align: center;
+  line-height: 28px;
+  box-sizing: border-box;
+}
+
+.accounts-account-name {
+  color: #0e050a;
+  font-size: 16px;
+  font-weight: 500;
+  position: relative;
+}
+
+.accounts-account-name > .accounts-account-copy {
+  position: absolute;
+  top: 0;
+  right: -25px;
+  content: '';
+  display: inline-block;
+  /* margin-left: 10px; */
+  width: 16px;
+  height: 16px;
+  background: url(../../../images/rename.png) 0px 0px no-repeat;
+  cursor: pointer;
+}
+
+.accounts-modal > .accounts-qrcode-block {
+  position: absolute;
+  top: 66px;
+  /* left: 65px; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  align-items: center;
+}
+
+#qrcode {
+  cursor: pointer;
+}
+
+.accounts-modal > .accounts-qrcode-block > .accounts-account-address-block {
+  color: #0a174c;
+  margin-top: 10px;
+  box-sizing: border-box;
+  padding: 0 31px;
+  width: 100%;
+  word-break: break-all;
+  text-align: center;
+}
+
+.accounts-modal > .accounts-qrcode-block > .accounts-account-address-block > .accounts-account-address {
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.accounts-modal > .accounts-modal-box {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 16px 28px;
+  border-top: 1px solid #b8b9c9;
+  border-radius: 0 0 10px 10px;
+}
+
+.accounts-modal > .accounts-modal-box > .accounts-btn-prv {
+  width: 210px;
+  height: 38px;
+  background: rgba(184, 185, 201, 1);
+  border-radius: 19px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+.accounts-account-rename {
+  width: 166px;
+  height: 28px;
+  text-align: center;
+  line-height: 28px;
+  vertical-align: middle;
+  border: 1px solid #b8b9c9;
+  border-radius: 14px;
+  outline: none;
+  font-size: 16px;
+  font-weight: 500;
+  box-sizing: border-box;
+}

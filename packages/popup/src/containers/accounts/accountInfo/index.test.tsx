@@ -17,7 +17,15 @@ describe('AccountInfo', () => {
   let instance: AccountInfo
 
   beforeEach(() => {
-    component = shallow(<AccountInfo account={account} label={label} />).dive()
+    component = shallow(
+      <AccountInfo
+        showDetail={() => {
+          return
+        }}
+        account={account}
+        label={label}
+      />
+    ).dive()
     instance = component.instance() as AccountInfo
   })
 
