@@ -105,6 +105,10 @@ class Account {
     this.getAccountInfo()
     this.getActiveAccount()
   }
+
+  getPrivateKey = (password: string): Promise<string> => {
+    return this._api.getPrivateKey(password)
+  }
 }
 
 export default Account

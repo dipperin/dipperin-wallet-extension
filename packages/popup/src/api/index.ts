@@ -25,7 +25,8 @@ import {
   CHANGE_NET,
   GET_CURRENT_NET,
   GET_APP_NAME,
-  GET_ESTIMATE_GAS
+  GET_ESTIMATE_GAS,
+  GET_PRIVATE_KEY
 } from '@dipperin/lib/constants'
 import { popupLog as log } from '@dipperin/lib/log'
 import { SendTxParams } from '@dipperin/lib/models/transaction'
@@ -101,6 +102,10 @@ class API {
   getAppName = () => {
     log.debug(`_api getAppName`)
     return this.duplex.send(GET_APP_NAME, '', true)
+  }
+
+  getPrivateKey = (password: string): Promise<string> => {
+    return this.duplex.send(GET_PRIVATE_KEY, password, true) as any
   }
 
   /** for account store  */

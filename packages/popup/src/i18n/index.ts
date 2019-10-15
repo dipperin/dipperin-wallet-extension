@@ -18,7 +18,13 @@ export const zhCN = {
     cancel: '取消',
     confirm: '确认',
     myAccounts: '我的账户',
-    seeTxs: '查看全部交易记录'
+    seeTxs: '查看全部交易记录',
+    exportPrivateKey: '导出私钥',
+    showPrivateKey: '显示私钥',
+    pleaseEnterPsw: '输入你的密码',
+    privNote: '注意：请保管好这个私钥。任何人拥有了你的私钥都可以窃取你帐户中的所有资产。',
+    yourPriv: '这是你的私钥（点击复制）',
+    done: '完成'
   },
   send: {
     accountBalance: '账户余额',
@@ -87,7 +93,14 @@ export const enUS: I18nCollection = {
     cancel: 'Cancel',
     confirm: 'Confirm',
     myAccounts: 'My Accounts',
-    seeTxs: 'see all transaction records'
+    seeTxs: 'see all transaction records',
+    exportPrivateKey: 'Export Private Key',
+    showPrivateKey: 'Show Private Key',
+    pleaseEnterPsw: 'Please enter your password',
+    privNote:
+      'Note: Please keep the private key in safe. Anyone with your private key can steal all the assets in your account.',
+    yourPriv: 'This is your private key (click to copy)',
+    done: 'Done'
   },
   send: {
     accountBalance: 'Account Balance',

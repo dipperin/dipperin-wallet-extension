@@ -5,11 +5,14 @@ import QRCode from 'qrcode'
 
 import AccountStore from '@/stores/account'
 
+import { I18nCollection } from '@/i18n'
+
 import './styles.css'
 
 interface Props {
   account: AccountStore
   onClose: () => void
+  label: I18nCollection
 }
 
 enum page {
@@ -29,6 +32,11 @@ class DetailInfo extends Component<Props> {
   @observable
   newName: string = ''
 
+  @observable
+  password: string = ''
+  @observable
+  privateKey: string = ''
+
   qrcode: HTMLCanvasElement
 
   nameInput: HTMLInputElement
@@ -38,7 +46,7 @@ class DetailInfo extends Component<Props> {
   }
 
   componentDidMount() {
-    const address = '0x000085E15e074806F1d123a2Bd925D2c60D627Fd8b2e'
+    const address = this.props.account.activeAccount.address
     this.showQrcode(address)
     // reaction(
     //   () => this.props.account!.activeAccount,
@@ -58,8 +66,14 @@ class DetailInfo extends Component<Props> {
     this.newName = name
   }
 
+  @action
+  changePsw = (key: string) => {
+    this.password = key
+  }
+
   handleRename = () => {
-    this.setNewName('account 1')
+    const activeAccountName = this.props.account.activeAccount.name
+    this.setNewName(activeAccountName)
 
     this.setIfRename(true)
   }
@@ -143,13 +157,20 @@ class DetailInfo extends Component<Props> {
     this.currentPage = page.password
   }
 
+  handleChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newPsw = e.target.value
+    this.changePsw(newPsw)
+  }
+
   @action
-  handleConfirmPsw = () => {
+  handleConfirmPsw = async () => {
+    const priv = await this.props.account.getPrivateKey(this.password)
+    this.privateKey = priv
     this.currentPage = page.privateKey
   }
 
   render() {
-    const { onClose } = this.props
+    const { onClose, label } = this.props
     return (
       <div className="modal-curtain" onClick={onClose}>
         <div className="accounts-modal" onClick={this.preventDefault}>
@@ -161,7 +182,7 @@ class DetailInfo extends Component<Props> {
               <div className="accounts-account-name-row">
                 {!this.ifRename && (
                   <span className="accounts-account-name">
-                    Account
+                    {this.props.account.activeAccount.name}
                     <span className="accounts-account-copy" onClick={this.handleRename} />
                   </span>
                 )}
@@ -179,13 +200,13 @@ class DetailInfo extends Component<Props> {
               <div className="accounts-qrcode-block">
                 <canvas id="qrcode" ref={this.refQrcode} />
                 <div className="accounts-account-address-block">
-                  <span className="accounts-account-address">0x000085E15e074806F1d123a2Bd925D2c60D627Fd8b2e</span>
+                  <span className="accounts-account-address">{this.props.account.activeAccount.address}</span>
                 </div>
               </div>
 
               <div className="accounts-modal-box">
                 <button className="accounts-btn-prv" onClick={this.handleTurnToExportPrivateKey}>
-                  Export Private Keys
+                  {this.props.label.account.exportPrivateKey}
                 </button>
               </div>
             </Fragment>
@@ -193,23 +214,26 @@ class DetailInfo extends Component<Props> {
           {this.currentPage === page.password && (
             <Fragment>
               <div className="accounts-account-name-row">
-                <span className="accounts-account-name">Show Private Keys</span>
+                <span className="accounts-account-name">{label.account.showPrivateKey}</span>
               </div>
 
               <div className="accounts-modal-psw-block">
-                <p className="accounts-modal-psw-label">输入你的密码</p>
-                <input className="accounts-modal-psw-input" />
+                <p className="accounts-modal-psw-label">{label.account.pleaseEnterPsw}</p>
+                <input
+                  className="accounts-modal-psw-input"
+                  type="password"
+                  value={this.password}
+                  onChange={this.handleChangePassword}
+                />
               </div>
 
               <div className="accounts-modal-notes-block">
-                <p className="accounts-modal-notes">
-                  注意：请保管好这个私钥。任何人拥有了你的私钥都可以窃取你帐户中的所有资产。
-                </p>
+                <p className="accounts-modal-notes">{label.account.privNote}</p>
               </div>
 
               <div className="accounts-modal-box">
                 <button className="accounts-btn-prv" onClick={this.handleConfirmPsw}>
-                  Confirm
+                  {label.account.confirm}
                 </button>
               </div>
             </Fragment>
@@ -217,23 +241,21 @@ class DetailInfo extends Component<Props> {
           {this.currentPage === page.privateKey && (
             <Fragment>
               <div className="accounts-account-name-row">
-                <span className="accounts-account-name">Show Private Keys</span>
+                <span className="accounts-account-name">{label.account.showPrivateKey}</span>
               </div>
 
               <div className="accounts-modal-psw-block">
-                <p className="accounts-modal-psw-label">这是你的私钥（点击复制）</p>
-                <input className="accounts-modal-priv-show" />
+                <p className="accounts-modal-psw-label">{label.account.yourPriv}</p>
+                <p className="accounts-modal-priv-show">{this.privateKey}</p>
               </div>
 
               <div className="accounts-modal-notes-block">
-                <p className="accounts-modal-notes">
-                  注意：请保管好这个私钥。任何人拥有了你的私钥都可以窃取你帐户中的所有资产。
-                </p>
+                <p className="accounts-modal-notes">{label.account.yourPriv}</p>
               </div>
 
               <div className="accounts-modal-box">
                 <button className="accounts-btn-prv" onClick={this.handleConfirmPsw}>
-                  Confirm
+                  {label.account.done}
                 </button>
               </div>
             </Fragment>

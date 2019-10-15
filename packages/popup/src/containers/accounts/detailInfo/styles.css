@@ -165,9 +165,11 @@
   border: none;
   outline: none;
   line-height: 34px;
-  padding: 0 10px;
+  padding: 8px 15px;
   font-size: 12px;
   color: #0a174c;
+  word-break: break-all;
+  line-height: 18px;
 }
 
 .accounts-modal > .accounts-modal-notes-block {

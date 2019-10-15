@@ -334,6 +334,18 @@ class RootStore extends EventEmitter {
     this.setAppSate(APP_STATE.HAS_NO_WALLET)
   }
 
+  getPrivateKey(password: string): string {
+    const accountPath = this._account.activeAccount.path
+    const hdAccount = this._wallet.checkPasswork(password)
+    if (!hdAccount) {
+      log.debug(`Can't get private key!`)
+      return ''
+    }
+    const privateKey = hdAccount.derivePath(accountPath).privateKey
+    log.debug('Get private key!', privateKey)
+    return privateKey
+  }
+
   /***** service end */
 
   /***** send to popup service start */

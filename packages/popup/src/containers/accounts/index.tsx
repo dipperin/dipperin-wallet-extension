@@ -76,7 +76,13 @@ class Accounts extends React.Component<AccountsProps> {
           {this.props.label!.label.account.seeTxs}
         </p>
 
-        {this.showDetail && <DetailInfo account={this.props.account as any} onClose={this.handleCloseShowDetail} />}
+        {this.showDetail && (
+          <DetailInfo
+            label={this.props.label!.label}
+            account={this.props.account as any}
+            onClose={this.handleCloseShowDetail}
+          />
+        )}
       </div>
     )
   }

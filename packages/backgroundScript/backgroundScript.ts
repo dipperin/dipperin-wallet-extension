@@ -37,7 +37,8 @@ import {
   GET_CURRENT_NET,
   GET_APP_NAME,
   UPDATE_ACCOUNT_LOCK_BALANCE,
-  GET_ESTIMATE_GAS
+  GET_ESTIMATE_GAS,
+  GET_PRIVATE_KEY
 } from '@dipperin/lib/constants'
 import { AccountBalanceParams, AccountLockBalanceParams } from '@dipperin/lib/models/account'
 import { TxStatusParams } from '@dipperin/lib/models/transaction'
@@ -103,6 +104,7 @@ class BackgroundScript {
     this.duplex.on(CHANGE_NET, this.service.changeNet)
     this.duplex.on(GET_CURRENT_NET, this.service.getCurrentNet)
     this.duplex.on(GET_APP_NAME, this.service.getAppName)
+    this.duplex.on(GET_PRIVATE_KEY, this.service.getPrivateKey)
     /**
      * for app event
      */

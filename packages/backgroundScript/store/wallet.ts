@@ -75,6 +75,24 @@ class Wallet {
     this.destroyMnemonic = undefined
   }
 
+  checkPasswork(password: string) {
+    if (!this._wallet || !this._wallet.encryptSeed) {
+      return undefined
+    }
+    try {
+      const account = Accounts.decrypt(this._wallet.encryptSeed, password)
+      // reset error times
+      this._wallet.unlockErrTimes = DEFAULT_ERR_TIMES
+      return account
+    } catch (_) {
+      // FIXME: error times should have init value 0
+      const preErrTimes = this._wallet.unlockErrTimes
+      let errTimes = preErrTimes ? preErrTimes : DEFAULT_ERR_TIMES
+      this._wallet.unlockErrTimes = ++errTimes
+      return undefined
+    }
+  }
+
   /**
    * Init the new wallet
    * @param password
