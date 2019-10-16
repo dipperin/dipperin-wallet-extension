@@ -67,7 +67,11 @@ export const zhCN = {
     forgetPassword: '忘记密码?',
     forgetPasswordTitle: '忘记密码',
     forgetPasswordWord:
-      '&#160;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  忘记密码可以通过导入助记词重新  &#160;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设置，不会影响您的钱包使用，请妥善保管您的助记词！'
+      '&#160;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  忘记密码可以通过导入助记词重新  &#160;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设置，不会影响您的钱包使用，请妥善保管您的助记词！',
+    passwordStrength: '密码强度',
+    weak: '弱',
+    medium: '中',
+    strong: '强'
   }
 }
 
@@ -143,7 +147,11 @@ export const enUS: I18nCollection = {
     forgetPassword: 'forget your password?',
     forgetPasswordTitle: 'Forget Password',
     forgetPasswordWord:
-      'Your password can be reset by importing mnemonics. It will not affect your wallet, and please keep your mnemonic!'
+      'Your password can be reset by importing mnemonics. It will not affect your wallet, and please keep your mnemonic!',
+    passwordStrength: 'Password Strength',
+    weak: 'Weak',
+    medium: 'Medium',
+    strong: 'Strong'
   }
 }
 

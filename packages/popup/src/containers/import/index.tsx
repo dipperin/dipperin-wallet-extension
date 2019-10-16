@@ -62,6 +62,24 @@ class Import extends React.Component<Props> {
     return false
   }
 
+  @computed
+  get passwordStrength() {
+    let result = 0
+    if (/[a-z]/.test(this.input.password)) {
+      result += 1
+    }
+    if (/[A-Z]/.test(this.input.password)) {
+      result += 1
+    }
+    if (/[0-9]/.test(this.input.password)) {
+      result += 1
+    }
+    if (/[`~!@#$%^&*()_+<>?:"{},.\\/;'[\]]/.test(this.input.password)) {
+      result += 1
+    }
+    return result
+  }
+
   @action
   handleMnemonic = (e: React.ChangeEvent<{ value: string }>) => {
     this.mnemonic = e.target.value
@@ -140,6 +158,8 @@ class Import extends React.Component<Props> {
       lineHeight: '18px',
       color: 'rgba(200, 200, 200, 1)'
     }
+
+    const wallet = this.props.label!.label.wallet
     return (
       <div className="bg-blue">
         <AppHeader />
@@ -165,6 +185,18 @@ class Import extends React.Component<Props> {
               onBlur={this.handlePswBlur}
             />
           </Tooltip>
+          <div className="create-password-strength">
+            <span className="create-password-label">{wallet.passwordStrength}</span>
+            <span className={`create-password-default ${this.passwordStrength > 0 ? 'create-password-weak' : ''}`}>
+              {this.passwordStrength === 1 && wallet.weak}
+            </span>
+            <span className={`create-password-default ${this.passwordStrength > 1 ? 'create-password-medium' : ''}`}>
+              {this.passwordStrength > 1 && this.passwordStrength < 4 && wallet.medium}
+            </span>
+            <span className={`create-password-default ${this.passwordStrength > 3 ? 'create-password-medium' : ''}`}>
+              {this.passwordStrength === 4 && wallet.strong}
+            </span>
+          </div>
           <p className="g-input-msg-v1 import-msg">{this.props.label!.label.wallet.repeatPassword}</p>
           <Tooltip
             position="top"
