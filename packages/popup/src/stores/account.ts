@@ -109,6 +109,10 @@ class Account {
   getPrivateKey = (password: string): Promise<string> => {
     return this._api.getPrivateKey(password)
   }
+
+  importPrivateKey = (privateKey: string): Promise<boolean> => {
+    return this._api.importAccount(privateKey)
+  }
 }
 
 export default Account

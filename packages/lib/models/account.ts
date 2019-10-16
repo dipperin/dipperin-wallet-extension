@@ -1,5 +1,18 @@
 import BigNumber from 'bignumber.js'
 import { DEFAULT_NONCE } from '../constants'
+import { EncryptResult } from '@dipperin/dipperin.js/build/module/dr/accounts'
+
+export enum AccountType {
+  hd,
+  privateKey
+}
+
+export interface Opt {
+  nonce?: string
+  type?: number
+  encryptKey?: EncryptResult
+}
+
 class Account {
   private _name: string
   private _address: string
@@ -8,6 +21,8 @@ class Account {
   private _balance: string
   private _lockBalance: string | undefined
   private _nonce: string = DEFAULT_NONCE
+  private _encryptKey: EncryptResult | undefined
+  private _type: number = AccountType.hd
 
   constructor(account: AccountObj) {
     this._name = account.name
@@ -15,7 +30,17 @@ class Account {
     this._id = account.id
     this._path = account.path
     this._balance = account.balance
-    this._lockBalance = account.lockBalance
+    this._lockBalance = account.lockBalance || ''
+    if (account.type === AccountType.privateKey) {
+      // TODO: add encrypKey data verifier
+      if (account.encryptKey) {
+        this._encryptKey = account.encryptKey
+      } else {
+        throw new Error('The account constructor input is wrong!')
+      }
+    } else if (account.type && !(account.type in AccountType)) {
+      throw new Error('The account type is wrong!')
+    }
   }
 
   set name(name: string) {
@@ -69,12 +94,20 @@ class Account {
     }
   }
 
+  get type() {
+    return this._type
+  }
+
+  get encryptKey() {
+    return this._encryptKey
+  }
+
   plusNonce() {
     this._nonce = new BigNumber(this._nonce).plus(1).toString(10)
   }
 
   toJS(): AccountObj {
-    return {
+    const baseObj: AccountObj = {
       name: this._name,
       address: this._address,
       id: this._id,
@@ -82,6 +115,15 @@ class Account {
       balance: this._balance,
       lockBalance: this._lockBalance
     }
+    if (this._type === AccountType.privateKey) {
+      if (this._encryptKey) {
+        baseObj.type = AccountType.privateKey
+        baseObj.encryptKey = this._encryptKey
+      } else {
+        throw new Error('The account is not a standard account! from modal account')
+      }
+    }
+    return baseObj
   }
 }
 
@@ -94,6 +136,8 @@ export interface AccountObj {
   path: string
   balance: string
   lockBalance?: string
+  type?: number
+  encryptKey?: EncryptResult
 }
 
 export interface AccountBalanceParams {

@@ -177,6 +177,7 @@ class AccountInfo extends React.Component<AccountInfoProps> {
             src={genAvatar(activeAccount.address, 80)}
             alt=""
             onClick={this.props.showDetail}
+            draggable={false}
           />
         </div>
 

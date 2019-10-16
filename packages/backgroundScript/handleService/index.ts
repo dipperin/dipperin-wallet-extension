@@ -342,8 +342,21 @@ class RootStore extends EventEmitter {
       return ''
     }
     const privateKey = hdAccount.derivePath(accountPath).privateKey
-    log.debug('Get private key!', privateKey)
-    return privateKey
+    // log.debug('Get private key!', privateKey)
+    const result = AccountStore.getAccountPrivate(this._account.activeAccount, privateKey)
+    return result
+  }
+
+  importAccount(priv: string) {
+    const hdAccount = this._wallet.hdAccount
+    // log.debug(`import account from ${priv}`)
+    try {
+      this._account.importAccount(hdAccount, priv)
+      return true
+    } catch (e) {
+      log.error(e)
+      return false
+    }
   }
 
   /***** service end */

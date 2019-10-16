@@ -26,7 +26,8 @@ import {
   GET_CURRENT_NET,
   GET_APP_NAME,
   GET_ESTIMATE_GAS,
-  GET_PRIVATE_KEY
+  GET_PRIVATE_KEY,
+  IMPORT_PRIVATE_KEY
 } from '@dipperin/lib/constants'
 import { popupLog as log } from '@dipperin/lib/log'
 import { SendTxParams } from '@dipperin/lib/models/transaction'
@@ -132,6 +133,10 @@ class API {
 
   updateAccountName = (param: AccountNameParams) => {
     return this.duplex.send(UPDATE_ACCOUNT_NAME, param)
+  }
+
+  importAccount = (priv: string): Promise<boolean> => {
+    return this.duplex.send(IMPORT_PRIVATE_KEY, priv, true) as any
   }
 
   /** for transaction store  */

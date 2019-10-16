@@ -8,7 +8,8 @@ export const zhCN = {
     enUS: '英语（美式）',
     zhCN: '简体中文',
     reset: '重置钱包',
-    venus: '金星'
+    venus: '金星',
+    importAccount: '导入钱包'
   },
   account: {
     send: '发送交易',
@@ -24,8 +25,11 @@ export const zhCN = {
     pleaseEnterPsw: '输入你的密码',
     privNote: '注意：请保管好这个私钥。任何人拥有了你的私钥都可以窃取你帐户中的所有资产。',
     yourPriv: '这是你的私钥（点击复制）',
+    enterPriv: '在此处粘贴您的私钥导入账户',
     done: '完成',
-    invalidPsw: '密码错误'
+    invalidPsw: '密码错误',
+    importSuccess: '导入账户成功',
+    importFailure: '导入账户失败'
   },
   send: {
     accountBalance: '账户余额',
@@ -88,7 +92,8 @@ export const enUS: I18nCollection = {
     enUS: 'en-US',
     zhCN: 'zh-CN',
     reset: 'Reset DipLink',
-    venus: 'venus'
+    venus: 'venus',
+    importAccount: 'Import Account'
   },
   account: {
     send: 'Send',
@@ -104,9 +109,12 @@ export const enUS: I18nCollection = {
     pleaseEnterPsw: 'Please enter your password',
     privNote:
       'Note: Please keep the private key in safe. Anyone with your private key can steal all the assets in your account.',
+    enterPriv: 'Please copy your private key here',
     yourPriv: 'This is your private key (click to copy)',
     done: 'Done',
-    invalidPsw: 'Invalid Password'
+    invalidPsw: 'Invalid Password',
+    importSuccess: 'Import Account Success!',
+    importFailure: 'Fail to import'
   },
   send: {
     accountBalance: 'Account Balance',

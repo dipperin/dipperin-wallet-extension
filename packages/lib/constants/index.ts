@@ -122,6 +122,7 @@ export const CHANGE_NET = 'changeNet'
 export const GET_CURRENT_NET = 'getCurrentNet'
 export const GET_APP_NAME = 'getAppName'
 export const GET_PRIVATE_KEY = 'getPrivateKey'
+export const IMPORT_PRIVATE_KEY = 'importPrivateKey'
 // popup for app
 export const APP_SEND = 'appSend'
 export const GET_APP_TX = 'getAppTx'

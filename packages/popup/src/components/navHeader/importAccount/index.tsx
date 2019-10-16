@@ -3,6 +3,7 @@ import { observable, action } from 'mobx'
 import { observer } from 'mobx-react'
 
 import AccountStore from '@/stores/account'
+import Layout from '@/stores/layout'
 
 import { I18nCollection } from '@/i18n'
 
@@ -12,6 +13,7 @@ interface Props {
   account: AccountStore
   label: I18nCollection
   onClose: () => void
+  layout: Layout
 }
 
 @observer
@@ -32,8 +34,17 @@ class ImportAccount extends Component<Props> {
     e.stopPropagation()
   }
 
-  handleImportAccount = () => {
-    return
+  handleImportAccount = async () => {
+    const result = await this.props.account.importPrivateKey(this.privateKey)
+    if (result) {
+      this.props.layout.displayModal(this.props.label.account.importSuccess)
+      setTimeout(() => this.props.layout.closeModal(), 3000)
+    } else {
+      this.props.layout.displayModal(this.props.label.account.importFailure)
+      setTimeout(() => this.props.layout.closeModal(), 3000)
+    }
+    this.props.onClose()
+    location.reload()
   }
 
   render() {
@@ -48,7 +59,7 @@ class ImportAccount extends Component<Props> {
             <span className="import-account-name">{label.account.showPrivateKey}</span>
           </div>
           <div className="import-account-modal-psw-block">
-            <p className="import-account-modal-psw-label">{label.account.yourPriv}</p>
+            <p className="import-account-modal-psw-label">{label.account.enterPriv}</p>
             <textarea
               className="import-account-modal-priv-show"
               value={this.privateKey}

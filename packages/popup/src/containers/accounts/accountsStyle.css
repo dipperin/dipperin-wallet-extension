@@ -152,6 +152,7 @@
   border-radius: 40px;
   line-height: 80px;
   cursor: pointer;
+  user-select: none;
 }
 
 .accounts-name-box {

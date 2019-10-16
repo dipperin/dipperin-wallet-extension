@@ -6,6 +6,7 @@ import { APP_STATE } from '@dipperin/lib/constants'
 import History from '@/stores/history'
 import Account from '@/stores/account'
 import Label from '@/stores/label'
+import Layout from '@/stores/layout'
 import { genAvatar } from '@/utils'
 
 import ImportAccount from './importAccount'
@@ -18,9 +19,10 @@ interface NavHeaderProps {
   history?: History
   account?: Account
   label?: Label
+  layout?: Layout
 }
 
-@inject('history', 'account', 'label')
+@inject('history', 'account', 'label', 'layout')
 @observer
 class NavHeader extends React.Component<NavHeaderProps> {
   @observable
@@ -112,6 +114,7 @@ class NavHeader extends React.Component<NavHeaderProps> {
             account={this.props.account as any}
             onClose={this.handleCloseImportAccountBox}
             label={this.props.label!.label}
+            layout={this.props.layout as any}
           />
         )}
         <div className="nav-main">
@@ -144,9 +147,9 @@ class NavHeader extends React.Component<NavHeaderProps> {
                   )
                 })}
               </div>
-              <div className="nav-setting-box" onClick={this.handleShowImportAccountBox}>
-                <span className="nav-setting-icon" />
-                <span className="nav-setting-word">{this.props.label!.label.setting.setting}</span>
+              <div className="nav-setting-box nav-import-account-box" onClick={this.handleShowImportAccountBox}>
+                <span className="nav-import-account-icon" />
+                <span className="nav-setting-word">{this.props.label!.label.setting.importAccount}</span>
               </div>
               <div className="nav-setting-box" onClick={this.turnToSetting}>
                 <span className="nav-setting-icon" />

@@ -1,6 +1,11 @@
 import EventEmitter from 'eventemitter3'
-import Dipperin, { AccountObject, Utils } from '@dipperin/dipperin.js'
-import AccountModel, { AccountObj, AccountBalanceParams, AccountLockBalanceParams } from '@dipperin/lib/models/account'
+import Dipperin, { AccountObject, Utils, Accounts, helper } from '@dipperin/dipperin.js'
+import AccountModel, {
+  AccountObj,
+  AccountBalanceParams,
+  AccountLockBalanceParams,
+  AccountType
+} from '@dipperin/lib/models/account'
 import {
   getAccounts,
   addAccount,
@@ -64,13 +69,7 @@ class Account extends EventEmitter {
   async initImportAccount(hdAccount: AccountObject) {
     for (let i = 0; i < 15; i++) {
       await this.addAccountAsync(hdAccount, 'account' + String(i + 1))
-      // if (this._activeAccount.balance !== '0') {
-      //   break
-      // }
     }
-    // if (this._activeAccount.balance === '0') {
-    //   this.changeActiveAccount('1')
-    // }
     this.changeActiveAccount('1')
     if (this._accountMap.get('1').balance === '0') {
       for (let i = 2; i < 16; i++) {
@@ -91,6 +90,11 @@ class Account extends EventEmitter {
     }
   }
 
+  /**
+   * derive new account from hdAccount Async
+   * @param hdAccount
+   * @param name
+   */
   async addAccountAsync(hdAccount: AccountObject, name: string = DEFAULT_NAME): Promise<Error | void> {
     try {
       const newId = String(++this._maxId)
@@ -122,6 +126,11 @@ class Account extends EventEmitter {
     }
   }
 
+  /**
+   * derive new account from hdAccount Sync
+   * @param hdAccount
+   * @param name
+   */
   addAccount(hdAccount: AccountObject, name: string = DEFAULT_NAME): Error | void {
     try {
       const newId = String(++this._maxId)
@@ -139,6 +148,24 @@ class Account extends EventEmitter {
       this.updateAddressLockMoney(newId)
     } catch (err) {
       return err
+    }
+  }
+
+  importAccount(hdAccount: AccountObject, priv: string, name?: string) {
+    try {
+      const newId = String(++this._maxId)
+      const accountName = name || `account${newId}`
+      const path = `${ACCOUNTS_PATH}/${0}`
+      const psw = hdAccount.derivePath(path).privateKey
+      const newAccount = this._getAccountFromPriv(accountName, psw, newId, priv)
+      // console.log(newAccount)
+      this._accountMap.set(newId, newAccount)
+      addAccount(newAccount.toJS())
+      this.changeActiveAccount(newId)
+      this.updateBanlance(newId)
+      this.updateAddressLockMoney(newId)
+    } catch (err) {
+      throw err
     }
   }
 
@@ -265,6 +292,23 @@ class Account extends EventEmitter {
     return new AccountModel(accountObj)
   }
 
+  private _getAccountFromPriv(name: string, psw: string, id: string, privateKey: string) {
+    const path = `${ACCOUNTS_PATH}/${0}`
+    const type = AccountType.privateKey
+    const encryptKey = Accounts.encrypt(privateKey, psw)
+    const address = helper.Account.fromPrivate(privateKey)
+    const accountObj: AccountObj = {
+      name,
+      address,
+      id,
+      path,
+      balance: DEFAULT_BALANCE,
+      type,
+      encryptKey
+    }
+    return new AccountModel(accountObj)
+  }
+
   /**
    * Get account balance from the chain
    * @param address Account Address
@@ -308,6 +352,19 @@ class Account extends EventEmitter {
       this.emit(UPDATE_ACCOUNT_BALANCE, params)
     }
     // }
+  }
+
+  static getAccountPrivate(account: AccountModel, priv: string): string {
+    if (account.type === AccountType.hd) {
+      return priv
+    }
+
+    if (account.type === AccountType.privateKey) {
+      const result = Accounts.decrypt(account.encryptKey, priv).seed
+      return result
+    }
+
+    throw new Error('The account is not standard!')
   }
 }
 
