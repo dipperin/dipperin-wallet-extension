@@ -24,7 +24,8 @@ export const zhCN = {
     pleaseEnterPsw: '输入你的密码',
     privNote: '注意：请保管好这个私钥。任何人拥有了你的私钥都可以窃取你帐户中的所有资产。',
     yourPriv: '这是你的私钥（点击复制）',
-    done: '完成'
+    done: '完成',
+    invalidPsw: '密码错误'
   },
   send: {
     accountBalance: '账户余额',
@@ -104,7 +105,8 @@ export const enUS: I18nCollection = {
     privNote:
       'Note: Please keep the private key in safe. Anyone with your private key can steal all the assets in your account.',
     yourPriv: 'This is your private key (click to copy)',
-    done: 'Done'
+    done: 'Done',
+    invalidPsw: 'Invalid Password'
   },
   send: {
     accountBalance: 'Account Balance',

@@ -183,9 +183,9 @@ class AccountInfo extends React.Component<AccountInfoProps> {
         <div className="accounts-name-box">
           {!this.inputAccount && (
             <Fragment>
-              <span className="accounts-name-nothing" />
+              {/* <span className="accounts-name-nothing" /> */}
               <span className="accounts-name">{this.accountName ? this.accountName : activeAccount.name}</span>
-              <span className="accounts-name-icon" onClick={this.openInputAccount} />
+              {/* <span className="accounts-name-icon" onClick={this.openInputAccount} /> */}
             </Fragment>
           )}
           {this.inputAccount && (

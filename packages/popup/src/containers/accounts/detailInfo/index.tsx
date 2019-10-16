@@ -4,6 +4,7 @@ import { observer } from 'mobx-react'
 import QRCode from 'qrcode'
 
 import AccountStore from '@/stores/account'
+import Layout from '@/stores/layout'
 
 import { I18nCollection } from '@/i18n'
 
@@ -13,6 +14,7 @@ interface Props {
   account: AccountStore
   onClose: () => void
   label: I18nCollection
+  layout: Layout
 }
 
 enum page {
@@ -80,6 +82,8 @@ class DetailInfo extends Component<Props> {
 
   handleFinishRename = () => {
     // process new name
+    this.changeAccountName()
+
     this.setNewName('')
 
     this.setIfRename(false)
@@ -150,6 +154,11 @@ class DetailInfo extends Component<Props> {
       // this.showTooltip()
     }
     document.body.removeChild(input)
+
+    this.props.layout.displayModal(this.props.label.account.copySuccess)
+    setTimeout(() => {
+      this.props.layout.closeModal()
+    }, 1500)
   }
 
   @action
@@ -164,9 +173,64 @@ class DetailInfo extends Component<Props> {
 
   @action
   handleConfirmPsw = async () => {
-    const priv = await this.props.account.getPrivateKey(this.password)
-    this.privateKey = priv
-    this.currentPage = page.privateKey
+    try {
+      const priv = await this.props.account.getPrivateKey(this.password)
+      if (/^(0x)?[0-9a-f]{64}$/.test(priv)) {
+        this.privateKey = priv
+        this.currentPage = page.privateKey
+        return
+      }
+    } catch (e) {
+      console.log('getPrivateKey error', e)
+    }
+
+    this.props.layout.displayModal(this.props.label.account.invalidPsw)
+    setTimeout(() => {
+      this.props.layout.closeModal()
+    }, 3000)
+  }
+
+  changeAccountName = () => {
+    if (!this.verifyAccountName) {
+      // TODO: use tooltip
+      alert(this.props.label.account.accountName)
+      this.newName = this.props.account!.activeAccount.name
+      return
+    }
+    const param = {
+      id: this.props.account!.activeAccount.id,
+      name: this.newName
+    }
+
+    this.setIfRename(false)
+
+    this.props
+      .account!.updateAccountName(param)!
+      .then(res => {
+        this.props.account!.updateAccountStore()
+        console.log('accounts-changeAccount-res', res)
+      })!
+      .catch(e => {
+        console.log('accounts-changeAccount-error', e)
+      })
+  }
+
+  copyPriv = () => {
+    const priv = this.privateKey
+    const input = document.createElement('input')
+    document.body.appendChild(input)
+    input.setAttribute('value', priv)
+    input.select()
+    if (document.execCommand('copy')) {
+      document.execCommand('copy')
+      // this.showTooltip()
+    }
+    document.body.removeChild(input)
+
+    this.props.layout.displayModal(this.props.label.account.copySuccess)
+    setTimeout(() => {
+      this.props.layout.closeModal()
+    }, 1500)
   }
 
   render() {
@@ -198,9 +262,11 @@ class DetailInfo extends Component<Props> {
               </div>
 
               <div className="accounts-qrcode-block">
-                <canvas id="qrcode" ref={this.refQrcode} />
+                <canvas id="qrcode" ref={this.refQrcode} onClick={this.copyAddress} />
                 <div className="accounts-account-address-block">
-                  <span className="accounts-account-address">{this.props.account.activeAccount.address}</span>
+                  <span className="accounts-account-address" onClick={this.copyAddress}>
+                    {this.props.account.activeAccount.address}
+                  </span>
                 </div>
               </div>
 
@@ -246,11 +312,13 @@ class DetailInfo extends Component<Props> {
 
               <div className="accounts-modal-psw-block">
                 <p className="accounts-modal-psw-label">{label.account.yourPriv}</p>
-                <p className="accounts-modal-priv-show">{this.privateKey}</p>
+                <p className="accounts-modal-priv-show" onClick={this.copyPriv}>
+                  {this.privateKey}
+                </p>
               </div>
 
               <div className="accounts-modal-notes-block">
-                <p className="accounts-modal-notes">{label.account.yourPriv}</p>
+                <p className="accounts-modal-notes">{label.account.privNote}</p>
               </div>
 
               <div className="accounts-modal-box">

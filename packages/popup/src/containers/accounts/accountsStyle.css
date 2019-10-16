@@ -151,6 +151,7 @@
   height: 80px;
   border-radius: 40px;
   line-height: 80px;
+  cursor: pointer;
 }
 
 .accounts-name-box {

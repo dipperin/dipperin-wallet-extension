@@ -5,6 +5,7 @@ import { observer, inject } from 'mobx-react'
 import Account from '@/stores/account'
 import History from '@/stores/history'
 import Label from '@/stores/label'
+import Layout from '@/stores/layout'
 
 // import AccountInfo from './accountInfo'
 import NavHeader from '@/components/navHeader'
@@ -23,9 +24,10 @@ interface AccountsProps {
   account?: Account
   history?: History
   label?: Label
+  layout?: Layout
 }
 
-@inject('account', 'history', 'label')
+@inject('account', 'history', 'label', 'layout')
 @observer
 class Accounts extends React.Component<AccountsProps> {
   @observable
@@ -81,6 +83,7 @@ class Accounts extends React.Component<AccountsProps> {
             label={this.props.label!.label}
             account={this.props.account as any}
             onClose={this.handleCloseShowDetail}
+            layout={this.props.layout as any}
           />
         )}
       </div>
