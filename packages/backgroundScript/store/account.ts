@@ -26,6 +26,7 @@ import {
   CHNAGE_ACTIVE_ACCOUNT,
   UPDATE_ACCOUNT_LOCK_BALANCE
 } from '@dipperin/lib/constants'
+
 class Account extends EventEmitter {
   private _activeAccount!: AccountModel
   private _accountMap: Map<string, AccountModel> = new Map()
@@ -67,27 +68,69 @@ class Account extends EventEmitter {
   }
 
   async initImportAccount(hdAccount: AccountObject) {
+    const tasks: Array<Promise<void | Error>> = []
     for (let i = 0; i < 15; i++) {
-      await this.addAccountAsync(hdAccount, 'account' + String(i + 1))
+      tasks.push(this.addAccountAsync(hdAccount, 'account' + String(i + 1)))
     }
-    this.changeActiveAccount('1')
-    if (this._accountMap.get('1').balance === '0') {
-      for (let i = 2; i < 16; i++) {
-        const act = this._accountMap.get(String(i))
-        console.log(i, act.balance)
-        if (act.balance !== '0') {
-          this.changeActiveAccount(String(i))
+    try {
+      await Promise.all(tasks)
+      this.changeActiveAccount('1')
+      // Turn to the first account that has coins
+      if (this._accountMap.get('1').balance === '0') {
+        for (let i = 2; i < 16; i++) {
+          // const act = this._accountMap.get(String(i))
+          const act = this._accountMap.get('1')
+          console.log(i, act.balance)
+          if (act.balance !== '0') {
+            this.changeActiveAccount(String(i))
+            break
+          }
+        }
+      }
+      for (let i = 15; i > 1; i--) {
+        if (this._accountMap.get(String(i)).balance === '0') {
+          await this.removeAccountAsync(String(i))
+        } else {
           break
         }
       }
-    }
-    for (let i = 15; i > 1; i--) {
-      if (this._accountMap.get(String(i)).balance === '0') {
-        await this.removeAccountAsync(String(i))
+    } catch (e) {
+      if (this._accountMap.get('1')) {
+        this.changeActiveAccount('1')
+        for (let i = 15; i > 1; i--) {
+          if (this._accountMap.get(String(i))) {
+            await this.removeAccountAsync(String(i))
+          }
+        }
       } else {
-        break
+        this.addAccount(hdAccount, 'account1')
       }
     }
+
+    // the old implementation
+    // for (let i = 0; i < 15; i++) {
+    //   await this.addAccountAsync(hdAccount, 'account' + String(i + 1))
+    // }
+    // this.changeActiveAccount('1')
+    // // Turn to the first account that has coins
+    // if (this._accountMap.get('1').balance === '0') {
+    //   for (let i = 2; i < 16; i++) {
+    //     // const act = this._accountMap.get(String(i))
+    //     const act = this._accountMap.get('1')
+    //     console.log(i, act.balance)
+    //     if (act.balance !== '0') {
+    //       this.changeActiveAccount(String(i))
+    //       break
+    //     }
+    //   }
+    // }
+    // for (let i = 15; i > 1; i--) {
+    //   if (this._accountMap.get(String(i)).balance === '0') {
+    //     await this.removeAccountAsync(String(i))
+    //   } else {
+    //     break
+    //   }
+    // }
   }
 
   /**
@@ -108,6 +151,7 @@ class Account extends EventEmitter {
       await addAccount(newAccount.toJS())
       // change active account
       this.changeActiveAccount(newId)
+      // setTimeout()
       await this.updateBanlance(newId)
       await this.updateAddressLockMoney(newId)
     } catch (err) {
@@ -314,12 +358,23 @@ class Account extends EventEmitter {
    * @param address Account Address
    */
   private async getAccountBalance(address: string): Promise<string> {
-    try {
-      const res = await this._dipperin.dr.getBalance(address)
-      return res || EMPTY_STRING
-    } catch (err) {
-      return EMPTY_STRING
-    }
+    // add a time limit
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(EMPTY_STRING)
+      }, 3000)
+      this._dipperin.dr
+        .getBalance(address)
+        .then(resolve)
+        .catch(() => resolve(EMPTY_STRING))
+    })
+    // old implementation
+    // try {
+    //   const res = await this._dipperin.dr.getBalance(address)
+    //   return res || EMPTY_STRING
+    // } catch (err) {
+    //   return EMPTY_STRING
+    // }
   }
 
   /**
