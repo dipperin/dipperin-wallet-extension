@@ -68,69 +68,69 @@ class Account extends EventEmitter {
   }
 
   async initImportAccount(hdAccount: AccountObject) {
-    const tasks: Array<Promise<void | Error>> = []
-    for (let i = 0; i < 15; i++) {
-      tasks.push(this.addAccountAsync(hdAccount, 'account' + String(i + 1)))
-    }
-    try {
-      await Promise.all(tasks)
-      this.changeActiveAccount('1')
-      // Turn to the first account that has coins
-      if (this._accountMap.get('1').balance === '0') {
-        for (let i = 2; i < 16; i++) {
-          // const act = this._accountMap.get(String(i))
-          const act = this._accountMap.get('1')
-          console.log(i, act.balance)
-          if (act.balance !== '0') {
-            this.changeActiveAccount(String(i))
-            break
-          }
-        }
-      }
-      for (let i = 15; i > 1; i--) {
-        if (this._accountMap.get(String(i)).balance === '0') {
-          await this.removeAccountAsync(String(i))
-        } else {
-          break
-        }
-      }
-    } catch (e) {
-      if (this._accountMap.get('1')) {
-        this.changeActiveAccount('1')
-        for (let i = 15; i > 1; i--) {
-          if (this._accountMap.get(String(i))) {
-            await this.removeAccountAsync(String(i))
-          }
-        }
-      } else {
-        this.addAccount(hdAccount, 'account1')
-      }
-    }
-
-    // the old implementation
+    // const tasks: Array<Promise<void | Error>> = []
     // for (let i = 0; i < 15; i++) {
-    //   await this.addAccountAsync(hdAccount, 'account' + String(i + 1))
+    //   tasks.push(this.addAccountAsync(hdAccount, 'account' + String(i + 1)))
     // }
-    // this.changeActiveAccount('1')
-    // // Turn to the first account that has coins
-    // if (this._accountMap.get('1').balance === '0') {
-    //   for (let i = 2; i < 16; i++) {
-    //     // const act = this._accountMap.get(String(i))
-    //     const act = this._accountMap.get('1')
-    //     console.log(i, act.balance)
-    //     if (act.balance !== '0') {
-    //       this.changeActiveAccount(String(i))
+    // try {
+    //   await Promise.all(tasks)
+    //   this.changeActiveAccount('1')
+    //   // Turn to the first account that has coins
+    //   if (this._accountMap.get('1').balance === '0') {
+    //     for (let i = 2; i < 16; i++) {
+    //       // const act = this._accountMap.get(String(i))
+    //       const act = this._accountMap.get('1')
+    //       console.log(i, act.balance)
+    //       if (act.balance !== '0') {
+    //         this.changeActiveAccount(String(i))
+    //         break
+    //       }
+    //     }
+    //   }
+    //   for (let i = 15; i > 1; i--) {
+    //     if (this._accountMap.get(String(i)).balance === '0') {
+    //       await this.removeAccountAsync(String(i))
+    //     } else {
     //       break
     //     }
     //   }
-    // }
-    // for (let i = 15; i > 1; i--) {
-    //   if (this._accountMap.get(String(i)).balance === '0') {
-    //     await this.removeAccountAsync(String(i))
+    // } catch (e) {
+    //   if (this._accountMap.get('1')) {
+    //     this.changeActiveAccount('1')
+    //     for (let i = 15; i > 1; i--) {
+    //       if (this._accountMap.get(String(i))) {
+    //         await this.removeAccountAsync(String(i))
+    //       }
+    //     }
     //   } else {
-    //     break
+    //     this.addAccount(hdAccount, 'account1')
     //   }
     // }
+
+    // the old implementation
+    for (let i = 0; i < 15; i++) {
+      await this.addAccountAsync(hdAccount, 'account' + String(i + 1))
+    }
+    this.changeActiveAccount('1')
+    // Turn to the first account that has coins
+    if (this._accountMap.get('1').balance === '0') {
+      for (let i = 2; i < 16; i++) {
+        // const act = this._accountMap.get(String(i))
+        const act = this._accountMap.get('1')
+        // console.log(i, act.balance)
+        if (act.balance !== '0') {
+          this.changeActiveAccount(String(i))
+          break
+        }
+      }
+    }
+    for (let i = 15; i > 1; i--) {
+      if (this._accountMap.get(String(i)).balance === '0') {
+        await this.removeAccountAsync(String(i))
+      } else {
+        break
+      }
+    }
   }
 
   /**
@@ -155,7 +155,7 @@ class Account extends EventEmitter {
       await this.updateBanlance(newId)
       await this.updateAddressLockMoney(newId)
     } catch (err) {
-      console.log(err)
+      console.log('addAccountAsync', err)
       return err
     }
   }
@@ -240,6 +240,7 @@ class Account extends EventEmitter {
       const selectAccount = this._accountMap.get(id)
       if (selectAccount) {
         const balance = await this.getAccountBalance(selectAccount.address)
+        // console.log('get balance', balance)
         this.updateAccountBalance(selectAccount, balance)
       }
     } else {
@@ -362,10 +363,10 @@ class Account extends EventEmitter {
     return new Promise(resolve => {
       setTimeout(() => {
         resolve(EMPTY_STRING)
-      }, 3000)
+      }, 4000)
       this._dipperin.dr
         .getBalance(address)
-        .then(resolve)
+        .then(res => resolve(res || EMPTY_STRING))
         .catch(() => resolve(EMPTY_STRING))
     })
     // old implementation
@@ -397,6 +398,7 @@ class Account extends EventEmitter {
     // if (balance !== EMPTY_STRING) {
     const preBalance = account.balance
     account.balance = balance ? Utils.fromUnit(balance) : balance
+    // console.log('format balance', account.balance)
     if (preBalance !== account.balance) {
       updateAccountInfo(account.id, ACCOUNT.BALANCE, account.balance)
       // send to popup new banlance

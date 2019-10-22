@@ -89,9 +89,12 @@ class Account {
 
   // FIXME: balance should have been fromartted  (Utils.fromUnit(balance))
   set balance(balance: string) {
-    if (balance !== '') {
+    if (/^[0-9]+\.?[0-9]{0,18}$/i.test(balance)) {
       this._balance = balance
     }
+    // if (balance !== '') {
+    //   this._balance = balance
+    // }
   }
 
   get type() {
