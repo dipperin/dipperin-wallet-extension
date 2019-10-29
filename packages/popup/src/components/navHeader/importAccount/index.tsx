@@ -38,13 +38,17 @@ class ImportAccount extends Component<Props> {
     const result = await this.props.account.importPrivateKey(this.privateKey)
     if (result) {
       this.props.layout.displayModal(this.props.label.account.importSuccess)
-      setTimeout(() => this.props.layout.closeModal(), 3000)
+      setTimeout(() => {
+        this.props.layout.closeModal()
+        location.reload()
+      }, 3000)
     } else {
       this.props.layout.displayModal(this.props.label.account.importFailure)
-      setTimeout(() => this.props.layout.closeModal(), 3000)
+      setTimeout(() => {
+        this.props.layout.closeModal()
+        // this.props.onClose()
+      }, 3000)
     }
-    this.props.onClose()
-    location.reload()
   }
 
   render() {

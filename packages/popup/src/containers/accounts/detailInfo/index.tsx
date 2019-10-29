@@ -94,10 +94,10 @@ class DetailInfo extends Component<Props> {
     return !regexCh.test(str)
   }
 
-  verifyAccountName() {
+  verifyAccountName(name: string) {
     const MAXLENGHT = 20
     let strlenght = 0
-    const txtval = this.newName
+    const txtval = name
     for (let i = 0; i < txtval.length; i++) {
       if (this.isCN(txtval.charAt(i)) === true) {
         strlenght = strlenght + 2
@@ -110,8 +110,9 @@ class DetailInfo extends Component<Props> {
 
   handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.value
-
-    this.setNewName(name)
+    if (this.verifyAccountName(name)) {
+      this.setNewName(name)
+    }
   }
 
   refQrcode = (instance: HTMLCanvasElement) => {
@@ -191,12 +192,12 @@ class DetailInfo extends Component<Props> {
   }
 
   changeAccountName = () => {
-    if (!this.verifyAccountName) {
-      // TODO: use tooltip
-      alert(this.props.label.account.accountName)
-      this.newName = this.props.account!.activeAccount.name
-      return
-    }
+    // if (!this.verifyAccountName(this.newName)) {
+    //   // TODO: use tooltip
+    //   alert(this.props.label.account.accountName)
+    //   this.newName = this.props.account!.activeAccount.name
+    //   return
+    // }
     const param = {
       id: this.props.account!.activeAccount.id,
       name: this.newName
@@ -298,7 +299,7 @@ class DetailInfo extends Component<Props> {
               </div>
 
               <div className="accounts-modal-box">
-                <button className="accounts-btn-prv" onClick={this.handleConfirmPsw}>
+                <button className="accounts-btn-prv accounts-btn-blue" onClick={this.handleConfirmPsw}>
                   {label.account.confirm}
                 </button>
               </div>
@@ -322,7 +323,7 @@ class DetailInfo extends Component<Props> {
               </div>
 
               <div className="accounts-modal-box">
-                <button className="accounts-btn-prv" onClick={this.handleConfirmPsw}>
+                <button className="accounts-btn-prv accounts-btn-blue" onClick={this.handleConfirmPsw}>
                   {label.account.done}
                 </button>
               </div>

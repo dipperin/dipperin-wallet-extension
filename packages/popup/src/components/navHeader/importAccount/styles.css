@@ -49,8 +49,9 @@
 }
 
 .import-account-modal > .import-account-modal-psw-block {
+  box-sizing: border-box;
   width: 100%;
-  padding: 0 10px;
+  padding: 0 14px;
   position: absolute;
   top: 50px;
 }
@@ -105,7 +106,8 @@
 .import-account-modal > .import-account-modal-box > .import-account-btn-prv {
   width: 210px;
   height: 38px;
-  background: rgba(184, 185, 201, 1);
+  /* background: rgba(184, 185, 201, 1); */
+  background: linear-gradient(-18deg, #044899 30%, #046a99 60%);
   border-radius: 19px;
   font-size: 16px;
   font-weight: bold;

@@ -120,6 +120,10 @@
   cursor: pointer;
 }
 
+.accounts-modal > .accounts-modal-box > .accounts-btn-prv.accounts-btn-blue {
+  background: linear-gradient(-18deg, #044899 30%, #046a99 60%);
+}
+
 .accounts-account-rename {
   width: 166px;
   height: 28px;
