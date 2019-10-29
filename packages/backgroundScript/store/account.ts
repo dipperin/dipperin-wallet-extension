@@ -26,6 +26,7 @@ import {
   CHNAGE_ACTIVE_ACCOUNT,
   UPDATE_ACCOUNT_LOCK_BALANCE
 } from '@dipperin/lib/constants'
+import { backgroundLog as log } from '@dipperin/lib/log'
 
 class Account extends EventEmitter {
   private _activeAccount!: AccountModel
@@ -68,69 +69,99 @@ class Account extends EventEmitter {
   }
 
   async initImportAccount(hdAccount: AccountObject) {
-    // const tasks: Array<Promise<void | Error>> = []
-    // for (let i = 0; i < 15; i++) {
-    //   tasks.push(this.addAccountAsync(hdAccount, 'account' + String(i + 1)))
-    // }
-    // try {
-    //   await Promise.all(tasks)
-    //   this.changeActiveAccount('1')
-    //   // Turn to the first account that has coins
-    //   if (this._accountMap.get('1').balance === '0') {
-    //     for (let i = 2; i < 16; i++) {
-    //       // const act = this._accountMap.get(String(i))
-    //       const act = this._accountMap.get('1')
-    //       console.log(i, act.balance)
-    //       if (act.balance !== '0') {
-    //         this.changeActiveAccount(String(i))
-    //         break
-    //       }
-    //     }
-    //   }
-    //   for (let i = 15; i > 1; i--) {
-    //     if (this._accountMap.get(String(i)).balance === '0') {
-    //       await this.removeAccountAsync(String(i))
-    //     } else {
-    //       break
-    //     }
-    //   }
-    // } catch (e) {
-    //   if (this._accountMap.get('1')) {
-    //     this.changeActiveAccount('1')
-    //     for (let i = 15; i > 1; i--) {
-    //       if (this._accountMap.get(String(i))) {
-    //         await this.removeAccountAsync(String(i))
-    //       }
-    //     }
-    //   } else {
-    //     this.addAccount(hdAccount, 'account1')
-    //   }
-    // }
-
-    // the old implementation
-    for (let i = 0; i < 15; i++) {
-      await this.addAccountAsync(hdAccount, 'account' + String(i + 1))
-    }
-    this.changeActiveAccount('1')
-    // Turn to the first account that has coins
-    if (this._accountMap.get('1').balance === '0') {
+    return new Promise(async resolve => {
+      const res = this.addAccount(hdAccount, 'account' + String(1))
+      if (res) {
+        throw res
+      }
+      const tmp: Map<string, AccountModel> = new Map()
       for (let i = 2; i < 16; i++) {
-        // const act = this._accountMap.get(String(i))
-        const act = this._accountMap.get('1')
-        // console.log(i, act.balance)
-        if (act.balance !== '0') {
-          this.changeActiveAccount(String(i))
+        tmp.set(String(i), this.generateAccount(hdAccount, String(i), 'account' + String(i)))
+      }
+      setTimeout(() => {
+        for (let i = 2; i < 16; i++) {
+          if (tmp.get(String(i)).balance !== '0') {
+            this._accountMap.set(String(i), tmp.get(String(i)))
+            addAccount(tmp.get(String(i)).toJS())
+            this.updateBanlance(String(i))
+            this.updateAddressLockMoney(String(i))
+          }
+        }
+        // log.debug('initImportAccount timeout')
+        resolve()
+      }, 4000)
+      // log.debug(tmp)
+      for (let i = 2; i < 16; i++) {
+        log.debug(i)
+        const balance = await this.getAccountBalance(tmp.get(String(i)).address)
+        log.debug(i, balance)
+        if (balance) {
+          tmp.get(String(i)).balance = Utils.fromUnit(balance)
+          log.debug(i, 2222)
+        }
+      }
+      // log.debug(tmp,tmp.size)
+      for (let i = 15; i > 1; i--) {
+        if (tmp.get(String(i)).balance === '0') {
+          tmp.delete(String(i))
+        } else {
           break
         }
       }
-    }
-    for (let i = 15; i > 1; i--) {
-      if (this._accountMap.get(String(i)).balance === '0') {
-        await this.removeAccountAsync(String(i))
-      } else {
-        break
+      // log.debug(tmp)
+      for (const [key, value] of tmp.entries()) {
+        this._accountMap.set(key, value)
+        await addAccount(value.toJS())
+        this.updateBanlance(key)
+        this.updateAddressLockMoney(key)
       }
-    }
+      // tmp.forEach(async (value, key) => {
+      //   this._accountMap.set(key, value)
+      //   await addAccount(value.toJS())
+      //   this.updateBanlance(key)
+      //   this.updateAddressLockMoney(key)
+      // })
+
+      if (this._accountMap.get('1').balance === '0') {
+        for (let i = 2; i < 16; i++) {
+          // const act = this._accountMap.get(String(i))
+          const act = this._accountMap.get('1')
+          // console.log(i, act.balance)
+          if (act && act.balance !== '0') {
+            this.changeActiveAccount(String(i))
+            break
+          }
+        }
+      }
+      // log.debug('initImportAccount finish')
+      resolve()
+    })
+
+    // the old implementation
+    // for (let i = 0; i < 15; i++) {
+    //   await this.addAccountAsync(hdAccount, 'account' + String(i + 1))
+    //   log.debug('finish create account', i + 1)
+    // }
+    // this.changeActiveAccount('1')
+    // // Turn to the first account that has coins
+    // if (this._accountMap.get('1').balance === '0') {
+    //   for (let i = 2; i < 16; i++) {
+    //     // const act = this._accountMap.get(String(i))
+    //     const act = this._accountMap.get('1')
+    //     // console.log(i, act.balance)
+    //     if (act.balance !== '0') {
+    //       this.changeActiveAccount(String(i))
+    //       break
+    //     }
+    //   }
+    // }
+    // for (let i = 15; i > 1; i--) {
+    //   if (this._accountMap.get(String(i)).balance === '0') {
+    //     await this.removeAccountAsync(String(i))
+    //   } else {
+    //     break
+    //   }
+    // }
   }
 
   /**
@@ -141,10 +172,10 @@ class Account extends EventEmitter {
   async addAccountAsync(hdAccount: AccountObject, name: string = DEFAULT_NAME): Promise<Error | void> {
     try {
       const newId = String(++this._maxId)
-      const newPath = `${ACCOUNTS_PATH}/${newId}`
-      const address = hdAccount.derivePath(newPath).address
+      // const newPath = `${ACCOUNTS_PATH}/${newId}`
+      // const address = hdAccount.derivePath(newPath).address
       // Add new account
-      const newAccount = this.createAccount(name, address, newId, newPath)
+      const newAccount = this.generateAccount(hdAccount, newId, name)
       // Save account
       this._accountMap.set(newId, newAccount)
       // add account to storage
@@ -154,10 +185,18 @@ class Account extends EventEmitter {
       // setTimeout()
       await this.updateBanlance(newId)
       await this.updateAddressLockMoney(newId)
+      log.debug('addAccountAsync finish', name)
     } catch (err) {
       console.log('addAccountAsync', err)
       return err
     }
+  }
+
+  private generateAccount(hdAccount: AccountObject, accountId: string, name: string): AccountModel {
+    const newPath = `${ACCOUNTS_PATH}/${accountId}`
+    const address = hdAccount.derivePath(newPath).address
+    const newAccount = this.createAccount(name, address, accountId, newPath)
+    return newAccount
   }
 
   async removeAccountAsync(id: string): Promise<Error | void> {
