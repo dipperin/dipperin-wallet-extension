@@ -9,7 +9,7 @@ export const zhCN = {
     zhCN: '简体中文',
     reset: '重置钱包',
     venus: '金星',
-    importAccount: '导入钱包'
+    importAccount: '导入账户'
   },
   account: {
     send: '发送交易',
