@@ -1,5 +1,5 @@
 import EventEmitter from 'eventemitter3'
-import Dipperin from '@dipperin/dipperin.js'
+import Dipperin, { Accounts } from '@dipperin/dipperin.js'
 // import Consola from 'consola'
 import {
   // HOST,
@@ -45,6 +45,9 @@ class RootStore extends EventEmitter {
   private _disconnectTimestamp: number
   private _timer: TimerStore
   private _interval: NodeJS.Timeout
+  private _signMessage: string
+  private _signedMessage: string
+
   constructor() {
     super()
     const net = this._currentNet
@@ -75,6 +78,7 @@ class RootStore extends EventEmitter {
   get activeAccount() {
     return this._account.activeAccount
   }
+
   async load() {
     const res = await this._wallet.load()
     this.initAppState()
@@ -457,6 +461,30 @@ class RootStore extends EventEmitter {
 
   getAppName = () => {
     return this.appName
+  }
+
+  getSignMessage = () => {
+    return this._signMessage
+  }
+
+  setSignMessage = (msg: string) => {
+    this._signMessage = msg
+  }
+
+  signMessage = () => {
+    const activeAccountPath = this._account.activeAccount.path
+    const activeAccountPrivateKey = this._wallet.hdAccount.derivePath(activeAccountPath).privateKey
+    const signedMessage = Accounts.sign(this._signMessage, activeAccountPrivateKey).signature
+    this._signedMessage = signedMessage
+  }
+
+  getSignedMessage = () => {
+    return this._signedMessage
+  }
+
+  clearSignedMessage = () => {
+    this._signMessage = ''
+    this._signedMessage = ''
   }
 
   async reload() {

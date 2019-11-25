@@ -9,7 +9,11 @@ export const zhCN = {
     zhCN: '简体中文',
     reset: '重置钱包',
     venus: '金星',
-    importAccount: '导入账户'
+    importAccount: '导入账户',
+    confirmReset: '确认重置账户',
+    warnText: '重置钱包，钱包所有记录将被删除。',
+    confirm: '确认',
+    close: '关闭'
   },
   account: {
     send: '发送交易',
@@ -50,7 +54,11 @@ export const zhCN = {
     betNumber: '下注对象',
     authTip: '该应用请求授权，是否同意？',
     gasPrice: 'Gas 费用',
-    currentPoundageIs: '当前手续费为'
+    currentPoundageIs: '当前手续费为',
+    currentAddress: '当前地址',
+    message: '加密信息',
+    sign: '签名',
+    cancel: '取消'
   },
   wallet: {
     importWallet: '导入钱包',
@@ -93,7 +101,11 @@ export const enUS: I18nCollection = {
     zhCN: 'zh-CN',
     reset: 'Reset DipLink',
     venus: 'venus',
-    importAccount: 'Import Account'
+    importAccount: 'Import Account',
+    confirmReset: 'Reset Wallet Confirm',
+    warnText: 'Reseting wallet will DELETE your entire wallet account, transaction records and profile.',
+    confirm: 'Confirm',
+    close: 'Close'
   },
   account: {
     send: 'Send',
@@ -135,7 +147,11 @@ export const enUS: I18nCollection = {
     betNumber: 'Bet Number',
     authTip: 'Request authorization, do you agree?',
     gasPrice: 'Gas Price',
-    currentPoundageIs: 'Current Poundage is'
+    currentPoundageIs: 'Current Poundage is',
+    currentAddress: 'Current Address',
+    message: 'Message',
+    sign: 'Sign',
+    cancel: 'Cancel'
   },
   wallet: {
     importWallet: 'Import Wallet',

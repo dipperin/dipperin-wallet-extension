@@ -1,6 +1,6 @@
 import EventEmitter from 'eventemitter3'
 import { Handler } from '../handlers/request'
-import { APP_APPROVE, IS_APPROVED, GET_ACTIVE_ACCOUNT_ADDRESS, SEND } from '@dipperin/lib/constants'
+import { APP_APPROVE, IS_APPROVED, GET_ACTIVE_ACCOUNT_ADDRESS, SEND, SIGN_MESSAGE } from '@dipperin/lib/constants'
 
 class DipperinExtension extends EventEmitter {
   request: Handler
@@ -23,6 +23,10 @@ class DipperinExtension extends EventEmitter {
 
   send(appName: string, to: string, value: string, extraData: string) {
     return this.request(SEND, { appName, to, value, extraData })
+  }
+
+  signMessage(appName: string, signMessage: string) {
+    return this.request(SIGN_MESSAGE, { appName, signMessage })
   }
 }
 

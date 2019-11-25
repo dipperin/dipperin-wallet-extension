@@ -86,6 +86,7 @@
 
 .unlock-modal-cancel {
   border: none;
+  outline: none;
   width: 106px;
   height: 38px;
   background: rgba(168, 169, 186, 1);
@@ -97,6 +98,7 @@
 
 .unlock-modal-confirm {
   border: none;
+  outline: none;
   width: 106px;
   height: 38px;
   background: linear-gradient(-18deg, rgba(4, 106, 153, 1), rgba(4, 72, 153, 1));

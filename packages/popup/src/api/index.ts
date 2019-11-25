@@ -27,7 +27,9 @@ import {
   GET_APP_NAME,
   GET_ESTIMATE_GAS,
   GET_PRIVATE_KEY,
-  IMPORT_PRIVATE_KEY
+  IMPORT_PRIVATE_KEY,
+  GET_SIGNING_MESSAGE,
+  CONFIRM_SIGN_MESSAGE
 } from '@dipperin/lib/constants'
 import { popupLog as log } from '@dipperin/lib/log'
 import { SendTxParams } from '@dipperin/lib/models/transaction'
@@ -172,6 +174,14 @@ class API {
    */
   sendTxForApp = (tx: SendTxParams) => {
     return this.duplex.send(APP_SEND, tx, true)
+  }
+
+  getSignMessage = () => {
+    return this.duplex.send(GET_SIGNING_MESSAGE, '', true)
+  }
+
+  confirmSignMessage = () => {
+    return this.duplex.send(CONFIRM_SIGN_MESSAGE, '', false)
   }
 
   /** EventListener */

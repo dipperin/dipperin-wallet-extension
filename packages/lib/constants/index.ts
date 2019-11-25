@@ -12,7 +12,8 @@ export enum APP_STATE {
   CREATE_ACCOUNT_PAGE,
   DAPP_SEND_PAGE,
   DAPP_AUTH,
-  TX_RECORD
+  TX_RECORD,
+  SIGN_MESSAGE
 }
 export const AUTO_LOCK_WALLET = 1000 * 60 * 10
 export const NUMBER_ZERO = 0
@@ -123,6 +124,8 @@ export const GET_CURRENT_NET = 'getCurrentNet'
 export const GET_APP_NAME = 'getAppName'
 export const GET_PRIVATE_KEY = 'getPrivateKey'
 export const IMPORT_PRIVATE_KEY = 'importPrivateKey'
+export const GET_SIGNING_MESSAGE = 'getSigningMessage'
+export const CONFIRM_SIGN_MESSAGE = 'confirmSignMessage'
 // popup for app
 export const APP_SEND = 'appSend'
 export const GET_APP_TX = 'getAppTx'
@@ -145,3 +148,4 @@ export const GET_ACTIVE_ACCOUNT_ADDRESS = 'getActiveAccountAddress'
 export const CHNAGE_ACTIVE_ACCOUNT = 'changeActiveAccount'
 export const SEND = 'send'
 export const SEND_SUCCESS = 'sendSuccess'
+export const SIGN_MESSAGE = 'signMessage'
