@@ -9,6 +9,7 @@ import Layout from '@/stores/layout'
 import Label from '@/stores/label'
 import Button from '@/components/button'
 import Tooltip from '@/components/tooltip'
+import Modal from '@/components/modal'
 
 import AppHeader from '@/components/header'
 import './importStyle.css'
@@ -42,14 +43,34 @@ class Import extends React.Component<Props> {
     rpsw: ['', false]
   }
 
+  @observable
+  modalHandler = {
+    modalMsg: '',
+    show: false
+  }
+
   @action
   handlePassword = (e: React.ChangeEvent<{ value: string }>) => {
-    this.input.password = e.target.value
+    if (/^[a-zA-Z0-9`~!@#$%^&*()_+<>?:"{},.\\/;'[\]]{0,24}$/.test(e.target.value)) {
+      this.input.password = e.target.value
+    }
   }
 
   @action
   handleRepeatPassword = (e: React.ChangeEvent<{ value: string }>) => {
     this.input.repeatPassword = e.target.value
+  }
+
+  @action
+  showModal = (message: string) => {
+    this.modalHandler.modalMsg = message
+    this.modalHandler.show = true
+  }
+
+  @action
+  closeModal = () => {
+    this.modalHandler.show = false
+    this.modalHandler.modalMsg = ''
   }
 
   @computed
@@ -99,8 +120,17 @@ class Import extends React.Component<Props> {
       console.log('import-handleContinue-res:', res)
       this.props.layout!.handleCloseLoading(this.toAccount)
     } catch (e) {
-      console.log('import-handleContinue-error:', e)
+      console.log('import-handleContinue-error:', e.message)
       this.props.layout!.handleCloseLoading()
+      let errorText: string = ''
+      switch (e.message) {
+        case `invalid mnemonic`:
+          errorText = this.props.label!.label.wallet.invalidMnemonic
+      }
+      this.showModal(errorText)
+      setTimeout(() => {
+        this.closeModal()
+      }, 2000)
     }
   }
 
@@ -113,9 +143,11 @@ class Import extends React.Component<Props> {
   }
 
   @action
-  handlePswBlur = () => {
-    const cond = this.input.password.split('').length > 7
-    if (!cond) {
+  handlePswBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    if (this.input.password.split('').length === 0) {
+      this.msgs.psw[0] = this.props.label!.label.wallet.emptyPassword
+      this.msgs.psw[1] = true
+    } else if (!(this.input.password.split('').length > 7)) {
       this.msgs.psw[0] = this.props.label!.label.wallet.shortPassword
       this.msgs.psw[1] = true
     }
@@ -223,6 +255,10 @@ class Import extends React.Component<Props> {
             {this.props.label!.label.wallet.confirm}
           </Button>
         </div>
+
+        <Modal showModal={this.modalHandler.show} size={250}>
+          {this.modalHandler.modalMsg}
+        </Modal>
       </div>
     )
   }

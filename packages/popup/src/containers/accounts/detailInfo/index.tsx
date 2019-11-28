@@ -95,7 +95,7 @@ class DetailInfo extends Component<Props> {
   }
 
   verifyAccountName(name: string) {
-    const MAXLENGHT = 20
+    const MAXLENGHT = 16
     let strlenght = 0
     const txtval = name
     for (let i = 0; i < txtval.length; i++) {
@@ -323,7 +323,7 @@ class DetailInfo extends Component<Props> {
               </div>
 
               <div className="accounts-modal-box">
-                <button className="accounts-btn-prv accounts-btn-blue" onClick={this.handleConfirmPsw}>
+                <button className="accounts-btn-prv accounts-btn-blue" onClick={onClose}>
                   {label.account.done}
                 </button>
               </div>
