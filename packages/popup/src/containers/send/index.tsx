@@ -12,7 +12,7 @@ import Layout from '@/stores/layout'
 import NavHeader from '@/components/navHeader'
 import Modal from '@/components/modal'
 
-import { verifyNumber } from '@/utils'
+import { verifyNumber, formatAmount, validateAddress } from '@/utils'
 
 import './sendStyle.css'
 
@@ -20,6 +20,7 @@ import { APP_STATE } from '@dipperin/lib/constants'
 import Button from '@/components/button'
 import { popupLog as log } from '@dipperin/lib/log'
 import { Utils } from '@dipperin/dipperin.js'
+import BN from 'bignumber.js'
 
 const { ACCOUNT_PAGE, SETTING_PAGE } = APP_STATE
 
@@ -89,6 +90,11 @@ class Send extends React.Component<SendProps> {
     }, 2000)
   }
 
+  handleAmountInputBlur = () => {
+    formatAmount(this.sendAmount)
+    this.getEstimateGas()
+  }
+
   getEstimateGas = async () => {
     if (this.sendToAddress && this.sendAmount) {
       const tx = this.genTx(this.sendToAddress, this.sendAmount)
@@ -119,10 +125,9 @@ class Send extends React.Component<SendProps> {
 
   @action
   handleAmount = e => {
-    if (!verifyNumber(e.target.value)) {
-      return
+    if (verifyNumber(e.target.value)) {
+      this.sendAmount = e.target.value
     }
-    this.sendAmount = e.target.value
   }
 
   @action
@@ -165,6 +170,9 @@ class Send extends React.Component<SendProps> {
     if (frequent.includes(error)) {
       return send.errorFrequent
     }
+    if (String(error).includes('InvalidConnectionError') || String(error).includes('Network Error')) {
+      return send.networkError
+    }
     if (error === 'ResponseError: Returned error: "new fee is too low to replace old one"') {
       return send.lowFee
     }
@@ -172,6 +180,15 @@ class Send extends React.Component<SendProps> {
   }
 
   sendTransfer = async () => {
+    const sendLabel = this.props.label!.label.send
+    if (!validateAddress(this.sendToAddress)) {
+      this.showMsg(sendLabel.invalidAddress)
+      return
+    }
+    if (new BN(this.sendAmount).gt(new BN(this.props.account!.activeAccount.balance).plus(new BN(this.fee)))) {
+      this.showMsg(sendLabel.errorBalance)
+      return
+    }
     const tx = this.genTx(this.sendToAddress, this.sendAmount, this.gasPrice)
     this.props.layout!.handleOpenLoading()
     const res = this.props.transaction!.verifyTx(tx)
@@ -239,7 +256,7 @@ class Send extends React.Component<SendProps> {
             type="number"
             value={this.sendAmount}
             onChange={this.handleAmount}
-            onBlur={this.getEstimateGas}
+            onBlur={this.handleAmountInputBlur}
           />
           <p className="g-input-msg-v1 send-msg-v2">
             {label.poundage}{' '}

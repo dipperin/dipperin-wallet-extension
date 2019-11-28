@@ -45,10 +45,11 @@ export const zhCN = {
     errorAddress: '请输入接收地址！',
     errorAmount: '请输入交易金额！',
     errorPoundage: '请输入手续费！',
-    errorBalance: '您的账户余额不足！',
+    errorBalance: '账户余额不足',
     sendSuccess: '交易发送成功，请等待同步!',
     errorFrequent: '您的操作过于频繁，请10秒后再尝试操作！',
     lowFee: '当前网络繁忙，请提高手续费或等待10秒后再操作！',
+    invalidAddress: '地址格式不正确',
     officialAddress: '官方地址',
     betAmount: '下注金额',
     betNumber: '下注对象',
@@ -58,7 +59,8 @@ export const zhCN = {
     currentAddress: '当前地址',
     message: '加密信息',
     sign: '签名',
-    cancel: '取消'
+    cancel: '取消',
+    networkError: '网络异常'
   },
   wallet: {
     importWallet: '导入钱包',
@@ -138,9 +140,10 @@ export const enUS: I18nCollection = {
     moreThan: 'more than',
     send: 'Send',
     errorAddress: "You have to input receiner's address!",
+    invalidAddress: 'invalid Address',
     errorAmount: 'You have to input the amount!',
     errorPoundage: 'You have to input the poundage!',
-    errorBalance: 'Your balance is not enough!',
+    errorBalance: 'Insufficient balance',
     sendSuccess: 'Send Success, please wait for synchronization!',
     errorFrequent: 'Your action is too frequent, please try 10s later.',
     lowFee: 'Net is busy，please increase poundage or try 10s later',
@@ -153,7 +156,8 @@ export const enUS: I18nCollection = {
     currentAddress: 'Current Address',
     message: 'Message',
     sign: 'Sign',
-    cancel: 'Cancel'
+    cancel: 'Cancel',
+    networkError: 'Network Error'
   },
   wallet: {
     importWallet: 'Import Wallet',
