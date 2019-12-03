@@ -236,7 +236,7 @@ class BackgroundScript {
       })
       return
     }
-    this.service.setAppSate(APP_STATE.SIGN_MESSAGE)
+    this.service.setAppSate(APP_STATE.DAPP_AUTH)
     await this.openPopup()
     const approved = isApproved(appName)
     if (!approved) {
