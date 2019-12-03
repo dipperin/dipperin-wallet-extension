@@ -77,6 +77,7 @@ class Pagination extends React.Component<Props> {
     const currentPage = this.props.currentPage
     return (
       <div style={paginationStyle}>
+        {/* TODO: fix this part, improve code quality */}
         <span style={turnPageStyle} onClick={this.handlePageChange.bind(this, currentPage - 1)}>
           上一页
         </span>

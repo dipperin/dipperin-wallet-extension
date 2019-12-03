@@ -148,7 +148,7 @@ class Settings extends React.Component<SettingsProps> {
               fontWeight: 400,
               background: '#fff',
               width: '266px',
-              height: '160px',
+              height: '190px',
               boxSizing: 'border-box',
               padding: 0
             }}
@@ -164,7 +164,7 @@ class Settings extends React.Component<SettingsProps> {
             <p className="unlock-modal-paragh" style={{ top: '50px' }}>
               <span style={{ fontSize: '12px' }}>{this.props.label!.label.setting.warnText}</span>
             </p>
-            <div className="unlock-modal-btnbox" style={{ top: '105px' }}>
+            <div className="unlock-modal-btnbox" style={{ top: '140px' }}>
               <button className="unlock-modal-cancel" onClick={this.handleCloseResetModal}>
                 {this.props.label!.label.setting.close}
               </button>
