@@ -7,6 +7,7 @@ import Wallet from './wallet'
 import Transaction from './transaction'
 import Layout from './layout'
 import Label from './label'
+import Dapp from './dapp'
 // import i18n from '@/i18n'
 
 class RootStore {
@@ -18,6 +19,7 @@ class RootStore {
   transaction: Transaction
   layout: Layout
   label: Label
+  dapp: Dapp
 
   constructor() {
     this.duplex = new Popup()
@@ -26,6 +28,7 @@ class RootStore {
     this.history = new History(this.api)
     this.wallet = new Wallet(this.api)
     this.transaction = new Transaction(this.api)
+    this.dapp = new Dapp(this.api)
     this.layout = new Layout()
     this.label = new Label()
   }

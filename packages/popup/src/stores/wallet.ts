@@ -1,4 +1,5 @@
 import API from '@/api'
+import BIP39 from 'bip39'
 // import { observable, computed } from 'mobx'
 
 class Wallet {
@@ -29,6 +30,9 @@ class Wallet {
   }
 
   importWallet = (password: string, mnemonic: string) => {
+    if (!BIP39.validateMnemonic(mnemonic)) {
+      throw new Error('invalid mnemonic')
+    }
     return this._api.importWallet(password, mnemonic)
   }
 

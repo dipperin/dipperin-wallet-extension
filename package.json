@@ -9,7 +9,7 @@
     "bootstrap": "lerna bootstrap",
     "build": "yarn clean && NODE_ENV=production lerna run --parallel build",
     "watch": "yarn removeCache && yarn clean && NODE_ENV=development lerna run --parallel watch",
-    "clean": "rimraf build",
+    "clean": "rimraf build && rimraf dist",
     "removeCache": "lerna run --parallel removeCache",
     "test": "NODE_ENV=test lerna run --parallel test:ci",
     "build:zip": "yarn build && npx bestzip chrome-extension.zip build manifest.json"

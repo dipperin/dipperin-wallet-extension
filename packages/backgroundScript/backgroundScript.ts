@@ -24,6 +24,7 @@ import {
   UPDATE_ACCOUNT_NAME,
   RESET_WALLET,
   APP_APPROVE,
+  SIGN_MESSAGE,
   IS_APPROVED,
   GET_ACTIVE_ACCOUNT_ADDRESS,
   CHNAGE_ACTIVE_ACCOUNT,
@@ -37,7 +38,11 @@ import {
   GET_CURRENT_NET,
   GET_APP_NAME,
   UPDATE_ACCOUNT_LOCK_BALANCE,
-  GET_ESTIMATE_GAS
+  GET_ESTIMATE_GAS,
+  GET_PRIVATE_KEY,
+  IMPORT_PRIVATE_KEY,
+  GET_SIGNING_MESSAGE,
+  CONFIRM_SIGN_MESSAGE
 } from '@dipperin/lib/constants'
 import { AccountBalanceParams, AccountLockBalanceParams } from '@dipperin/lib/models/account'
 import { TxStatusParams } from '@dipperin/lib/models/transaction'
@@ -103,11 +108,16 @@ class BackgroundScript {
     this.duplex.on(CHANGE_NET, this.service.changeNet)
     this.duplex.on(GET_CURRENT_NET, this.service.getCurrentNet)
     this.duplex.on(GET_APP_NAME, this.service.getAppName)
+    this.duplex.on(GET_PRIVATE_KEY, this.service.getPrivateKey)
+    this.duplex.on(IMPORT_PRIVATE_KEY, this.service.importAccount)
+    this.duplex.on(GET_SIGNING_MESSAGE, this.service.getSignMessage)
+    this.duplex.on(CONFIRM_SIGN_MESSAGE, this.service.signMessage)
     /**
      * for app event
      */
     this.duplex.on(APP_APPROVE, this.approveConfirm.bind(this))
     this.duplex.on(GET_APP_TX, this.getAppTx.bind(this))
+    // this.duplex.on(SIGN_MESSAGE, this.sign)
   }
 
   private bindTabDuplex() {
@@ -136,6 +146,10 @@ class BackgroundScript {
         }
         case SEND: {
           this.send(data, resolve, uuid)
+          break
+        }
+        case SIGN_MESSAGE: {
+          this.signMessage(data, resolve, uuid)
           break
         }
         default:
@@ -231,6 +245,46 @@ class BackgroundScript {
     resolve({
       success: approved,
       data: res,
+      uuid
+    })
+  }
+
+  /**
+   * signMessage
+   * @param appName
+   * @param resolve
+   * @param uuid
+   */
+  private async signMessage(data: { appName: string; signMessage: string }, resolve, uuid: string) {
+    this.appName = data.appName
+    this.service.appName = data.appName
+    const res: ApproveRes = {
+      popupExist: !!this.popupId,
+      isHaveWallet: this.service.isHaveWallet,
+      isUnlock: this.service.isUnlock
+    }
+
+    if (!res.isHaveWallet || !res.isUnlock || this.popupId) {
+      resolve({
+        success: false,
+        data: res,
+        uuid
+      })
+      return
+    }
+    this.service.setAppSate(APP_STATE.SIGN_MESSAGE)
+    this.service.setSignMessage(data.signMessage)
+    await this.openPopup()
+    if (this.service.getSignedMessage()) {
+      res.info = this.service.getSignedMessage()
+    }
+    this.service.clearSignedMessage()
+    // if (!approved) {
+    //   res.info = 'approved filed!'
+    // }
+    resolve({
+      success: true,
+      data: res.info,
       uuid
     })
   }

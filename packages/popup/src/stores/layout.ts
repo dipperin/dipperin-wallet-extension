@@ -7,6 +7,11 @@ class Layout {
     time: 0
   }
 
+  @observable
+  showModal: boolean = false
+  @observable
+  modalMessage: string = ''
+
   @action
   private closeLoading = () => {
     this.loadingHandler.show = false
@@ -20,6 +25,25 @@ class Layout {
   @action
   private setLoadingTime = (time: number) => {
     this.loadingHandler.time = time
+  }
+
+  @action
+  setShowModal = (flag: boolean) => {
+    this.showModal = flag
+  }
+  @action
+  setModalMessage = (msg: string) => {
+    this.modalMessage = msg
+  }
+
+  displayModal = (msg: string) => {
+    this.setModalMessage(msg)
+    this.setShowModal(true)
+  }
+
+  closeModal = () => {
+    this.setShowModal(false)
+    this.setModalMessage('')
   }
 
   handleCloseLoading = (cb?: (param?: any) => void, param?: any) => {
