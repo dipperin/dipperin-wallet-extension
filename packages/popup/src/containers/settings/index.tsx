@@ -1,9 +1,10 @@
 import React from 'react'
-import { observable, runInAction } from 'mobx'
+import { observable, runInAction, action } from 'mobx'
 import { inject, observer } from 'mobx-react'
 
 import NavHeader from '@/components/navHeader'
 import HrLine from '@/components/hrLine'
+import Modal from '@/components/modal'
 import Account from '@/stores/account'
 import History from '@/stores/history'
 import Wallet from '@/stores/wallet'
@@ -29,6 +30,8 @@ interface SettingsProps {
 class Settings extends React.Component<SettingsProps> {
   @observable
   mainActive: boolean = true
+  @observable
+  showResetModal: boolean = false
 
   // @observable
   // lang: string = 'en'
@@ -55,6 +58,16 @@ class Settings extends React.Component<SettingsProps> {
     const net = flag ? REMOTE_VENUS : REMOTE_TEST
     log.debug(`Setting page, change net to ${net}`)
     this.props.wallet!.changeNet(net)
+  }
+
+  @action
+  handleShowResetModal = () => {
+    this.showResetModal = true
+  }
+
+  @action
+  handleCloseResetModal = () => {
+    this.showResetModal = false
   }
 
   handleReset = () => {
@@ -111,7 +124,7 @@ class Settings extends React.Component<SettingsProps> {
             </Choice>
           </div>
 
-          <Button params={resetWallet} onClick={this.handleReset}>
+          <Button params={resetWallet} onClick={this.handleShowResetModal}>
             {this.props.label!.label.setting.reset}
           </Button>
           {/* <Button params={{ classes: [] }} onClick={this.turnToDappSend}>
@@ -120,6 +133,47 @@ class Settings extends React.Component<SettingsProps> {
         <Button params={{ classes: [] }} onClick={this.turnToAuth}>
           To Auth
         </Button> */}
+          <Modal
+            showModal={this.showResetModal}
+            theme={'white'}
+            style={{
+              position: 'absolute',
+              borderRadius: '10px',
+              top: '175px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              fontSize: '20px',
+              lineHeight: 1.5,
+              textAlign: 'center',
+              fontWeight: 400,
+              background: '#fff',
+              width: '266px',
+              height: '190px',
+              boxSizing: 'border-box',
+              padding: 0
+            }}
+          >
+            <span
+              className="unlock-close-icon"
+              style={{ cursor: 'pointer', zIndex: 9 }}
+              onClick={this.handleCloseResetModal}
+            />
+            <div className="unlock-modal-title" style={{ top: '21px' }}>
+              {this.props.label!.label.setting.confirmReset}
+            </div>
+            <p className="unlock-modal-paragh" style={{ top: '50px' }}>
+              <span style={{ fontSize: '12px' }}>{this.props.label!.label.setting.warnText}</span>
+            </p>
+            <div className="unlock-modal-btnbox" style={{ top: '140px' }}>
+              <button className="unlock-modal-cancel" onClick={this.handleCloseResetModal}>
+                {this.props.label!.label.setting.close}
+              </button>
+              <button className="unlock-modal-confirm" onClick={this.handleReset}>
+                {this.props.label!.label.setting.confirm}
+              </button>
+            </div>
+            {/* <div style={{ width: '100%', height: '100%', background: '#fff' }}>111</div> */}
+          </Modal>
         </div>
       </div>
     )

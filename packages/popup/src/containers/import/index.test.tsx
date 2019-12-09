@@ -125,13 +125,13 @@ describe('Import', () => {
 
   it('handlePswBlur', async () => {
     jest.useFakeTimers()
-    const e1 = ({
+    const e1 = {
       target: {
         value: '1234567'
       }
-    } as any) as React.ChangeEvent<{ value: string }>
+    } as any
     instance.handlePassword(e1)
-    instance.handlePswBlur()
+    instance.handlePswBlur(e1)
     expect(instance.msgs.psw[1]).toBe(true)
     jest.runAllTimers()
     expect(instance.msgs.psw[1]).toBe(false)
@@ -145,13 +145,13 @@ describe('Import', () => {
       }
     } as any) as React.ChangeEvent<{ value: string }>
     instance.handlePassword(e1)
-    const e2 = ({
+    const e2 = {
       target: {
         value: '12345678'
       }
-    } as any) as React.ChangeEvent<{ value: string }>
+    } as any
     instance.handleRepeatPassword(e2)
-    instance.handlePswBlur()
+    instance.handlePswBlur(e2)
     expect(instance.msgs.psw[1]).toBe(true)
     jest.runAllTimers()
     expect(instance.msgs.psw[1]).toBe(false)

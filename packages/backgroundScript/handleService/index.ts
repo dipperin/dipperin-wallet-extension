@@ -1,5 +1,5 @@
 import EventEmitter from 'eventemitter3'
-import Dipperin from '@dipperin/dipperin.js'
+import Dipperin, { Accounts } from '@dipperin/dipperin.js'
 // import Consola from 'consola'
 import {
   // HOST,
@@ -45,6 +45,9 @@ class RootStore extends EventEmitter {
   private _disconnectTimestamp: number
   private _timer: TimerStore
   private _interval: NodeJS.Timeout
+  private _signMessage: string
+  private _signedMessage: string
+
   constructor() {
     super()
     const net = this._currentNet
@@ -75,6 +78,7 @@ class RootStore extends EventEmitter {
   get activeAccount() {
     return this._account.activeAccount
   }
+
   async load() {
     const res = await this._wallet.load()
     this.initAppState()
@@ -334,6 +338,31 @@ class RootStore extends EventEmitter {
     this.setAppSate(APP_STATE.HAS_NO_WALLET)
   }
 
+  getPrivateKey(password: string): string {
+    const accountPath = this._account.activeAccount.path
+    const hdAccount = this._wallet.checkPasswork(password)
+    if (!hdAccount) {
+      log.debug(`Can't get private key!`)
+      return ''
+    }
+    const privateKey = hdAccount.derivePath(accountPath).privateKey
+    // log.debug('Get private key!', privateKey)
+    const result = AccountStore.getAccountPrivate(this._account.activeAccount, privateKey)
+    return result
+  }
+
+  importAccount(priv: string) {
+    const hdAccount = this._wallet.hdAccount
+    // log.debug(`import account from ${priv}`)
+    try {
+      this._account.importAccount(hdAccount, priv)
+      return true
+    } catch (e) {
+      log.error(e)
+      return false
+    }
+  }
+
   /***** service end */
 
   /***** send to popup service start */
@@ -432,6 +461,30 @@ class RootStore extends EventEmitter {
 
   getAppName = () => {
     return this.appName
+  }
+
+  getSignMessage = () => {
+    return this._signMessage
+  }
+
+  setSignMessage = (msg: string) => {
+    this._signMessage = msg
+  }
+
+  signMessage = () => {
+    const activeAccountPath = this._account.activeAccount.path
+    const activeAccountPrivateKey = this._wallet.hdAccount.derivePath(activeAccountPath).privateKey
+    const signedMessage = Accounts.sign(this._signMessage, activeAccountPrivateKey).signature
+    this._signedMessage = signedMessage
+  }
+
+  getSignedMessage = () => {
+    return this._signedMessage
+  }
+
+  clearSignedMessage = () => {
+    this._signMessage = ''
+    this._signedMessage = ''
   }
 
   async reload() {

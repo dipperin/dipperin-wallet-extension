@@ -1,13 +1,15 @@
 import React from 'react'
-// import { observable, action } from 'mobx'
+import { observable, action } from 'mobx'
 import { observer, inject } from 'mobx-react'
 
 import Account from '@/stores/account'
 import History from '@/stores/history'
 import Label from '@/stores/label'
+import Layout from '@/stores/layout'
 
 // import AccountInfo from './accountInfo'
 import NavHeader from '@/components/navHeader'
+import DetailInfo from './detailInfo'
 import AccountInfo from './accountInfo'
 import './accountsStyle.css'
 
@@ -22,13 +24,30 @@ interface AccountsProps {
   account?: Account
   history?: History
   label?: Label
+  layout?: Layout
 }
 
-@inject('account', 'history', 'label')
+@inject('account', 'history', 'label', 'layout')
 @observer
 class Accounts extends React.Component<AccountsProps> {
+  @observable
+  showDetail: boolean = false
+
   constructor(props) {
     super(props)
+  }
+
+  @action
+  setShowDetail = (flag: boolean) => {
+    this.showDetail = flag
+  }
+
+  handleShowDetail = () => {
+    this.setShowDetail(true)
+  }
+
+  handleCloseShowDetail = () => {
+    this.setShowDetail(false)
   }
 
   turnToSend = () => {
@@ -49,7 +68,7 @@ class Accounts extends React.Component<AccountsProps> {
       <div className="bg-blue">
         <NavHeader />
 
-        {activeAccount && <AccountInfo />}
+        {activeAccount && <AccountInfo showDetail={this.handleShowDetail} />}
 
         <Button params={btnSend} onClick={this.turnToSend}>
           {this.props.label!.label.account.send}
@@ -58,6 +77,15 @@ class Accounts extends React.Component<AccountsProps> {
           <img src={txRecordIcon} className="accounts-txRecordIcon" />
           {this.props.label!.label.account.seeTxs}
         </p>
+
+        {this.showDetail && (
+          <DetailInfo
+            label={this.props.label!.label}
+            account={this.props.account as any}
+            onClose={this.handleCloseShowDetail}
+            layout={this.props.layout as any}
+          />
+        )}
       </div>
     )
   }

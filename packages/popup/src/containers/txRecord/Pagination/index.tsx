@@ -24,10 +24,10 @@ const turnPageStyle: React.CSSProperties = {
 }
 
 const pageBtnStyle: React.CSSProperties = {
-  margin: '0 8px',
-  height: '30px',
-  width: '30px',
-  lineHeight: '30px',
+  margin: '0 4px',
+  height: '24px',
+  width: '24px',
+  lineHeight: '24px',
   background: 'white',
   borderRadius: '15px',
   fontSize: '14px',
@@ -37,10 +37,10 @@ const pageBtnStyle: React.CSSProperties = {
   cursor: 'pointer'
 }
 const cpageBtnStyle: React.CSSProperties = {
-  margin: '0 8px',
-  height: '30px',
-  width: '30px',
-  lineHeight: '30px',
+  margin: '0 4px',
+  height: '24px',
+  width: '24px',
+  lineHeight: '24px',
   background: '#12A8E0',
   borderRadius: '15px',
   fontSize: '14px',
@@ -50,7 +50,7 @@ const cpageBtnStyle: React.CSSProperties = {
 }
 
 const emStyle: React.CSSProperties = {
-  margin: '0 8px',
+  margin: '0 0px',
   height: '30px',
   width: '20px',
   lineHeight: '23px',
@@ -77,10 +77,11 @@ class Pagination extends React.Component<Props> {
     const currentPage = this.props.currentPage
     return (
       <div style={paginationStyle}>
+        {/* TODO: fix this part, improve code quality */}
         <span style={turnPageStyle} onClick={this.handlePageChange.bind(this, currentPage - 1)}>
           上一页
         </span>
-        {maxPage <= 5 &&
+        {maxPage <= 7 &&
           Array(maxPage)
             .fill(0)
             .map((_, index) => (
@@ -88,7 +89,7 @@ class Pagination extends React.Component<Props> {
                 {index + 1}
               </span>
             ))}
-        {maxPage > 5 && (
+        {maxPage > 7 && (
           <Fragment>
             <span style={this.getPageStyle(0)} onClick={this.handlePageChange.bind(this, 0)}>
               1
@@ -103,19 +104,48 @@ class Pagination extends React.Component<Props> {
                 3
               </span>
             )}
-            {currentPage > 2 && <span style={emStyle}>...</span>}
-            {currentPage > 2 && currentPage < maxPage - 3 && (
-              <span style={cpageBtnStyle} onClick={this.handlePageChange.bind(this, this.props.currentPage)}>
+            {currentPage < 3 && (
+              <span style={this.getPageStyle(3)} onClick={this.handlePageChange.bind(this, 3)}>
+                4
+              </span>
+            )}
+            {currentPage >= 3 && <span style={emStyle}>...</span>}
+            {currentPage >= 3 && currentPage < maxPage - 4 && (
+              <span
+                style={this.getPageStyle(currentPage - 1)}
+                onClick={this.handlePageChange.bind(this, this.props.currentPage - 1)}
+              >
+                {currentPage}
+              </span>
+            )}
+            {currentPage >= 3 && currentPage < maxPage - 4 && (
+              <span
+                style={this.getPageStyle(currentPage)}
+                onClick={this.handlePageChange.bind(this, this.props.currentPage)}
+              >
                 {currentPage + 1}
               </span>
             )}
-            {currentPage < maxPage - 3 && <span style={emStyle}>...</span>}
-            {currentPage >= maxPage - 3 && (
+            {currentPage >= 3 && currentPage < maxPage - 4 && (
+              <span
+                style={this.getPageStyle(currentPage + 1)}
+                onClick={this.handlePageChange.bind(this, this.props.currentPage + 1)}
+              >
+                {currentPage + 2}
+              </span>
+            )}
+            {currentPage < maxPage - 4 && <span style={emStyle}>...</span>}
+            {currentPage >= maxPage - 4 && (
+              <span style={this.getPageStyle(maxPage - 4)} onClick={this.handlePageChange.bind(this, maxPage - 4)}>
+                {maxPage - 3}
+              </span>
+            )}
+            {currentPage >= maxPage - 4 && (
               <span style={this.getPageStyle(maxPage - 3)} onClick={this.handlePageChange.bind(this, maxPage - 3)}>
                 {maxPage - 2}
               </span>
             )}
-            {currentPage >= maxPage - 3 && (
+            {currentPage >= maxPage - 4 && (
               <span style={this.getPageStyle(maxPage - 2)} onClick={this.handlePageChange.bind(this, maxPage - 2)}>
                 {maxPage - 1}
               </span>

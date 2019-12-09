@@ -5,6 +5,7 @@ interface ModalProps {
   showModal?: boolean
   size?: number
   theme?: string
+  style?: React.CSSProperties
 }
 
 class Modal extends React.Component<ModalProps> {
@@ -16,9 +17,16 @@ class Modal extends React.Component<ModalProps> {
       <Fragment>
         {showModal && (
           <div className={`modal-bg theme-${theme}`}>
-            <div className="modal-main" style={{ width: size }}>
-              {this.props.children}
-            </div>
+            {this.props.style && (
+              <div className="modal-main" style={this.props.style}>
+                {this.props.children}
+              </div>
+            )}
+            {!this.props.style && (
+              <div className="modal-main" style={{ width: size }}>
+                {this.props.children}
+              </div>
+            )}
           </div>
         )}
       </Fragment>

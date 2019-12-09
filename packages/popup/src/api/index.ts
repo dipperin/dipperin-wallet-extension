@@ -25,7 +25,11 @@ import {
   CHANGE_NET,
   GET_CURRENT_NET,
   GET_APP_NAME,
-  GET_ESTIMATE_GAS
+  GET_ESTIMATE_GAS,
+  GET_PRIVATE_KEY,
+  IMPORT_PRIVATE_KEY,
+  GET_SIGNING_MESSAGE,
+  CONFIRM_SIGN_MESSAGE
 } from '@dipperin/lib/constants'
 import { popupLog as log } from '@dipperin/lib/log'
 import { SendTxParams } from '@dipperin/lib/models/transaction'
@@ -103,6 +107,10 @@ class API {
     return this.duplex.send(GET_APP_NAME, '', true)
   }
 
+  getPrivateKey = (password: string): Promise<string> => {
+    return this.duplex.send(GET_PRIVATE_KEY, password, true) as any
+  }
+
   /** for account store  */
 
   getAccounts = () => {
@@ -127,6 +135,10 @@ class API {
 
   updateAccountName = (param: AccountNameParams) => {
     return this.duplex.send(UPDATE_ACCOUNT_NAME, param)
+  }
+
+  importAccount = (priv: string): Promise<boolean> => {
+    return this.duplex.send(IMPORT_PRIVATE_KEY, priv, true) as any
   }
 
   /** for transaction store  */
@@ -162,6 +174,14 @@ class API {
    */
   sendTxForApp = (tx: SendTxParams) => {
     return this.duplex.send(APP_SEND, tx, true)
+  }
+
+  getSignMessage = () => {
+    return this.duplex.send(GET_SIGNING_MESSAGE, '', true)
+  }
+
+  confirmSignMessage = () => {
+    return this.duplex.send(CONFIRM_SIGN_MESSAGE, '', false)
   }
 
   /** EventListener */

@@ -139,7 +139,6 @@
   box-sizing: border-box;
   width: 100%;
   height: 48px;
-  border-top: 1px solid rgba(255, 255, 255, 0.4);
   padding: 11px 14px;
   vertical-align: middle;
   font-family: SourceHanSansSC-Normal;
@@ -148,12 +147,24 @@
   cursor: pointer;
 }
 
+.nav-setting-box.nav-import-account-box {
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+}
+
 .nav-setting-icon {
   display: block;
   float: left;
   width: 26px;
   height: 26px;
   background: url(../../images/setting_slices/setting@2x.png) 0px 0px no-repeat;
+}
+
+.nav-import-account-icon {
+  display: block;
+  float: left;
+  width: 26px;
+  height: 26px;
+  background: url(../../images/importAccount.png) 0px 0px no-repeat;
 }
 
 .nav-setting-word {

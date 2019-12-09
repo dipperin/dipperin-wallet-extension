@@ -51,7 +51,9 @@ class SetPassword extends React.Component<Props> {
 
   @action
   handlePassword = (e: React.ChangeEvent<{ value: string }>) => {
-    this.input.password = e.target.value
+    if (/^[a-zA-Z0-9`~!@#$%^&*()_+<>?:"{},.\\/;'[\]]{0,24}$/.test(e.target.value)) {
+      this.input.password = e.target.value
+    }
   }
 
   @action
@@ -67,6 +69,24 @@ class SetPassword extends React.Component<Props> {
       return true
     }
     return false
+  }
+
+  @computed
+  get passwordStrength() {
+    let result = 0
+    if (/[a-z]/.test(this.input.password)) {
+      result += 1
+    }
+    if (/[A-Z]/.test(this.input.password)) {
+      result += 1
+    }
+    if (/[0-9]/.test(this.input.password)) {
+      result += 1
+    }
+    if (/[`~!@#$%^&*()_+<>?:"{},.\\/;'[\]]/.test(this.input.password)) {
+      result += 1
+    }
+    return result
   }
 
   setPassword = async () => {
@@ -91,7 +111,7 @@ class SetPassword extends React.Component<Props> {
   handlePswBlur = () => {
     const cond = this.input.password.split('').length > 7
     if (!cond) {
-      this.msgs.psw[0] = 'Your password is too short!'
+      this.msgs.psw[0] = this.props.label!.label.wallet.atLeast
       this.msgs.psw[1] = true
     }
     setTimeout(() => {
@@ -103,7 +123,7 @@ class SetPassword extends React.Component<Props> {
   handleRpswBlur = () => {
     const cond = this.input.password !== this.input.repeatPassword
     if (cond) {
-      this.msgs.rpsw[0] = 'The first password is not equal to the second password!'
+      this.msgs.rpsw[0] = this.props.label!.label.wallet.notSamePassword
       this.msgs.rpsw[1] = true
     }
     setTimeout(() => {
@@ -124,6 +144,7 @@ class SetPassword extends React.Component<Props> {
       size: 'small',
       float: 'right'
     }
+    const wallet = this.props.label!.label.wallet
     return (
       <div className="bg-blue">
         <AppHeader />
@@ -146,6 +167,18 @@ class SetPassword extends React.Component<Props> {
               onBlur={this.handlePswBlur}
             />
           </Tooltip>
+          <div className="create-password-strength">
+            <span className="create-password-label">{wallet.passwordStrength}</span>
+            <span className={`create-password-default ${this.passwordStrength > 0 ? 'create-password-weak' : ''}`}>
+              {this.passwordStrength === 1 && wallet.weak}
+            </span>
+            <span className={`create-password-default ${this.passwordStrength > 1 ? 'create-password-medium' : ''}`}>
+              {this.passwordStrength > 1 && this.passwordStrength < 4 && wallet.medium}
+            </span>
+            <span className={`create-password-default ${this.passwordStrength > 3 ? 'create-password-medium' : ''}`}>
+              {this.passwordStrength === 4 && wallet.strong}
+            </span>
+          </div>
           <p className="g-input-msg-v1">{this.props.label!.label.wallet.repeatPassword}</p>
           <Tooltip
             position="bottom"

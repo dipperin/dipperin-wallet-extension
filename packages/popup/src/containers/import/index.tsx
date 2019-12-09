@@ -9,6 +9,7 @@ import Layout from '@/stores/layout'
 import Label from '@/stores/label'
 import Button from '@/components/button'
 import Tooltip from '@/components/tooltip'
+import Modal from '@/components/modal'
 
 import AppHeader from '@/components/header'
 import './importStyle.css'
@@ -42,14 +43,34 @@ class Import extends React.Component<Props> {
     rpsw: ['', false]
   }
 
+  @observable
+  modalHandler = {
+    modalMsg: '',
+    show: false
+  }
+
   @action
   handlePassword = (e: React.ChangeEvent<{ value: string }>) => {
-    this.input.password = e.target.value
+    if (/^[a-zA-Z0-9`~!@#$%^&*()_+<>?:"{},.\\/;'[\]]{0,24}$/.test(e.target.value)) {
+      this.input.password = e.target.value
+    }
   }
 
   @action
   handleRepeatPassword = (e: React.ChangeEvent<{ value: string }>) => {
     this.input.repeatPassword = e.target.value
+  }
+
+  @action
+  showModal = (message: string) => {
+    this.modalHandler.modalMsg = message
+    this.modalHandler.show = true
+  }
+
+  @action
+  closeModal = () => {
+    this.modalHandler.show = false
+    this.modalHandler.modalMsg = ''
   }
 
   @computed
@@ -60,6 +81,24 @@ class Import extends React.Component<Props> {
       return true
     }
     return false
+  }
+
+  @computed
+  get passwordStrength() {
+    let result = 0
+    if (/[a-z]/.test(this.input.password)) {
+      result += 1
+    }
+    if (/[A-Z]/.test(this.input.password)) {
+      result += 1
+    }
+    if (/[0-9]/.test(this.input.password)) {
+      result += 1
+    }
+    if (/[`~!@#$%^&*()_+<>?:"{},.\\/;'[\]]/.test(this.input.password)) {
+      result += 1
+    }
+    return result
   }
 
   @action
@@ -81,8 +120,17 @@ class Import extends React.Component<Props> {
       console.log('import-handleContinue-res:', res)
       this.props.layout!.handleCloseLoading(this.toAccount)
     } catch (e) {
-      console.log('import-handleContinue-error:', e)
+      console.log('import-handleContinue-error:', e.message)
       this.props.layout!.handleCloseLoading()
+      let errorText: string = ''
+      switch (e.message) {
+        case `invalid mnemonic`:
+          errorText = this.props.label!.label.wallet.invalidMnemonic
+      }
+      this.showModal(errorText)
+      setTimeout(() => {
+        this.closeModal()
+      }, 2000)
     }
   }
 
@@ -95,9 +143,11 @@ class Import extends React.Component<Props> {
   }
 
   @action
-  handlePswBlur = () => {
-    const cond = this.input.password.split('').length > 7
-    if (!cond) {
+  handlePswBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    if (this.input.password.split('').length === 0) {
+      this.msgs.psw[0] = this.props.label!.label.wallet.emptyPassword
+      this.msgs.psw[1] = true
+    } else if (!(this.input.password.split('').length > 7)) {
       this.msgs.psw[0] = this.props.label!.label.wallet.shortPassword
       this.msgs.psw[1] = true
     }
@@ -140,6 +190,8 @@ class Import extends React.Component<Props> {
       lineHeight: '18px',
       color: 'rgba(200, 200, 200, 1)'
     }
+
+    const wallet = this.props.label!.label.wallet
     return (
       <div className="bg-blue">
         <AppHeader />
@@ -165,6 +217,18 @@ class Import extends React.Component<Props> {
               onBlur={this.handlePswBlur}
             />
           </Tooltip>
+          <div className="create-password-strength">
+            <span className="create-password-label">{wallet.passwordStrength}</span>
+            <span className={`create-password-default ${this.passwordStrength > 0 ? 'create-password-weak' : ''}`}>
+              {this.passwordStrength === 1 && wallet.weak}
+            </span>
+            <span className={`create-password-default ${this.passwordStrength > 1 ? 'create-password-medium' : ''}`}>
+              {this.passwordStrength > 1 && this.passwordStrength < 4 && wallet.medium}
+            </span>
+            <span className={`create-password-default ${this.passwordStrength > 3 ? 'create-password-medium' : ''}`}>
+              {this.passwordStrength === 4 && wallet.strong}
+            </span>
+          </div>
           <p className="g-input-msg-v1 import-msg">{this.props.label!.label.wallet.repeatPassword}</p>
           <Tooltip
             position="top"
@@ -191,6 +255,10 @@ class Import extends React.Component<Props> {
             {this.props.label!.label.wallet.confirm}
           </Button>
         </div>
+
+        <Modal showModal={this.modalHandler.show} size={250}>
+          {this.modalHandler.modalMsg}
+        </Modal>
       </div>
     )
   }

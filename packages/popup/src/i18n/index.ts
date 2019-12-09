@@ -8,7 +8,12 @@ export const zhCN = {
     enUS: '英语（美式）',
     zhCN: '简体中文',
     reset: '重置钱包',
-    venus: '金星'
+    venus: '金星',
+    importAccount: '导入账户',
+    confirmReset: '确认重置账户',
+    warnText: '重置钱包，钱包所有记录将被删除。',
+    confirm: '确认',
+    close: '关闭'
   },
   account: {
     send: '发送交易',
@@ -18,7 +23,17 @@ export const zhCN = {
     cancel: '取消',
     confirm: '确认',
     myAccounts: '我的账户',
-    seeTxs: '查看全部交易记录'
+    seeTxs: '查看全部交易记录',
+    exportPrivateKey: '导出私钥',
+    showPrivateKey: '显示私钥',
+    pleaseEnterPsw: '输入你的密码',
+    privNote: '注意：请保管好这个私钥。任何人拥有了你的私钥都可以窃取你帐户中的所有资产。',
+    yourPriv: '这是你的私钥（点击复制）',
+    enterPriv: '在此处粘贴您的私钥导入账户',
+    done: '完成',
+    invalidPsw: '密码错误',
+    importSuccess: '导入账户成功',
+    importFailure: '导入账户失败'
   },
   send: {
     accountBalance: '账户余额',
@@ -30,23 +45,31 @@ export const zhCN = {
     errorAddress: '请输入接收地址！',
     errorAmount: '请输入交易金额！',
     errorPoundage: '请输入手续费！',
-    errorBalance: '您的账户余额不足！',
+    errorBalance: '账户余额不足',
     sendSuccess: '交易发送成功，请等待同步!',
     errorFrequent: '您的操作过于频繁，请10秒后再尝试操作！',
     lowFee: '当前网络繁忙，请提高手续费或等待10秒后再操作！',
+    invalidAddress: '地址格式不正确',
     officialAddress: '官方地址',
     betAmount: '下注金额',
     betNumber: '下注对象',
     authTip: '该应用请求授权，是否同意？',
     gasPrice: 'Gas 费用',
-    currentPoundageIs: '当前手续费为'
+    currentPoundageIs: '当前手续费为',
+    currentAddress: '当前地址',
+    message: '加密信息',
+    sign: '签名',
+    cancel: '取消',
+    networkError: '网络异常'
   },
   wallet: {
     importWallet: '导入钱包',
     createWallet: '创建钱包',
     inputMnemonic: '请输入用于恢复钱包的助记词',
+    invalidMnemonic: '助记词不合法',
     setPassword: '设置密码',
-    atLeast: '至少8个字符',
+    atLeast: '密码长度为8~24个字符',
+    emptyPassword: '密码不能为空',
     repeatPassword: '确认密码',
     cancel: '取消',
     confirm: '确认',
@@ -55,13 +78,17 @@ export const zhCN = {
     backupConfirm: '请按顺序选择助记词',
     unlockWallet: '解锁钱包',
     password: '密码',
-    shortPassword: '密码过短，请重新设定！',
-    notSamePassword: '两次输入密码不一致，请重新输入！',
+    shortPassword: '密码长度为8~24个字符',
+    notSamePassword: '两次密码不一致',
     transactionDetail: '交易详情',
     forgetPassword: '忘记密码?',
     forgetPasswordTitle: '忘记密码',
     forgetPasswordWord:
-      '&#160;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  忘记密码可以通过导入助记词重新  &#160;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设置，不会影响您的钱包使用，请妥善保管您的助记词！'
+      '&#160;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  忘记密码可以通过导入助记词重新  &#160;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设置，不会影响您的钱包使用，请妥善保管您的助记词！',
+    passwordStrength: '密码强度',
+    weak: '弱',
+    medium: '中',
+    strong: '强'
   }
 }
 
@@ -77,7 +104,12 @@ export const enUS: I18nCollection = {
     enUS: 'en-US',
     zhCN: 'zh-CN',
     reset: 'Reset DipLink',
-    venus: 'venus'
+    venus: 'venus',
+    importAccount: 'Import Account',
+    confirmReset: 'Reset Wallet Confirm',
+    warnText: 'Reseting wallet will DELETE your entire wallet account, transaction records and profile.',
+    confirm: 'Confirm',
+    close: 'Close'
   },
   account: {
     send: 'Send',
@@ -87,7 +119,18 @@ export const enUS: I18nCollection = {
     cancel: 'Cancel',
     confirm: 'Confirm',
     myAccounts: 'My Accounts',
-    seeTxs: 'see all transaction records'
+    seeTxs: 'see all transaction records',
+    exportPrivateKey: 'Export Private Key',
+    showPrivateKey: 'Show Private Key',
+    pleaseEnterPsw: 'Please enter your password',
+    privNote:
+      'Note: Please keep the private key in safe. Anyone with your private key can steal all the assets in your account.',
+    enterPriv: 'Please copy your private key here',
+    yourPriv: 'This is your private key (click to copy)',
+    done: 'Done',
+    invalidPsw: 'Invalid Password',
+    importSuccess: 'Import Account Success!',
+    importFailure: 'Fail to import'
   },
   send: {
     accountBalance: 'Account Balance',
@@ -97,9 +140,10 @@ export const enUS: I18nCollection = {
     moreThan: 'more than',
     send: 'Send',
     errorAddress: "You have to input receiner's address!",
+    invalidAddress: 'invalid Address',
     errorAmount: 'You have to input the amount!',
     errorPoundage: 'You have to input the poundage!',
-    errorBalance: 'Your balance is not enough!',
+    errorBalance: 'Insufficient balance',
     sendSuccess: 'Send Success, please wait for synchronization!',
     errorFrequent: 'Your action is too frequent, please try 10s later.',
     lowFee: 'Net is busy，please increase poundage or try 10s later',
@@ -108,14 +152,21 @@ export const enUS: I18nCollection = {
     betNumber: 'Bet Number',
     authTip: 'Request authorization, do you agree?',
     gasPrice: 'Gas Price',
-    currentPoundageIs: 'Current Poundage is'
+    currentPoundageIs: 'Current Poundage is',
+    currentAddress: 'Current Address',
+    message: 'Message',
+    sign: 'Sign',
+    cancel: 'Cancel',
+    networkError: 'Network Error'
   },
   wallet: {
     importWallet: 'Import Wallet',
     createWallet: 'Create Wallet',
     inputMnemonic: 'Please input mnemonic phrase to recovery your account.',
+    invalidMnemonic: 'Invalid mnemonics',
     setPassword: 'Set Password',
-    atLeast: 'at least 8 characters',
+    atLeast: 'Password must be 8~24 characters in length',
+    emptyPassword: 'Password is required',
     repeatPassword: 'Repeat Password',
     cancel: 'Cancel',
     confirm: 'Confirm',
@@ -124,13 +175,17 @@ export const enUS: I18nCollection = {
     backupConfirm: 'Please choose mnemonic words in order.',
     unlockWallet: 'Unlock Wallet',
     password: 'Password',
-    shortPassword: 'Your password is too short!',
-    notSamePassword: 'The first password is not equal to the second password!',
+    shortPassword: 'Password must be 8~24 characters in length',
+    notSamePassword: `Passwords don't match`,
     transactionDetail: 'Transaction Detail',
     forgetPassword: 'forget your password?',
     forgetPasswordTitle: 'Forget Password',
     forgetPasswordWord:
-      'Your password can be reset by importing mnemonics. It will not affect your wallet, and please keep your mnemonic!'
+      'Your password can be reset by importing mnemonics. It will not affect your wallet, and please keep your mnemonic!',
+    passwordStrength: 'Password Strength',
+    weak: 'Weak',
+    medium: 'Medium',
+    strong: 'Strong'
   }
 }
 

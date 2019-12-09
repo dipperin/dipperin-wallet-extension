@@ -12,6 +12,7 @@ import WhiteLock from '@/images/whiteLock.png'
 interface AccountInfoProps {
   account?: Account
   label?: Label
+  showDetail: () => void
 }
 
 @inject('account', 'label')
@@ -171,15 +172,21 @@ class AccountInfo extends React.Component<AccountInfoProps> {
       <div className="accounts-content">
         <div className="accounts-id-box">
           {/* <span className="accounts-id">{activeAccount.id}</span> */}
-          <img className="accounts-avatar" src={genAvatar(activeAccount.address, 80)} alt="" />
+          <img
+            className="accounts-avatar"
+            src={genAvatar(activeAccount.address, 80)}
+            alt=""
+            onClick={this.props.showDetail}
+            draggable={false}
+          />
         </div>
 
         <div className="accounts-name-box">
           {!this.inputAccount && (
             <Fragment>
-              <span className="accounts-name-nothing" />
+              {/* <span className="accounts-name-nothing" /> */}
               <span className="accounts-name">{this.accountName ? this.accountName : activeAccount.name}</span>
-              <span className="accounts-name-icon" onClick={this.openInputAccount} />
+              {/* <span className="accounts-name-icon" onClick={this.openInputAccount} /> */}
             </Fragment>
           )}
           {this.inputAccount && (

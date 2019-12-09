@@ -46,7 +46,7 @@ class CreateAccount extends React.Component<CreateAccountProps> {
 
   @computed
   get verifyAccountName() {
-    const MAXLENGHT = 20
+    const MAXLENGHT = 16
     let strlenght = 0
     const txtval = this.accountName
     for (let i = 0; i < txtval.length; i++) {
