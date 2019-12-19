@@ -2,7 +2,7 @@ interface Window {
   chrome: typeof chrome
 }
 
-declare var window: Window
+declare var window: Window & typeof globalThis
 
 const mockChrome = ({
   storage: {
