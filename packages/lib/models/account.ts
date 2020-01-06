@@ -31,6 +31,7 @@ class Account {
     this._path = account.path
     this._balance = account.balance
     this._lockBalance = account.lockBalance || ''
+    this._type = account.type
     if (account.type === AccountType.privateKey) {
       // TODO: add encrypKey data verifier
       if (account.encryptKey) {

@@ -21,7 +21,7 @@ import WalletStore from '../store/wallet'
 import AccountStore from '../store/account'
 import TimerStore from '../store/timer'
 import TxStore from '../store/transaction'
-import { AccountObj, AccountBalanceParams, AccountNameParams } from '@dipperin/lib/models/account'
+import { AccountObj, AccountBalanceParams, AccountNameParams, AccountType } from '@dipperin/lib/models/account'
 import { TxStatusParams, TransactionObj, SendTxParams } from '@dipperin/lib/models/transaction'
 import { ImportParams } from '@dipperin/lib/models/wallet'
 import { clear } from '../storage'
@@ -472,8 +472,16 @@ class RootStore extends EventEmitter {
   }
 
   signMessage = () => {
-    const activeAccountPath = this._account.activeAccount.path
-    const activeAccountPrivateKey = this._wallet.hdAccount.derivePath(activeAccountPath).privateKey
+    let activeAccountPrivateKey: string
+    log.info('activeAccount', this._account.activeAccount)
+    if (this._account.activeAccount.type === AccountType.hd) {
+      const activeAccountPath = this._account.activeAccount.path
+      activeAccountPrivateKey = this._wallet.hdAccount.derivePath(activeAccountPath).privateKey
+    } else {
+      const path = this._account.activeAccount.path
+      const psw = this._wallet.hdAccount.derivePath(path).privateKey
+      activeAccountPrivateKey = Accounts.decrypt(this._account.activeAccount.encryptKey, psw).seed
+    }
     const signedMessage = Accounts.sign(this._signMessage, activeAccountPrivateKey).signature
     this._signedMessage = signedMessage
   }
