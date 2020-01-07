@@ -122,7 +122,7 @@ class TransactionStore extends EventEmitter {
   async getEstimateGas(hdAccount: AccountObject, activeAccount: AccountModel, tx: SendTxParams): Promise<string> {
     const privateKey = hdAccount.derivePath(activeAccount.path).privateKey
     try {
-      tx.gas = '0'
+      tx.gas = '10000000000000000'
       tx.gasPrice = '1'
       const transaction = this.createNewTransaction(activeAccount, tx)
       transaction.signTranaction(privateKey, DEFAULT_CHAIN_ID)

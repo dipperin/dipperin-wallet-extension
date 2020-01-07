@@ -45,7 +45,7 @@ class DappSend extends React.Component<DappSendProps> {
   sendAmount: string = ''
 
   @observable
-  gas: string = '21000'
+  gas: string = '100000000'
 
   @observable
   gasPrice: string = '1'
@@ -75,6 +75,14 @@ class DappSend extends React.Component<DappSendProps> {
       this.getEstimateGas()
     })
     this.setAutoCloseWindow()
+    // console.log('11111')
+    setInterval(() => {
+      if (this.gas === '0') {
+        this.getEstimateGas()
+      } else {
+        console.log(this.gas)
+      }
+    }, 1000)
   }
 
   adjustWindow = () => {
@@ -145,7 +153,7 @@ class DappSend extends React.Component<DappSendProps> {
   @action
   setGas = (newGas: string) => {
     const re = /^[0-9.]+$/
-    if (re.test(newGas)) {
+    if (re.test(newGas) && Number(newGas) > 0) {
       this.gas = newGas
     }
   }
@@ -332,7 +340,7 @@ class DappSend extends React.Component<DappSendProps> {
           <Button params={btnCancel} onClick={this.toQuit}>
             {this.props.label!.label.wallet.cancel}
           </Button>
-          <Button params={btnConfirm} onClick={this.handleTransfer}>
+          <Button params={btnConfirm} onClick={this.handleTransfer} disabled={this.gas === '0'}>
             {this.props.label!.label.wallet.confirm}
           </Button>
         </div>
