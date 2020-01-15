@@ -77,7 +77,7 @@ class Import extends React.Component<Props> {
   get verifyInput() {
     const { password, repeatPassword } = this.input
     const flagLen = this.input.password.split('').length >= 8
-    if (this.mnemonic && (password && password === repeatPassword && flagLen)) {
+    if (this.mnemonic && password && password === repeatPassword && flagLen) {
       return true
     }
     return false
