@@ -1,0 +1,30 @@
+name: Test
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Run popup tests
+        run: |
+          cd packages/popup/
+          yarn test:ci
+    
+      # - name: Run background tests
+      #   run: |
+      #     ls
+      #     cd packages/backgroundScript/
+      #     yarn test:ci

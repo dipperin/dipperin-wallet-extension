@@ -7,7 +7,7 @@
     "build": "webpack-cli --config ../../webpack.config.js -o ../../build/pageHook.js",
     "watch": "webpack-cli -w --config ../../webpack.config.js -o ../../build/pageHook.js",
     "test": "jest --watch --config=./jest.config.js",
-    "test:ci": "jest --ci --config=./jest.config.js",
+    "test:ci": "jest --passWithNoTests --ci --config=./jest.config.js",
     "removeCache": "rimraf node_modules/.cache/hard-source"
   },
   "devDependencies": {

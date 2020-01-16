@@ -17,7 +17,11 @@ it('verifyEnteringAmount', () => {
   })
 })
 
-const formatAmountTestData = [{ input: '0.', result: '0' }, { input: '.1', result: '0.1' }, { input: '.', result: '0' }]
+const formatAmountTestData = [
+  { input: '0.', result: '0' },
+  { input: '.1', result: '0.1' },
+  { input: '.', result: '0' }
+]
 
 it('formatAmount', () => {
   formatAmountTestData.forEach(item => {
