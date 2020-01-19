@@ -21,7 +21,7 @@ const api = {
   /** for account store  */
   getAccounts: jest.fn().mockResolvedValue([]),
   getActiveAccount: jest.fn().mockResolvedValue({
-    name: '222',
+    name: '1',
     address: '0x00007B71014bd3AdfB86bC0E774605F85DE850F89192',
     id: '2',
     path: `m/44'/709394'/0'/0/2`,
