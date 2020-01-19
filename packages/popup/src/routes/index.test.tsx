@@ -25,7 +25,7 @@ describe('Routes', () => {
   // let instance: Routes
 
   beforeEach(() => {
-    component = shallow(<Routes history={history} />).dive()
+    component = shallow(<Routes history={history} />)
     // instance = component.instance() as Routes
   })
 
