@@ -127,6 +127,7 @@ describe('Send', () => {
   })
 
   it('sendTransfer', async () => {
+    jest.useFakeTimers()
     transaction.verifyTx = jest.fn(() => {
       return { success: true }
     })
@@ -135,6 +136,7 @@ describe('Send', () => {
       return {}
     })
     await instance.sendTransfer()
+    jest.runAllTimers()
     expect(layout.handleCloseLoading).toHaveBeenCalled()
   })
 
@@ -149,12 +151,14 @@ describe('Send', () => {
   })
 
   it('sendTransfer tx err', async () => {
+    jest.useFakeTimers()
     transaction.verifyTx = jest.fn(() => {
       return { success: false, info: 'tx error' }
     })
     layout.handleCloseLoading = jest.fn()
     transaction.sendTxForApp = jest.fn().mockRejectedValue('error')
     await instance.sendTransfer()
+    jest.runAllTimers()
     expect(layout.handleCloseLoading).toHaveBeenCalled()
   })
 

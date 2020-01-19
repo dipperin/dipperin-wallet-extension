@@ -4,6 +4,7 @@ import History from '../../stores/history'
 import Account from '../../stores/account'
 import { mockApi } from '../../tests/mock/api'
 import Label from '../../stores/label'
+import '@/tests/mock/mockChrome'
 
 import CreateAccount from './index'
 

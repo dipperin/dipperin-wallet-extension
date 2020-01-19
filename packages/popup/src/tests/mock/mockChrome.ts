@@ -16,3 +16,4 @@ const mockChrome = ({
 window.chrome = mockChrome
 window.open = jest.fn()
 window.close = jest.fn()
+window.resizeBy = jest.fn()

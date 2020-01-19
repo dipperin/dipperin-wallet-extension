@@ -4,6 +4,7 @@ import '@/tests/mock/mockChrome'
 import { mockApi } from '../../tests/mock/api'
 import History from '@/stores/history'
 import Account from '@/stores/account'
+import Layout from '@/stores/layout'
 import Label from '@/stores/label'
 import NavHeader from './index'
 // import Label from '../../stores/label'
@@ -13,12 +14,13 @@ describe('NavHeader', () => {
   const history = new History(mockApi)
   const account = new Account(mockApi)
   const label = new Label()
+  const layout = new Layout()
   let component: ShallowWrapper
   let instance: NavHeader
   account.updateAccountStore = jest.fn()
 
   beforeEach(() => {
-    component = shallow(<NavHeader history={history} account={account} label={label} />).dive()
+    component = shallow(<NavHeader history={history} layout={layout} account={account} label={label} />).dive()
     instance = component.instance() as NavHeader
   })
   it('render', () => {

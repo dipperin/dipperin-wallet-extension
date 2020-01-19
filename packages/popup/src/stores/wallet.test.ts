@@ -31,7 +31,10 @@ describe('wallet Store', () => {
 
   it('importWallet', async () => {
     mockApi.importWallet = jest.fn().mockResolvedValue(true)
-    const res = await wallet.importWallet('123', 'xx')
+    const res = await wallet.importWallet(
+      '12345678',
+      'very olive salon brand know muffin uniform garage scout narrow stove solar'
+    )
     expect(res).toBe(true)
   })
 

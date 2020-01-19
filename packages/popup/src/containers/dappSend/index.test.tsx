@@ -26,7 +26,7 @@ describe('DappSend', () => {
   })
 
   it('fee', () => {
-    expect(instance.fee).toBe(21000)
+    expect(instance.fee).toBe(100000000)
   })
 
   it('verifyGasPrince', () => {
@@ -38,6 +38,7 @@ describe('DappSend', () => {
   })
 
   it('setAutoCloseWindow', async () => {
+    jest.useFakeTimers()
     const spyonToQuit = jest.spyOn(instance, 'setAutoCloseWindow')
     instance.setAutoCloseWindow()
     jest.runAllTicks()
@@ -129,7 +130,7 @@ describe('DappSend', () => {
       address: '0x001',
       amount: '1',
       memo: '00',
-      gas: '21000',
+      gas: '100000000',
       gasPrice: '1'
     })
   })

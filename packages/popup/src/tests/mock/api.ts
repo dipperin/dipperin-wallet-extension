@@ -19,8 +19,16 @@ const api = {
   resetWallet: jest.fn(),
   confirmAuth: jest.fn().mockResolvedValue(''),
   /** for account store  */
-  getAccounts: jest.fn().mockResolvedValue(''),
-  getActiveAccount: jest.fn().mockResolvedValue(''),
+  getAccounts: jest.fn().mockResolvedValue([]),
+  getActiveAccount: jest.fn().mockResolvedValue({
+    name: '222',
+    address: '0x00007B71014bd3AdfB86bC0E774605F85DE850F89192',
+    id: '2',
+    path: `m/44'/709394'/0'/0/2`,
+    balance: '0',
+    lockBalance: '0',
+    type: 0
+  }),
   changeActiveAccount: jest.fn().mockResolvedValue(''),
   addAccount: jest.fn().mockResolvedValue(''),
   deleteAccount: jest.fn(),

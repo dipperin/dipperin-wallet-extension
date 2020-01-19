@@ -80,7 +80,7 @@ class DappSend extends React.Component<DappSendProps> {
       if (this.gas === '0') {
         this.getEstimateGas()
       } else {
-        console.log(this.gas)
+        // console.log(this.gas)
       }
     }, 1000)
   }
