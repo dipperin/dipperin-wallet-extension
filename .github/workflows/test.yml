@@ -22,6 +22,11 @@ jobs:
         run: |
           cd packages/popup/
           yarn test:ci
+      
+      - name: Run popup tests
+        run: |
+          cd packages/popup/
+          yarn test:cov
     
       # - name: Run background tests
       #   run: |
