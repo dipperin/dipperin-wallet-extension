@@ -1,5 +1,6 @@
 jest.mock('@/api')
 import extensionizer from 'extensionizer'
+import '@/tests/mock/mockChrome'
 jest.mock('extensionizer')
 extensionizer.runtime = {
   connect: jest.fn(() => {

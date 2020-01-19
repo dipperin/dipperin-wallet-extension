@@ -5,10 +5,7 @@ import mockDuplex from './duplex'
 
 const api = {
   // duplex: new Popup(),
-  getCurrentPage: jest
-    .fn()
-    .mockResolvedValue('')
-    .mockRejectedValue('getCurrentPage'),
+  getCurrentPage: jest.fn().mockResolvedValue(''),
   setAppState: jest.fn(),
   onAppState: jest.fn(),
   importWallet: jest.fn().mockResolvedValue(''),
