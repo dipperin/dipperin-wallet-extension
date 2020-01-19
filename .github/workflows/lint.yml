@@ -34,6 +34,9 @@ jobs:
 
       - name: Run linters
         run: |
+          git fetch
+          changes=$(git status -s | wc -l)
+          echo $changes
           git checkout ${{ github.head_ref }}
           cd packages/popup
           yarn fix
