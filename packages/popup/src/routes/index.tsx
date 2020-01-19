@@ -12,7 +12,7 @@ interface RoutesProps {
 
 @inject('history')
 @observer
-class Routes extends React.Component<RoutesProps, {}> {
+class Routes extends React.Component<RoutesProps> {
   showPage = () => {
     const appState = this.props.history!.appState
     const Component = COMPONENT_DIC[appState]

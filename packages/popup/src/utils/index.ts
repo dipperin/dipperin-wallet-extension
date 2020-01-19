@@ -54,3 +54,11 @@ export const formatAmount = (amount: string) => {
 
   return formattedAmount
 }
+
+export const sleep = (time: number) => {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve()
+    }, time)
+  })
+}

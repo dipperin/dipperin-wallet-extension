@@ -1,4 +1,4 @@
-import { observable, computed, action } from 'mobx'
+import { observable, computed, action, runInAction } from 'mobx'
 
 import { ApiType } from '@/api'
 import { AccountObj, AccountNameParams } from '@dipperin/lib/models/account'
@@ -52,7 +52,9 @@ class Account {
   getAccountInfo = () => {
     this._api.getAccounts()!.then((res: AccountObj[]) => {
       // console.log('accountStore-getAccountInfo:', res)
-      this._accountList = res
+      runInAction(() => {
+        this._accountList = res
+      })
     })
   }
 

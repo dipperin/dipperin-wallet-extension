@@ -76,7 +76,7 @@ class TxRecord extends React.Component<SettingsProps> {
 
   @action
   setTransactions = (txs: TransactionObj[]) => {
-    this.transactions = txs
+    this.transactions = txs ? txs : []
   }
 
   constructor(props) {

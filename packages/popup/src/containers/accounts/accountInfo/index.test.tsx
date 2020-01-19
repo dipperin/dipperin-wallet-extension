@@ -85,7 +85,16 @@ describe('AccountInfo', () => {
       }
     }
     mockApi.getAccounts = jest.fn(async () => {
-      return [{ name: 'name', address: '0x00', id: '1', path: '/1', balance: '0', lockBalance: '0' }]
+      return [
+        {
+          address: '0x0000b4293d60F051936beDecfaE1B85d5A46d377aF37',
+          id: 1,
+          nonce: '0',
+          path: "m/44'/709394'/0'/0/1",
+          _id: 'sqEVSm4jZaNAegxA',
+          name: ''
+        }
+      ]
     })
     await account.getAccountInfo()
     await account.changeCurrentAccount('1')
@@ -98,7 +107,16 @@ describe('AccountInfo', () => {
 
   it('copyAddress', async () => {
     mockApi.getAccounts = jest.fn(async () => {
-      return [{ name: 'name', address: '0x00', id: '1', path: '/1', balance: '0', lockBalance: '0' }]
+      return [
+        {
+          address: '0x0000b4293d60F051936beDecfaE1B85d5A46d377aF37',
+          id: 1,
+          nonce: '0',
+          path: "m/44'/709394'/0'/0/1",
+          _id: 'sqEVSm4jZaNAegxA',
+          name: ''
+        }
+      ]
     })
     await account.getAccountInfo()
     // await account.changeCurrentAccount('1')

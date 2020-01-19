@@ -55,6 +55,7 @@ class DappSend extends React.Component<DappSendProps> {
     modalMsg: '',
     show: false
   }
+  timer: NodeJS.Timeout
 
   @computed
   get fee() {
@@ -76,13 +77,17 @@ class DappSend extends React.Component<DappSendProps> {
     })
     this.setAutoCloseWindow()
     // console.log('11111')
-    setInterval(() => {
+    this.timer = setInterval(() => {
       if (this.gas === '0') {
         this.getEstimateGas()
       } else {
-        console.log(this.gas)
+        // console.log(this.gas)
       }
     }, 1000)
+  }
+
+  clearTimer = () => {
+    clearInterval(this.timer)
   }
 
   adjustWindow = () => {

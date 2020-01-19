@@ -1,0 +1,29 @@
+name: Release
+
+on: release
+
+jobs:
+  ubuntu:
+    name: Build and upload tar
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull source
+        uses: actions/checkout@v1
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build
+        run: yarn build:zip
+
+      - name: Upload to release
+        uses: JasonEtco/upload-to-release@master
+        with:
+          args: Dipperin-chrome.zip application/zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

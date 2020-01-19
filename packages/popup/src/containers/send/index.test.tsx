@@ -5,8 +5,8 @@ import History from '@/stores/history'
 import Account from '@/stores/account'
 import Transaction from '@/stores/transaction'
 import Layout from '@/stores/layout'
-import { mockApi } from '../../tests/mock/api'
-import Label from '../../stores/label'
+import { mockApi } from '@/tests/mock/api'
+import Label from '@/stores/label'
 
 import Send from './index'
 
@@ -127,6 +127,7 @@ describe('Send', () => {
   })
 
   it('sendTransfer', async () => {
+    jest.useFakeTimers()
     transaction.verifyTx = jest.fn(() => {
       return { success: true }
     })
@@ -134,7 +135,9 @@ describe('Send', () => {
     transaction.sendTxForApp = jest.fn(async () => {
       return {}
     })
+    instance.handleAddress({ target: { value: '0x0000b4293d60F051936beDecfaE1B85d5A46d377aF37' } } as any)
     await instance.sendTransfer()
+    jest.runAllTimers()
     expect(layout.handleCloseLoading).toHaveBeenCalled()
   })
 
@@ -144,17 +147,21 @@ describe('Send', () => {
     })
     layout.handleCloseLoading = jest.fn()
     transaction.sendTxForApp = jest.fn().mockRejectedValue('error')
+    instance.handleAddress({ target: { value: '0x0000b4293d60F051936beDecfaE1B85d5A46d377aF37' } } as any)
     await instance.sendTransfer()
     expect(layout.handleCloseLoading).toHaveBeenCalled()
   })
 
   it('sendTransfer tx err', async () => {
+    jest.useFakeTimers()
     transaction.verifyTx = jest.fn(() => {
       return { success: false, info: 'tx error' }
     })
     layout.handleCloseLoading = jest.fn()
     transaction.sendTxForApp = jest.fn().mockRejectedValue('error')
+    instance.handleAddress({ target: { value: '0x0000b4293d60F051936beDecfaE1B85d5A46d377aF37' } } as any)
     await instance.sendTransfer()
+    jest.runAllTimers()
     expect(layout.handleCloseLoading).toHaveBeenCalled()
   })
 
