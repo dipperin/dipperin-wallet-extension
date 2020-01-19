@@ -1,11 +1,11 @@
 import { shallow, ShallowWrapper } from 'enzyme'
 import React from 'react'
 import '@/tests/mock/mockChrome'
-import History from '../../stores/history'
-import Account from '../../stores/account'
-import Transaction from '../../stores/transaction'
-import { mockApi } from '../../tests/mock/api'
-import Label from '../../stores/label'
+import History from '@/stores/history'
+import Account from '@/stores/account'
+import Transaction from '@/stores/transaction'
+import { mockApi } from '@/tests/mock/api'
+import Label from '@/stores/label'
 
 import DappSend from './index'
 
@@ -20,6 +20,7 @@ describe('DappSend', () => {
   beforeEach(() => {
     component = shallow(<DappSend account={account} transaction={transaction} history={history} label={label} />).dive()
     instance = component.instance() as DappSend
+    instance.clearTimer()
   })
   it('render', () => {
     expect(component.exists()).toBe(true)
@@ -197,7 +198,7 @@ describe('DappSend', () => {
     expect(window.close).toHaveBeenCalled()
   })
 
-  it('showMsg', () => {
+  it('showMsg', async () => {
     jest.useFakeTimers()
     instance.showMsg('msg')
     expect(instance.modalHandler.modalMsg).toBe('msg')
